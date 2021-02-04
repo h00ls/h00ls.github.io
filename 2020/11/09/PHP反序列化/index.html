@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html  lang="en" >
+    <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, maximum-scale=5, viewport-fit=cover">
+    <title>PHP反序列化案例 | Hexo</title>
+    <meta name="description" content="PHP反序列化漏洞案例在看php反序列化的时候遇到下面这个题，来自于：https:&#x2F;&#x2F;www.cnblogs.com&#x2F;nul1&#x2F;p&#x2F;9928797.html。然后解答来自于https:&#x2F;&#x2F;www.freebuf.com&#x2F;articles&#x2F;web&#x2F;167721.html。这里我就说下我踏过的坑。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PHP反序列化案例">
+<meta property="og:url" content="http://example.com/2020/11/09/PHP%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="PHP反序列化漏洞案例在看php反序列化的时候遇到下面这个题，来自于：https:&#x2F;&#x2F;www.cnblogs.com&#x2F;nul1&#x2F;p&#x2F;9928797.html。然后解答来自于https:&#x2F;&#x2F;www.freebuf.com&#x2F;articles&#x2F;web&#x2F;167721.html。这里我就说下我踏过的坑。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://raw.githubusercontent.com/unihac/picGo/master/images/20201109090938.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/unihac/picGo/master/images/20201109090603.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/unihac/picGo/master/images/20201109090608.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/unihac/picGo/master/images/20201109090832.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/unihac/picGo/master/images/20201109090635.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/unihac/picGo/master/images/20201109090643.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/unihac/picGo/master/images/20201109090648.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/unihac/picGo/master/images/20201109090654.png">
+<meta property="article:published_time" content="2020-11-09T00:36:36.000Z">
+<meta property="article:modified_time" content="2020-11-09T01:09:55.139Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="php反序列化">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/unihac/picGo/master/images/20201109090938.png">
+
+    <link rel="alternate" type="application/atom+xml" href="/atom.xml">
+    <link rel="icon" href="/images/favicon.ico" type="image/x-icon">
+
+    
+<link rel="stylesheet" href="/css/common.min.css">
+
+
+
+    
+    
+    
+    
+        <link href="//cdn.jsdelivr.net/npm/lightgallery.js@1.1.3/dist/css/lightgallery.min.css" rel="stylesheet">
+    
+    
+    
+<link rel="stylesheet" href="/css/iconfont.min.css">
+
+    
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+    <body>
+        <header class="header header-fixture">
+    <div class="profile-search-wrap flex sm:block">
+        
+        
+        <div class="profile sm:text-center md:px-1 lg:px-3 sm:pb-4 sm:pt-6">
+            <a id="avatar" role="link" href="https://github.com/fengkx" class="inline-block lg:w-16 lg:h-16 w-8 h-8 m-2" target="_blank" rel="noopener" rel="noreferrer" >
+                <img src="https://www.gravatar.com/avatar/0bc83cb571cd1c50ba6f3e8a78ef1346?s=128" class="rounded-full" alt="avatar">
+            </a>
+            <h2 id="name" class="hidden lg:block">h00ls</h2>
+            <h3 id="title" class="hidden xl:block">安全那些事</h3>
+            
+            <small id="location" class="hidden lg:block">
+                <i class="iconfont icon-map-icon"></i>
+                Sichuan, China
+            </small>
+            
+        </div>
+        
+        
+<div class="search flex-1 flex lg:inline-block sm:hidden lg:px-4 lg:mt-2 lg:mb-4 lg:w-full">
+    <form id="search-form" class="my-auto flex-1 lg:border lg:border-solid lg:border-gray-200">
+        <div class="input-group table bg-gray-100 lg:bg-white w-full">
+            <input id="search-input" type="text" placeholder="Search" class="inline-block w-full bg-gray-100 lg:bg-white">
+            <span class="table-cell">
+                <button name="search tigger button" disabled>
+                    <i class="iconfont icon-search m-2"></i>
+                </button>
+            </span>
+        </div>
+    </form>
+        
+<script id="search-teamplate" type="text/html" data-path="/content.json">
+    <div>
+        <div class="search-header bg-gray-400">
+            <input id="actual-search-input" model="keyword" ref="input" class="inline-block w-full h-10 px-2 py-1" placeholder="Search" type="text">
+        </div>
+        <div class="search-result bg-gray-200">
+            {{#each searchPosts}}
+            <a href="/{{ path }}" class="result-item block px-2 pb-3 mb-1 pt-1 hover:bg-indigo-100">
+                <i class="iconfont icon-file"></i>
+                <h1 class="result-title inline font-medium text-lg">{{ title }}</h1>
+                <p class="result-content text-gray-600 text-sm">{{{ text }}}</p>
+            </a>
+            {{/each}}
+        </div>
+    </div>
+</script>
+
+</div>
+
+
+        <button name="menu toogle button" id="menu-toggle-btn" class="block sm:hidden p-3" role="button" aria-expanded="false">
+            <i class="iconfont icon-hamburger"></i>
+        </button>
+    </div>
+    <nav id="menu-nav" class="hidden sm:flex flex-col">
+        
+        
+            <div class="menu-item menu-home" role="menuitem">
+                <a href="/.">
+                    <i class="iconfont icon-home" aria-hidden="true"></i>
+                    <span class="menu-title">Home</span>
+                </a>
+            </div>
+        
+        
+            <div class="menu-item menu-archives" role="menuitem">
+                <a href="/archives">
+                    <i class="iconfont icon-archive" aria-hidden="true"></i>
+                    <span class="menu-title">Archives</span>
+                </a>
+            </div>
+        
+        
+            <div class="menu-item menu-categories" role="menuitem">
+                <a href="/categories">
+                    <i class="iconfont icon-folder" aria-hidden="true"></i>
+                    <span class="menu-title">Categories</span>
+                </a>
+            </div>
+        
+        
+            <div class="menu-item menu-tags" role="menuitem">
+                <a href="/tags">
+                    <i class="iconfont icon-tag" aria-hidden="true"></i>
+                    <span class="menu-title">Tags</span>
+                </a>
+            </div>
+        
+        
+            <div class="menu-item menu-repository" role="menuitem">
+                <a href="/repository">
+                    <i class="iconfont icon-project" aria-hidden="true"></i>
+                    <span class="menu-title">Repository</span>
+                </a>
+            </div>
+        
+        
+            <div class="menu-item menu-links" role="menuitem">
+                <a href="/links">
+                    <i class="iconfont icon-friend" aria-hidden="true"></i>
+                    <span class="menu-title">Links</span>
+                </a>
+            </div>
+        
+        
+            <div class="menu-item menu-about" role="menuitem">
+                <a href="/about">
+                    <i class="iconfont icon-cup" aria-hidden="true"></i>
+                    <span class="menu-title">About</span>
+                </a>
+            </div>
+        
+        
+<div class="social-links flex sm:flex-col lg:hidden mt-5">
+    
+        <span class="social-item text-center">
+            <a target="_blank" rel="noopener" href="https://github.com/fengkx">
+                <i class="iconfont social-icon icon-github"></i>
+                <span class="menu-title hidden lg:inline">menu.github</span>
+            </a>
+        </span>
+    
+        <span class="social-item text-center">
+            <a target="_blank" rel="noopener" href="https://t.me/fengkx">
+                <i class="iconfont social-icon icon-telegram"></i>
+                <span class="menu-title hidden lg:inline">menu.telegram</span>
+            </a>
+        </span>
+    
+        <span class="social-item text-center">
+            <a target="_blank" rel="noopener" href="https://twitter.com/example">
+                <i class="iconfont social-icon icon-twitter"></i>
+                <span class="menu-title hidden lg:inline">menu.twitter</span>
+            </a>
+        </span>
+    
+        <span class="social-item text-center">
+            <a href="/atom.xml">
+                <i class="iconfont social-icon icon-rss"></i>
+                <span class="menu-title hidden lg:inline">menu.rss</span>
+            </a>
+        </span>
+    
+</div>
+
+
+    </nav>
+</header>
+
+        <section class="main-section">
+            
+    <main class="flex-1 px-4 py-12 md:px-5 lg:px-8 lg:py-4 relative min-h-screen">
+    
+
+    <article class="content article article-archives article-type-list" itemscope="">
+        <header class="article-header">
+            
+    
+        <h1 class="article-title text-lg" itemprop="name">
+            PHP反序列化案例
+        </h1>
+    
+
+
+
+            <p class="article-meta mb-3 text-xs">
+                <span class="article-date">
+    <i class="iconfont icon-calendar-check"></i>
+	<a href="/2020/11/09/PHP%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/" class="article-date">
+	  <time datetime="2020-11-09T00:36:36.000Z" itemprop="datePublished">Nov 9</time>
+	</a>
+</span>
+
+                
+
+                
+    <span class="article-tags">
+    <i class="iconfont icon-tag"></i>
+    <a class="article-tag-none-link" href="/tags/php%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/" rel="tag">php反序列化</a>
+  </span>
+
+
+                <span class="_partial/post-comment"><i class="icon icon-comment"></i>
+                    <a href="/2020/11/09/PHP%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/#comments" class="article-comment-link">
+                        Comments
+                    </a>
+                </span>
+                
+    
+        <span class="post-wordcount" itemprop="wordCount">Word Count: 967(words)</span>
+    
+    
+        <span class="post-readcount" itemprop="timeRequired">Read Count: 4(minutes)</span>
+    
+
+
+            </p>
+        </header>
+        <div class="marked-body article-body">
+            <h2 id="PHP反序列化漏洞案例"><a href="#PHP反序列化漏洞案例" class="headerlink" title="PHP反序列化漏洞案例"></a>PHP反序列化漏洞案例</h2><p>在看php反序列化的时候遇到下面这个题，来自于：<a target="_blank" rel="noopener" href="https://www.cnblogs.com/nul1/p/9928797.html%E3%80%82%E7%84%B6%E5%90%8E%E8%A7%A3%E7%AD%94%E6%9D%A5%E8%87%AA%E4%BA%8Ehttps://www.freebuf.com/articles/web/167721.html%E3%80%82%E8%BF%99%E9%87%8C%E6%88%91%E5%B0%B1%E8%AF%B4%E4%B8%8B%E6%88%91%E8%B8%8F%E8%BF%87%E7%9A%84%E5%9D%91%E3%80%82">https://www.cnblogs.com/nul1/p/9928797.html。然后解答来自于https://www.freebuf.com/articles/web/167721.html。这里我就说下我踏过的坑。</a></p>
+<a id="more"></a>
+
+<p>源码如下：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">error_reporting(<span class="number">0</span>);</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">come</span></span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="variable">$method</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="variable">$args</span>;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">__construct</span>(<span class="params"><span class="variable">$method</span>, <span class="variable">$args</span></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;method = <span class="variable">$method</span>;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;args = <span class="variable">$args</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">__wakeup</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="keyword">foreach</span>(<span class="keyword">$this</span>-&gt;args <span class="keyword">as</span> <span class="variable">$k</span> =&gt; <span class="variable">$v</span>) &#123;</span><br><span class="line">            <span class="keyword">$this</span>-&gt;args[<span class="variable">$k</span>] = <span class="keyword">$this</span>-&gt;waf(trim(<span class="variable">$v</span>));</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">waf</span>(<span class="params"><span class="variable">$str</span></span>)</span>&#123;</span><br><span class="line">        <span class="variable">$str</span>=preg_replace(<span class="string">&quot;/[&lt;&gt;*;|?\n ]/&quot;</span>,<span class="string">&quot;&quot;</span>,<span class="variable">$str</span>);</span><br><span class="line">        <span class="variable">$str</span>=str_replace(<span class="string">&#x27;flag&#x27;</span>,<span class="string">&#x27;&#x27;</span>,<span class="variable">$str</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="variable">$str</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">echos</span>(<span class="params"><span class="variable">$host</span></span>)</span>&#123;</span><br><span class="line">        system(<span class="string">&quot;echo <span class="subst">$host</span>&quot;</span>.<span class="variable">$host</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">__destruct</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (in_array(<span class="keyword">$this</span>-&gt;method, <span class="keyword">array</span>(<span class="string">&quot;echos&quot;</span>))) &#123;</span><br><span class="line">            call_user_func_array(<span class="keyword">array</span>(<span class="keyword">$this</span>, <span class="keyword">$this</span>-&gt;method), <span class="keyword">$this</span>-&gt;args);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="variable">$first</span>=<span class="string">&#x27;hi&#x27;</span>;</span><br><span class="line"><span class="variable">$var</span>=<span class="string">&#x27;var&#x27;</span>;</span><br><span class="line"><span class="variable">$bbb</span>=<span class="string">&#x27;bbb&#x27;</span>;</span><br><span class="line"><span class="variable">$ccc</span>=<span class="string">&#x27;ccc&#x27;</span>;</span><br><span class="line"><span class="variable">$i</span>=<span class="number">1</span>;</span><br><span class="line"><span class="keyword">foreach</span>(<span class="variable">$_GET</span> <span class="keyword">as</span> <span class="variable">$key</span> =&gt; <span class="variable">$value</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span>(<span class="variable">$i</span>===<span class="number">1</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="variable">$i</span>++;</span><br><span class="line">            <span class="variable">$$key</span> = <span class="variable">$value</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span>&#123;<span class="keyword">break</span>;&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span>(<span class="variable">$first</span>===<span class="string">&quot;doller&quot;</span>)</span><br><span class="line">&#123;</span><br><span class="line">    @parse_str(<span class="variable">$_GET</span>[<span class="string">&#x27;a&#x27;</span>]);</span><br><span class="line">    <span class="keyword">if</span>(<span class="variable">$var</span>===<span class="string">&quot;give&quot;</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span>(<span class="variable">$bbb</span>===<span class="string">&quot;me&quot;</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span>(<span class="variable">$ccc</span>===<span class="string">&quot;flag&quot;</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">echo</span> <span class="string">&quot;&lt;br&gt;welcome!&lt;br&gt;&quot;</span>;</span><br><span class="line">                <span class="variable">$come</span>=@<span class="variable">$_POST</span>[<span class="string">&#x27;come&#x27;</span>];</span><br><span class="line">                unserialize(<span class="variable">$come</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;<span class="keyword">echo</span> <span class="string">&quot;&lt;br&gt;think about it&lt;br&gt;&quot;</span>;&#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">&quot;NO&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&quot;Can you hack me?&lt;br&gt;&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p>上面代码可以分为两个阶段来看，第一个阶段就是如何进入到下面的反序列化代码中，第二个如何利用反序列化进行代码执行。</p>
+<h3 id="第一阶段"><a href="#第一阶段" class="headerlink" title="第一阶段"></a>第一阶段</h3><p>代码片段如下。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$first</span>=<span class="string">&#x27;hi&#x27;</span>;</span><br><span class="line"><span class="variable">$var</span>=<span class="string">&#x27;var&#x27;</span>;</span><br><span class="line"><span class="variable">$bbb</span>=<span class="string">&#x27;bbb&#x27;</span>;</span><br><span class="line"><span class="variable">$ccc</span>=<span class="string">&#x27;ccc&#x27;</span>;</span><br><span class="line"><span class="variable">$i</span>=<span class="number">1</span>;</span><br><span class="line"><span class="keyword">foreach</span>(<span class="variable">$_GET</span> <span class="keyword">as</span> <span class="variable">$key</span> =&gt; <span class="variable">$value</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span>(<span class="variable">$i</span>===<span class="number">1</span>)&#123;</span><br><span class="line">            <span class="variable">$i</span>++;</span><br><span class="line">            <span class="variable">$$key</span> = <span class="variable">$value</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span>&#123;<span class="keyword">break</span>;&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span>(<span class="variable">$first</span>===<span class="string">&quot;doller&quot;</span>)&#123;</span><br><span class="line">    @parse_str(<span class="variable">$_GET</span>[<span class="string">&#x27;a&#x27;</span>]);</span><br><span class="line">    <span class="keyword">if</span>(<span class="variable">$var</span>===<span class="string">&quot;give&quot;</span>)&#123;</span><br><span class="line">        <span class="keyword">if</span>(<span class="variable">$bbb</span>===<span class="string">&quot;me&quot;</span>)&#123;</span><br><span class="line">            <span class="keyword">if</span>(<span class="variable">$ccc</span>===<span class="string">&quot;flag&quot;</span>)&#123;</span><br><span class="line">                <span class="keyword">echo</span> <span class="string">&quot;&lt;br&gt;welcome!&lt;br&gt;&quot;</span>;</span><br><span class="line">                <span class="variable">$come</span>=@<span class="variable">$_POST</span>[<span class="string">&#x27;come&#x27;</span>];</span><br><span class="line">                unserialize(<span class="variable">$come</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="keyword">echo</span> <span class="string">&quot;&lt;br&gt;think about it&lt;br&gt;&quot;</span>;&#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span>&#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">&quot;NO&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span>&#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&quot;Can you hack me?&lt;br&gt;&quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>看到有两个<code>$$</code>直接反手一个变量覆盖，直接访问：<a target="_blank" rel="noopener" href="http://127.0.0.1/test.php?first=doller&amp;var=give&amp;bbb=me&amp;ccc=flag%E3%80%82">http://127.0.0.1/test.php?first=doller&amp;var=give&amp;bbb=me&amp;ccc=flag。</a></p>
+<p><img src="https://raw.githubusercontent.com/unihac/picGo/master/images/20201109090938.png" alt="image-20201108152053284"></p>
+<p>这怎么是个NO，仔细一看才知道这个变量覆盖只能利用一次，i++之后就进不去了。那只能往下看，注意到有个<code>parse_str</code>的函数。这个函数的作用如下，将键值对中的键直接变成了变量。</p>
+<p><img src="https://raw.githubusercontent.com/unihac/picGo/master/images/20201109090603.png" alt="image-20201108152430924"></p>
+<p>这会儿就要怎么考虑利用这个<code>a</code>了。浏览器在发起URL时，<strong>猜测</strong>本地应该会先分割，先用<code>&amp;</code>作为分割符，然后传输。</p>
+<p><img src="https://raw.githubusercontent.com/unihac/picGo/master/images/20201109090608.png" alt="image-20201108153321042"></p>
+<p><img src="https://raw.githubusercontent.com/unihac/picGo/master/images/20201109090832.png" alt="image-20201108153527236"></p>
+<p>对<code>&amp;</code>进行url编码后，后面所有的东西都会被浏览器当成a的值，这个时候才发送出去。</p>
+<h3 id="第二阶段"><a href="#第二阶段" class="headerlink" title="第二阶段"></a>第二阶段</h3><p>反序列化漏洞，变量覆盖之类的可以忽略了。简化代码如下：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">error_reporting(<span class="number">0</span>);</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">come</span></span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="variable">$method</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="variable">$args</span>;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">__construct</span>(<span class="params"><span class="variable">$method</span>, <span class="variable">$args</span></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;method = <span class="variable">$method</span>;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;args = <span class="variable">$args</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">__wakeup</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="keyword">foreach</span>(<span class="keyword">$this</span>-&gt;args <span class="keyword">as</span> <span class="variable">$k</span> =&gt; <span class="variable">$v</span>) &#123;</span><br><span class="line">            <span class="keyword">$this</span>-&gt;args[<span class="variable">$k</span>] = <span class="keyword">$this</span>-&gt;waf(trim(<span class="variable">$v</span>));</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">waf</span>(<span class="params"><span class="variable">$str</span></span>)</span>&#123;</span><br><span class="line">        <span class="variable">$str</span>=preg_replace(<span class="string">&quot;/[&lt;&gt;*|;?\n ]/&quot;</span>,<span class="string">&quot;&quot;</span>,<span class="variable">$str</span>);</span><br><span class="line">        <span class="variable">$str</span>=str_replace(<span class="string">&#x27;flag&#x27;</span>,<span class="string">&#x27;&#x27;</span>,<span class="variable">$str</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="variable">$str</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">echos</span>(<span class="params"><span class="variable">$host</span></span>)</span>&#123;</span><br><span class="line">        system(<span class="string">&quot;echo <span class="subst">$host</span>&quot;</span>.<span class="variable">$host</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">__destruct</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (in_array(<span class="keyword">$this</span>-&gt;method, <span class="keyword">array</span>(<span class="string">&quot;echos&quot;</span>))) &#123;</span><br><span class="line">            call_user_func_array(<span class="keyword">array</span>(<span class="keyword">$this</span>, <span class="keyword">$this</span>-&gt;method), <span class="keyword">$this</span>-&gt;args);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="variable">$come</span>=@<span class="variable">$_POST</span>[<span class="string">&#x27;come&#x27;</span>];</span><br><span class="line">unserialize(<span class="variable">$come</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p><strong>假设</strong>此时外部传入序列化后的字符串，函数调用顺序为：<code>wakeup  --&gt;  waf  --&gt;  destruct  --&gt;  echos</code>。然后随便写一个payload测试下：</p>
+<p><img src="https://raw.githubusercontent.com/unihac/picGo/master/images/20201109090635.png" alt="image-20201108155315502"></p>
+<p>拿着这一串payload直接上，输出见下图。</p>
+<p><img src="https://raw.githubusercontent.com/unihac/picGo/master/images/20201109090643.png" alt="image-20201108155406597"></p>
+<p>然后就是过滤。直接看freebuf那片文章就行。在作者这篇文章中，给args传参为<code>&amp;type.\flaflagg.txt</code>，但是我测试了好久，始终没读到数据，然后调试发现那个<code>&amp;</code>有问题，发过去了服务端接收不了，所以一直报错。</p>
+<p><img src="https://raw.githubusercontent.com/unihac/picGo/master/images/20201109090648.png" alt="image-20201108160403920"></p>
+<p>然后使用url编码后，就直接能绕过去了。</p>
+<p><img src="https://raw.githubusercontent.com/unihac/picGo/master/images/20201109090654.png" alt="image-20201108160449377"></p>
+
+        </div>
+        
+<blockquote class="copyright">
+    <p><strong>Link to this article : </strong><a class="permalink" href="http://example.com/2020/11/09/PHP%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/">http://example.com/2020/11/09/PHP反序列化/</a></p>
+    <p><strong>This article is available under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener noreferrer">Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)</a> License</strong></p>
+</blockquote>
+
+
+    </article>
+    
+    <section id="comments">
+        
+    </section>
+
+
+    
+
+</main>
+
+
+<aside style="" id="sidebar" class="aside aside-fixture">
+    <div class="toc-sidebar">
+        <nav id="toc" class="article-toc">
+            <h3 class="toc-title">Catalogue</h3>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#PHP%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%BC%8F%E6%B4%9E%E6%A1%88%E4%BE%8B"><span class="toc-number">1.</span> <span class="toc-text">PHP反序列化漏洞案例</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E9%98%B6%E6%AE%B5"><span class="toc-number">1.1.</span> <span class="toc-text">第一阶段</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E9%98%B6%E6%AE%B5"><span class="toc-number">1.2.</span> <span class="toc-text">第二阶段</span></a></li></ol></li></ol>
+        </nav>
+    </div>
+</aside>
+
+
+
+
+
+        </section>
+        <footer class="hidden lg:block fixed bottom-0 left-0 sm:w-1/12 lg:w-1/6 bg-gray-100 z-40">
+    
+    <div class="footer-social-links">
+        
+            <a target="_blank" rel="noopener" href="https://github.com/fengkx">
+                <i class="iconfont icon-github"></i>
+            </a>
+        
+            <a target="_blank" rel="noopener" href="https://t.me/fengkx">
+                <i class="iconfont icon-telegram"></i>
+            </a>
+        
+            <a target="_blank" rel="noopener" href="https://twitter.com/example">
+                <i class="iconfont icon-twitter"></i>
+            </a>
+        
+            <a href="/atom.xml">
+                <i class="iconfont icon-rss"></i>
+            </a>
+        
+    </div>
+    
+    
+</footer>
+
+        <div id="mask" class="hidden mask fixed inset-0 bg-gray-900 opacity-75 z-40"></div>
+        <div id="search-view-container" class="hidden shadow-xl"></div>
+        
+<script src="/js/dom-event.min.js"></script>
+
+<script src="//cdn.jsdelivr.net/npm/yox@1.0.0-alpha.121/dist/standard/prod/yox.min.js"></script>
+
+
+<script src="/js/search.min.js"></script>
+
+
+
+    <script src="//cdn.jsdelivr.net/npm/lightgallery.js@1.1.3/dist/js/lightgallery.min.js"></script>
+    
+<script src="/js/light-gallery.min.js"></script>
+
+
+
+
+
+    </body>
+</html>

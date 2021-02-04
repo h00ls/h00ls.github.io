@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html  lang="en" >
+    <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, maximum-scale=5, viewport-fit=cover">
+    <title>windows信息收集 | Hexo</title>
+    <meta name="description" content="Windows 信息收集作为一个想偷懒的人，必然就想写个脚本对信息收集，免得自己丢三落四。然而，知道python打包的exe文件大，不知道这么大。于是只有个半成品。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="windows信息收集">
+<meta property="og:url" content="http://example.com/2020/12/17/windows%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="Windows 信息收集作为一个想偷懒的人，必然就想写个脚本对信息收集，免得自己丢三落四。然而，知道python打包的exe文件大，不知道这么大。于是只有个半成品。">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-12-17T14:54:36.000Z">
+<meta property="article:modified_time" content="2020-12-17T14:59:10.269Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="信息收集">
+<meta name="twitter:card" content="summary">
+
+    <link rel="alternate" type="application/atom+xml" href="/atom.xml">
+    <link rel="icon" href="/images/favicon.ico" type="image/x-icon">
+
+    
+<link rel="stylesheet" href="/css/common.min.css">
+
+
+
+    
+    
+    
+    
+        <link href="//cdn.jsdelivr.net/npm/lightgallery.js@1.1.3/dist/css/lightgallery.min.css" rel="stylesheet">
+    
+    
+    
+<link rel="stylesheet" href="/css/iconfont.min.css">
+
+    
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+    <body>
+        <header class="header header-fixture">
+    <div class="profile-search-wrap flex sm:block">
+        
+        
+        <div class="profile sm:text-center md:px-1 lg:px-3 sm:pb-4 sm:pt-6">
+            <a id="avatar" role="link" href="https://github.com/fengkx" class="inline-block lg:w-16 lg:h-16 w-8 h-8 m-2" target="_blank" rel="noopener" rel="noreferrer" >
+                <img src="https://www.gravatar.com/avatar/0bc83cb571cd1c50ba6f3e8a78ef1346?s=128" class="rounded-full" alt="avatar">
+            </a>
+            <h2 id="name" class="hidden lg:block">h00ls</h2>
+            <h3 id="title" class="hidden xl:block">安全那些事</h3>
+            
+            <small id="location" class="hidden lg:block">
+                <i class="iconfont icon-map-icon"></i>
+                Sichuan, China
+            </small>
+            
+        </div>
+        
+        
+<div class="search flex-1 flex lg:inline-block sm:hidden lg:px-4 lg:mt-2 lg:mb-4 lg:w-full">
+    <form id="search-form" class="my-auto flex-1 lg:border lg:border-solid lg:border-gray-200">
+        <div class="input-group table bg-gray-100 lg:bg-white w-full">
+            <input id="search-input" type="text" placeholder="Search" class="inline-block w-full bg-gray-100 lg:bg-white">
+            <span class="table-cell">
+                <button name="search tigger button" disabled>
+                    <i class="iconfont icon-search m-2"></i>
+                </button>
+            </span>
+        </div>
+    </form>
+        
+<script id="search-teamplate" type="text/html" data-path="/content.json">
+    <div>
+        <div class="search-header bg-gray-400">
+            <input id="actual-search-input" model="keyword" ref="input" class="inline-block w-full h-10 px-2 py-1" placeholder="Search" type="text">
+        </div>
+        <div class="search-result bg-gray-200">
+            {{#each searchPosts}}
+            <a href="/{{ path }}" class="result-item block px-2 pb-3 mb-1 pt-1 hover:bg-indigo-100">
+                <i class="iconfont icon-file"></i>
+                <h1 class="result-title inline font-medium text-lg">{{ title }}</h1>
+                <p class="result-content text-gray-600 text-sm">{{{ text }}}</p>
+            </a>
+            {{/each}}
+        </div>
+    </div>
+</script>
+
+</div>
+
+
+        <button name="menu toogle button" id="menu-toggle-btn" class="block sm:hidden p-3" role="button" aria-expanded="false">
+            <i class="iconfont icon-hamburger"></i>
+        </button>
+    </div>
+    <nav id="menu-nav" class="hidden sm:flex flex-col">
+        
+        
+            <div class="menu-item menu-home" role="menuitem">
+                <a href="/.">
+                    <i class="iconfont icon-home" aria-hidden="true"></i>
+                    <span class="menu-title">Home</span>
+                </a>
+            </div>
+        
+        
+            <div class="menu-item menu-archives" role="menuitem">
+                <a href="/archives">
+                    <i class="iconfont icon-archive" aria-hidden="true"></i>
+                    <span class="menu-title">Archives</span>
+                </a>
+            </div>
+        
+        
+            <div class="menu-item menu-categories" role="menuitem">
+                <a href="/categories">
+                    <i class="iconfont icon-folder" aria-hidden="true"></i>
+                    <span class="menu-title">Categories</span>
+                </a>
+            </div>
+        
+        
+            <div class="menu-item menu-tags" role="menuitem">
+                <a href="/tags">
+                    <i class="iconfont icon-tag" aria-hidden="true"></i>
+                    <span class="menu-title">Tags</span>
+                </a>
+            </div>
+        
+        
+            <div class="menu-item menu-repository" role="menuitem">
+                <a href="/repository">
+                    <i class="iconfont icon-project" aria-hidden="true"></i>
+                    <span class="menu-title">Repository</span>
+                </a>
+            </div>
+        
+        
+            <div class="menu-item menu-links" role="menuitem">
+                <a href="/links">
+                    <i class="iconfont icon-friend" aria-hidden="true"></i>
+                    <span class="menu-title">Links</span>
+                </a>
+            </div>
+        
+        
+            <div class="menu-item menu-about" role="menuitem">
+                <a href="/about">
+                    <i class="iconfont icon-cup" aria-hidden="true"></i>
+                    <span class="menu-title">About</span>
+                </a>
+            </div>
+        
+        
+<div class="social-links flex sm:flex-col lg:hidden mt-5">
+    
+        <span class="social-item text-center">
+            <a target="_blank" rel="noopener" href="https://github.com/fengkx">
+                <i class="iconfont social-icon icon-github"></i>
+                <span class="menu-title hidden lg:inline">menu.github</span>
+            </a>
+        </span>
+    
+        <span class="social-item text-center">
+            <a target="_blank" rel="noopener" href="https://t.me/fengkx">
+                <i class="iconfont social-icon icon-telegram"></i>
+                <span class="menu-title hidden lg:inline">menu.telegram</span>
+            </a>
+        </span>
+    
+        <span class="social-item text-center">
+            <a target="_blank" rel="noopener" href="https://twitter.com/example">
+                <i class="iconfont social-icon icon-twitter"></i>
+                <span class="menu-title hidden lg:inline">menu.twitter</span>
+            </a>
+        </span>
+    
+        <span class="social-item text-center">
+            <a href="/atom.xml">
+                <i class="iconfont social-icon icon-rss"></i>
+                <span class="menu-title hidden lg:inline">menu.rss</span>
+            </a>
+        </span>
+    
+</div>
+
+
+    </nav>
+</header>
+
+        <section class="main-section">
+            
+    <main class="flex-1 px-4 py-12 md:px-5 lg:px-8 lg:py-4 relative min-h-screen">
+    
+
+    <article class="content article article-archives article-type-list" itemscope="">
+        <header class="article-header">
+            
+    
+        <h1 class="article-title text-lg" itemprop="name">
+            windows信息收集
+        </h1>
+    
+
+
+
+            <p class="article-meta mb-3 text-xs">
+                <span class="article-date">
+    <i class="iconfont icon-calendar-check"></i>
+	<a href="/2020/12/17/windows%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/" class="article-date">
+	  <time datetime="2020-12-17T14:54:36.000Z" itemprop="datePublished">Dec 17</time>
+	</a>
+</span>
+
+                
+
+                
+    <span class="article-tags">
+    <i class="iconfont icon-tag"></i>
+    <a class="article-tag-none-link" href="/tags/%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/" rel="tag">信息收集</a>
+  </span>
+
+
+                <span class="_partial/post-comment"><i class="icon icon-comment"></i>
+                    <a href="/2020/12/17/windows%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/#comments" class="article-comment-link">
+                        Comments
+                    </a>
+                </span>
+                
+    
+        <span class="post-wordcount" itemprop="wordCount">Word Count: 911(words)</span>
+    
+    
+        <span class="post-readcount" itemprop="timeRequired">Read Count: 4(minutes)</span>
+    
+
+
+            </p>
+        </header>
+        <div class="marked-body article-body">
+            <h1 id="Windows-信息收集"><a href="#Windows-信息收集" class="headerlink" title="Windows 信息收集"></a>Windows 信息收集</h1><p>作为一个想偷懒的人，必然就想写个脚本对信息收集，免得自己丢三落四。然而，知道python打包的exe文件大，不知道这么大。于是只有个半成品。</p>
+<a id="more"></a>
+
+<p>python 源码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> subprocess <span class="keyword">import</span> Popen, PIPE</span><br><span class="line"><span class="keyword">from</span> re <span class="keyword">import</span> <span class="built_in">compile</span>, sub, DOTALL</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">getInformation</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self</span>):</span></span><br><span class="line">        self.hostName = <span class="literal">None</span></span><br><span class="line">        self.registerName = <span class="literal">None</span></span><br><span class="line">        self.domainWork = <span class="literal">None</span></span><br><span class="line">        self.patches = <span class="literal">None</span></span><br><span class="line">        self.allUser = <span class="literal">None</span></span><br><span class="line">        self.OnlineUser = <span class="literal">None</span></span><br><span class="line">        self.currentUser = <span class="literal">None</span></span><br><span class="line">        self.currentUserGroup = <span class="literal">None</span></span><br><span class="line">        self.AVName = <span class="literal">None</span></span><br><span class="line">        self.shareList = <span class="literal">None</span></span><br><span class="line">        self.OS = <span class="literal">None</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">userOpt</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="comment"># 获取所有用户</span></span><br><span class="line">        response = Popen(<span class="string">&quot;net user&quot;</span>, shell=<span class="literal">True</span>, stdout=PIPE)</span><br><span class="line">        result = response.stdout.read().decode(<span class="string">&#x27;gbk&#x27;</span>)</span><br><span class="line">        <span class="comment"># print(result)</span></span><br><span class="line"></span><br><span class="line">        pattern1 = <span class="string">r&#x27;.*?---\r\n(.*?)命令成功&#x27;</span></span><br><span class="line">        allUsers = <span class="built_in">compile</span>(pattern1, DOTALL)</span><br><span class="line">        allUser = allUsers.findall(result)[<span class="number">0</span>].replace(<span class="string">&quot;\r\n&quot;</span>, <span class="string">&quot;&quot;</span>)</span><br><span class="line">        allUser = sub(<span class="string">&#x27; +&#x27;</span>, <span class="string">&#x27; | &#x27;</span>, allUser)</span><br><span class="line">        <span class="comment"># print(allUser)</span></span><br><span class="line">        self.allUser = allUser</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 查询当前用户</span></span><br><span class="line">        response = Popen(<span class="string">&quot;whoami&quot;</span>, shell=<span class="literal">True</span>, stdout=PIPE)</span><br><span class="line">        result = response.stdout.read().decode(<span class="string">&#x27;gbk&#x27;</span>)</span><br><span class="line"></span><br><span class="line">        pattern1 = <span class="string">r&#x27;.*?\\(.*?)\r\n&#x27;</span></span><br><span class="line">        currentUsers = <span class="built_in">compile</span>(pattern1, DOTALL)</span><br><span class="line">        currentUser = currentUsers.findall(result)[<span class="number">0</span>].replace(<span class="string">&quot;\r\n&quot;</span>, <span class="string">&quot;&quot;</span>).strip()</span><br><span class="line">        self.currentUser = currentUser</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 查询当前用户所属组</span></span><br><span class="line">        response = Popen(<span class="string">&quot;net user &quot;</span>+self.currentUser, shell=<span class="literal">True</span>, stdout=PIPE)</span><br><span class="line">        result = response.stdout.read().decode(<span class="string">&#x27;gbk&#x27;</span>)</span><br><span class="line"></span><br><span class="line">        pattern1 = <span class="string">r&#x27;.*?本地组成员 \s+(\*.*?)\r\n&#x27;</span></span><br><span class="line">        currentUserGroups = <span class="built_in">compile</span>(pattern1, DOTALL)</span><br><span class="line">        currentUserGroup = currentUserGroups.findall(result)[<span class="number">0</span>].replace(<span class="string">&quot;\r\n&quot;</span>, <span class="string">&quot;&quot;</span>).strip()</span><br><span class="line">        self.currentUserGroup = currentUserGroup</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        <span class="comment"># 查询在线用户</span></span><br><span class="line">        response = Popen(<span class="string">&quot;query user | quser&quot;</span>, shell=<span class="literal">True</span>, stdout=PIPE)</span><br><span class="line">        result = response.stdout.read().decode(<span class="string">&#x27;gbk&#x27;</span>)</span><br><span class="line"></span><br><span class="line">        pattern1 = <span class="string">r&#x27;.*?&gt;(.*?) &#x27;</span></span><br><span class="line">        OnlineUsers = <span class="built_in">compile</span>(pattern1, DOTALL)</span><br><span class="line">        OnlineUser = OnlineUsers.findall(result)[<span class="number">0</span>].replace(<span class="string">&quot;\r\n&quot;</span>, <span class="string">&quot;&quot;</span>).strip()</span><br><span class="line">        self.OnlineUser = OnlineUser</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">SystemInfo</span>(<span class="params">self</span>):</span></span><br><span class="line">        response = Popen(<span class="string">&quot;systeminfo&quot;</span>, shell=<span class="literal">True</span>, stdout=PIPE)</span><br><span class="line">        result = response.stdout.read().decode(<span class="string">&#x27;gbk&#x27;</span>)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 获取主机名</span></span><br><span class="line">        pattern1 = <span class="string">r&#x27;.*?主机名:\s+(.*?)\r\n&#x27;</span></span><br><span class="line">        hostNames = <span class="built_in">compile</span>(pattern1, DOTALL)</span><br><span class="line">        hostName = hostNames.findall(result)</span><br><span class="line">        self.hostName = hostName[<span class="number">0</span>].strip()</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 获取用户名</span></span><br><span class="line">        pattern2 = <span class="string">r&#x27;.*?注册的所有人:   (.*?)\r\n&#x27;</span></span><br><span class="line">        registerNames = <span class="built_in">compile</span>(pattern2, DOTALL)</span><br><span class="line">        registerName = registerNames.findall(result)</span><br><span class="line">        self.registerName = registerName[<span class="number">0</span>].strip()</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 获取工作组名或域名</span></span><br><span class="line">        pattern3 = <span class="string">r&#x27;.*?域:\s+(.*?)\r\n&#x27;</span></span><br><span class="line">        domainWorks = <span class="built_in">compile</span>(pattern3, DOTALL)</span><br><span class="line">        domainWork = domainWorks.findall(result)</span><br><span class="line">        self.domainWork = domainWork[<span class="number">0</span>].strip()</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 获取补丁信息</span></span><br><span class="line">        pattern4 = <span class="string">r&#x27;.*?\[\d+\]: (KB\d&#123;7&#125;)\r\n&#x27;</span></span><br><span class="line">        patches = <span class="built_in">compile</span>(pattern4, DOTALL)</span><br><span class="line">        patchName = patches.findall(result)</span><br><span class="line">        self.patches = patchName</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 获取OS名称和版本</span></span><br><span class="line">        pattern5 = <span class="string">r&#x27;.*?OS 名称:\s+ (.*?)\r\nOS&#x27;</span></span><br><span class="line">        OS = <span class="built_in">compile</span>(pattern5, DOTALL)</span><br><span class="line">        OSName = OS.findall(result)[<span class="number">0</span>]</span><br><span class="line">        </span><br><span class="line">        pattern6 = <span class="string">r&#x27;.*?OS 版本:\s+ (.*?)\r\nOS&#x27;</span></span><br><span class="line">        OSVersion = <span class="built_in">compile</span>(pattern6, DOTALL)</span><br><span class="line">        OSVersion = OSVersion.findall(result)[<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line">        <span class="comment"># print(OSName + &quot; &quot; + OSVersion)</span></span><br><span class="line">        self.OS = OSName + <span class="string">&quot; &quot;</span> + OSVersion</span><br><span class="line">        <span class="comment"># self.OS = OS</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">AntiVirusList</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="comment"># 获取杀软名称</span></span><br><span class="line">        response = Popen(<span class="string">&quot;wmic /namespace:\\\\root\\securitycenter2 path antivirusproduct GET displayName&quot;</span>, shell=<span class="literal">True</span>, stdout=PIPE)</span><br><span class="line">        result = response.stdout.read().decode(<span class="string">&#x27;gbk&#x27;</span>)</span><br><span class="line">        AVs = result.split(<span class="string">&#x27;\r\r\n&#x27;</span>)</span><br><span class="line">        AVs = <span class="built_in">set</span>([item.strip() <span class="keyword">for</span> item <span class="keyword">in</span> AVs[<span class="number">1</span>:-<span class="number">2</span>]])</span><br><span class="line">        self.AVName = AVs</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">NetShare</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="comment"># 获取共享资源</span></span><br><span class="line">        response = Popen(<span class="string">&quot;net share&quot;</span>, shell=<span class="literal">True</span>, stdout=PIPE)</span><br><span class="line">        result = response.stdout.read().decode(<span class="string">&#x27;gbk&#x27;</span>)</span><br><span class="line"></span><br><span class="line">        pattern = <span class="string">r&#x27;.*?---\r\n(.*?)\r\n命令&#x27;</span></span><br><span class="line">        shareList = <span class="built_in">compile</span>(pattern, DOTALL)</span><br><span class="line">        shareList = shareList.findall(result)[<span class="number">0</span>]</span><br><span class="line">        shareList = <span class="string">&#x27; &#x27;</span>.join(shareList.split())</span><br><span class="line">        self.shareList = shareList</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">runCommand</span>(<span class="params">self</span>):</span></span><br><span class="line">        self.NetShare()</span><br><span class="line">        self.AntiVirusList()</span><br><span class="line">        self.userOpt()</span><br><span class="line">        self.SystemInfo()</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">printInfo</span>(<span class="params">self</span>):</span></span><br><span class="line"></span><br><span class="line">        print(<span class="string">&quot;\n\n&quot;</span>)</span><br><span class="line">        print(<span class="string">&quot;[*]系统信息:&quot;</span>.ljust(<span class="number">15</span>), self.OS)</span><br><span class="line">        print(<span class="string">&quot;[-]&quot;</span>,<span class="string">&quot;-&quot;</span>*<span class="number">100</span>)</span><br><span class="line">        print(<span class="string">&quot;[*]当前主机名:&quot;</span>.ljust(<span class="number">15</span>), self.hostName)</span><br><span class="line">        print(<span class="string">&quot;[-]&quot;</span>,<span class="string">&quot;-&quot;</span>*<span class="number">100</span>)</span><br><span class="line">        print(<span class="string">&quot;[*]域/工作组:&quot;</span>.ljust(<span class="number">15</span>), self.domainWork)</span><br><span class="line">        print(<span class="string">&quot;[-]&quot;</span>,<span class="string">&quot;-&quot;</span>*<span class="number">100</span>)</span><br><span class="line">        print(<span class="string">&quot;[*]当前注册人:&quot;</span>.ljust(<span class="number">15</span>), self.registerName)</span><br><span class="line">        print(<span class="string">&quot;[-]&quot;</span>,<span class="string">&quot;-&quot;</span>*<span class="number">100</span>)</span><br><span class="line">        print(<span class="string">&quot;[*]当前用户名:&quot;</span>.ljust(<span class="number">15</span>), self.currentUser)</span><br><span class="line">        print(<span class="string">&quot;[-]&quot;</span>,<span class="string">&quot;-&quot;</span>*<span class="number">100</span>)</span><br><span class="line">        print(<span class="string">&quot;[*]当前用户属组:&quot;</span>.ljust(<span class="number">15</span>), self.currentUserGroup)</span><br><span class="line">        print(<span class="string">&quot;[-]&quot;</span>,<span class="string">&quot;-&quot;</span>*<span class="number">100</span>)</span><br><span class="line">        print(<span class="string">&quot;[*]所有用户名:&quot;</span>.ljust(<span class="number">15</span>), self.allUser)</span><br><span class="line">        print(<span class="string">&quot;[-]&quot;</span>,<span class="string">&quot;-&quot;</span>*<span class="number">100</span>)</span><br><span class="line">        print(<span class="string">&quot;[*]在线用户:&quot;</span>.ljust(<span class="number">15</span>),  self.OnlineUser)</span><br><span class="line">        print(<span class="string">&quot;[-]&quot;</span>,<span class="string">&quot;-&quot;</span>*<span class="number">100</span>)</span><br><span class="line">        print(<span class="string">&quot;[*]补丁安装情况:&quot;</span>.ljust(<span class="number">15</span>), self.patches)</span><br><span class="line">        print(<span class="string">&quot;[-]\n[-]&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;复制补丁信息到网站查询可用exp：http://bugs.hacking8.com/tiquan/&quot;</span>)</span><br><span class="line">        print(<span class="string">&quot;[-]&quot;</span>,<span class="string">&quot;-&quot;</span>*<span class="number">100</span>)</span><br><span class="line">        print(<span class="string">&quot;[*]杀软程序:&quot;</span>.ljust(<span class="number">15</span>), self.AVName)</span><br><span class="line">        print(<span class="string">&quot;[-]&quot;</span>,<span class="string">&quot;-&quot;</span>*<span class="number">100</span>)</span><br><span class="line">        print(<span class="string">&quot;[*]共享资源:&quot;</span>.ljust(<span class="number">15</span>), self.shareList)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">info = getInformation()</span><br><span class="line">info.runCommand()</span><br><span class="line">info.printInfo()</span><br></pre></td></tr></table></figure>
+<p>文件大小6KB，打包后约为6M。脑瓜子又嗡嗡的。</p>
+
+        </div>
+        
+<blockquote class="copyright">
+    <p><strong>Link to this article : </strong><a class="permalink" href="http://example.com/2020/12/17/windows%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/">http://example.com/2020/12/17/windows信息收集/</a></p>
+    <p><strong>This article is available under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener noreferrer">Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)</a> License</strong></p>
+</blockquote>
+
+
+    </article>
+    
+    <section id="comments">
+        
+    </section>
+
+
+    
+
+</main>
+
+
+<aside style="" id="sidebar" class="aside aside-fixture">
+    <div class="toc-sidebar">
+        <nav id="toc" class="article-toc">
+            <h3 class="toc-title">Catalogue</h3>
+            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Windows-%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86"><span class="toc-number">1.</span> <span class="toc-text">Windows 信息收集</span></a></li></ol>
+        </nav>
+    </div>
+</aside>
+
+
+
+
+
+        </section>
+        <footer class="hidden lg:block fixed bottom-0 left-0 sm:w-1/12 lg:w-1/6 bg-gray-100 z-40">
+    
+    <div class="footer-social-links">
+        
+            <a target="_blank" rel="noopener" href="https://github.com/fengkx">
+                <i class="iconfont icon-github"></i>
+            </a>
+        
+            <a target="_blank" rel="noopener" href="https://t.me/fengkx">
+                <i class="iconfont icon-telegram"></i>
+            </a>
+        
+            <a target="_blank" rel="noopener" href="https://twitter.com/example">
+                <i class="iconfont icon-twitter"></i>
+            </a>
+        
+            <a href="/atom.xml">
+                <i class="iconfont icon-rss"></i>
+            </a>
+        
+    </div>
+    
+    
+</footer>
+
+        <div id="mask" class="hidden mask fixed inset-0 bg-gray-900 opacity-75 z-40"></div>
+        <div id="search-view-container" class="hidden shadow-xl"></div>
+        
+<script src="/js/dom-event.min.js"></script>
+
+<script src="//cdn.jsdelivr.net/npm/yox@1.0.0-alpha.121/dist/standard/prod/yox.min.js"></script>
+
+
+<script src="/js/search.min.js"></script>
+
+
+
+    <script src="//cdn.jsdelivr.net/npm/lightgallery.js@1.1.3/dist/js/lightgallery.min.js"></script>
+    
+<script src="/js/light-gallery.min.js"></script>
+
+
+
+
+
+    </body>
+</html>
