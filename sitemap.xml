@@ -319,14 +319,14 @@
   </url>
   
   <url>
-    <loc>http://example.com/tags/joomla/</loc>
+    <loc>http://example.com/tags/sql%E6%B3%A8%E5%85%A5/</loc>
     <lastmod>2021-03-22</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
-    <loc>http://example.com/tags/sql%E6%B3%A8%E5%85%A5/</loc>
+    <loc>http://example.com/tags/joomla/</loc>
     <lastmod>2021-03-22</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -347,14 +347,14 @@
   </url>
   
   <url>
-    <loc>http://example.com/tags/%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/</loc>
+    <loc>http://example.com/tags/%E9%9D%B6%E6%9C%BA%E8%AE%AD%E7%BB%83/</loc>
     <lastmod>2021-03-22</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
-    <loc>http://example.com/tags/%E9%9D%B6%E6%9C%BA%E8%AE%AD%E7%BB%83/</loc>
+    <loc>http://example.com/tags/%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/</loc>
     <lastmod>2021-03-22</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
