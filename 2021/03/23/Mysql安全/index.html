@@ -11,24 +11,24 @@
 <meta property="og:site_name" content="h00ls">
 <meta property="og:description" content="Mysql安全Mysql注入万能密码1234567&#39; or 1&#39;&#39; or 1 -- -&quot; or &quot;&quot; &#x3D; &quot;&quot; or 1&#x3D;1 -- -&#39; &#x3D; &#39;&#39;LIKE&#39;&#39;&#x3D;0 -- + 判断注入点要闭合语句，让sql语句正常才能执行 12345678&amp;#39">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="c:/Users/Rainbow/AppData/Roaming/Typora/typora-user-images/image-20210118100808835.png">
-<meta property="og:image" content="c:/Users/Rainbow/AppData/Roaming/Typora/typora-user-images/image-20210118100736325.png">
-<meta property="og:image" content="c:/Users/Rainbow/AppData/Roaming/Typora/typora-user-images/image-20210118100530058.png">
-<meta property="og:image" content="c:/Users/Rainbow/AppData/Roaming/Typora/typora-user-images/image-20210123110631247.png">
-<meta property="og:image" content="c:/Users/Rainbow/AppData/Roaming/Typora/typora-user-images/image-20210123102918005.png">
-<meta property="og:image" content="c:/Users/Rainbow/AppData/Roaming/Typora/typora-user-images/image-20210319203004955.png">
-<meta property="og:image" content="c:/Users/Rainbow/AppData/Roaming/Typora/typora-user-images/image-20210319183842847.png">
-<meta property="og:image" content="c:/Users/Rainbow/AppData/Roaming/Typora/typora-user-images/image-20210319191013437.png">
-<meta property="og:image" content="c:/Users/Rainbow/AppData/Roaming/Typora/typora-user-images/image-20210319191120045.png">
-<meta property="og:image" content="c:/Users/Rainbow/AppData/Roaming/Typora/typora-user-images/image-20210319182938912.png">
-<meta property="og:image" content="c:/Users/Rainbow/AppData/Roaming/Typora/typora-user-images/image-20210319202515804.png">
-<meta property="og:image" content="c:/Users/Rainbow/AppData/Roaming/Typora/typora-user-images/image-20210319183435268.png">
+<meta property="og:image" content="http://example.com/images/image-20210118100808835.png">
+<meta property="og:image" content="http://example.com/images/image-20210118100736325.png">
+<meta property="og:image" content="http://example.com/images/image-20210118100530058.png">
+<meta property="og:image" content="http://example.com/images/image-20210123110631247.png">
+<meta property="og:image" content="http://example.com/images/image-20210123102918005.png">
+<meta property="og:image" content="http://example.com/images/image-20210319203004955.png">
+<meta property="og:image" content="http://example.com/images/image-20210319183842847.png">
+<meta property="og:image" content="http://example.com/images/image-20210319191013437.png">
+<meta property="og:image" content="http://example.com/images/image-20210319191120045.png">
+<meta property="og:image" content="http://example.com/images/image-20210319182938912.png">
+<meta property="og:image" content="http://example.com/images/image-20210319202515804.png">
+<meta property="og:image" content="http://example.com/images/image-20210319183435268.png">
 <meta property="article:published_time" content="2021-03-23T12:37:08.000Z">
-<meta property="article:modified_time" content="2021-03-23T12:39:04.006Z">
+<meta property="article:modified_time" content="2021-03-23T12:41:38.577Z">
 <meta property="article:author" content="h00ls">
 <meta property="article:tag" content="Mysql">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="c:/Users/Rainbow/AppData/Roaming/Typora/typora-user-images/image-20210118100808835.png">
+<meta name="twitter:image" content="http://example.com/images/image-20210118100808835.png">
 
     <link rel="alternate" type="application/atom+xml" href="/atom.xml">
     <link rel="icon" href="/images/favicon.png" type="image/x-icon">
@@ -270,23 +270,23 @@
 <p>geometrycollection()，multipoint()，polygon()，multipolygon()，linestring()，multilinestring()</p>
 <h4 id="布尔型注入"><a href="#布尔型注入" class="headerlink" title="布尔型注入"></a>布尔型注入</h4><p>不会给出具体错误信息。sql语句正常是返回正常，异常时返回自定义的错误信息</p>
 <p>正确情况</p>
-<p><img src="C:\Users\Rainbow\AppData\Roaming\Typora\typora-user-images\image-20210118100808835.png" alt="image-20210118100808835"></p>
+<p><img src="/images/image-20210118100808835.png" alt="image-20210118100808835"></p>
 <p>错误情况</p>
-<p><img src="C:\Users\Rainbow\AppData\Roaming\Typora\typora-user-images\image-20210118100736325.png" alt="image-20210118100736325"></p>
+<p><img src="/images/image-20210118100736325.png" alt="image-20210118100736325"></p>
 <p>布尔型注入</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">id&#x3D;1&#39; and substr(version(),1,1)&#x3D;5-- -</span><br></pre></td></tr></table></figure>
 <h4 id="时间盲注"><a href="#时间盲注" class="headerlink" title="时间盲注"></a>时间盲注</h4><p>不管输入的正确与否都会会显出正确的页面，也就是只会有相应时间的差别。</p>
-<p><img src="C:\Users\Rainbow\AppData\Roaming\Typora\typora-user-images\image-20210118100530058.png" alt="image-20210118100530058"></p>
+<p><img src="/images/image-20210118100530058.png" alt="image-20210118100530058"></p>
 <p>时间延迟注入</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">id&#x3D;1&#39; and if(substr(user(),2,1)&#x3D;&#39;o&#39;, sleep(1),sleep(5))-- -</span><br></pre></td></tr></table></figure>
 <h4 id="宽字节注入"><a href="#宽字节注入" class="headerlink" title="宽字节注入"></a>宽字节注入</h4><h5 id="宽字节注入原理"><a href="#宽字节注入原理" class="headerlink" title="宽字节注入原理"></a>宽字节注入原理</h5><p>Mysql在使用GBK编码的时候，会认为两个字节为一个汉字（当前一个ascii码大于128的时候，就是汉字了），而输入<code>%df%27</code>经过注释符就变成<code>%df%5c%27</code>，第一个字节大于128，所以<code>%df%5c</code>组合成一个汉字，就留下了<code>%27</code>，单引号就已经被带入数据库进行闭合了。把这个思路扩展到世界上所有多字节编码，只要低位的范围中含有<code>0x5c</code>的编码，就可以进行宽字符注入。</p>
 <h5 id="宽字节注入实践"><a href="#宽字节注入实践" class="headerlink" title="宽字节注入实践"></a>宽字节注入实践</h5><p>TIPS：sqlmap无法直接注入，需要使用tamper <code>unmagicquotes.py</code>。或者在id后加上<code>%df&#39;</code> ，单引号需要根据情况修改闭合</p>
-<p><img src="C:\Users\Rainbow\AppData\Roaming\Typora\typora-user-images\image-20210123110631247.png" alt="image-20210123110631247"></p>
+<p><img src="/images/image-20210123110631247.png" alt="image-20210123110631247"></p>
 <p>GET</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">使用 %df 吃掉后面的 \   &#x3D;&#x3D;&#x3D;&gt;  payload: id&#x3D;1%df&#39; -- -</span><br></pre></td></tr></table></figure>
 <p>POST</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">将 %df 先进行urldecode  ß  然后利用</span><br></pre></td></tr></table></figure>
-<p><img src="C:\Users\Rainbow\AppData\Roaming\Typora\typora-user-images\image-20210123102918005.png" alt="image-20210123102918005"></p>
+<p><img src="/images/image-20210123102918005.png" alt="image-20210123102918005"></p>
 <h5 id="宽字节注入防范"><a href="#宽字节注入防范" class="headerlink" title="宽字节注入防范"></a>宽字节注入防范</h5><p>在查询语句前使用<code>mysql_query(SET character_set_client=binary)</code></p>
 <h4 id="order-by-注入"><a href="#order-by-注入" class="headerlink" title="order by 注入"></a>order by 注入</h4><p>报错注入</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">id&#x3D;updatexml(1,concat(&#39;~&#39;,version()),1)</span><br></pre></td></tr></table></figure>
@@ -361,16 +361,16 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">index.php?id&#x3D;select 1&amp;id&#x3D;2,version() from dbname</span><br></pre></td></tr></table></figure>
 
 
-<h5 id="多个POST请求包绕过"><a href="#多个POST请求包绕过" class="headerlink" title="多个POST请求包绕过"></a>多个POST请求包绕过</h5><h5 id="分块传输"><a href="#分块传输" class="headerlink" title="分块传输"></a><strong>分块传输</strong></h5><p><img src="C:/Users/Rainbow/AppData/Roaming/Typora/typora-user-images/image-20210319203004955.png" alt="image-20210319203004955"></p>
+<h5 id="多个POST请求包绕过"><a href="#多个POST请求包绕过" class="headerlink" title="多个POST请求包绕过"></a>多个POST请求包绕过</h5><h5 id="分块传输"><a href="#分块传输" class="headerlink" title="分块传输"></a><strong>分块传输</strong></h5><p><img src="/images/image-20210319203004955.png" alt="image-20210319203004955"></p>
 <h5 id="Burpsuite中的Change-body-encoding"><a href="#Burpsuite中的Change-body-encoding" class="headerlink" title="Burpsuite中的Change body encoding"></a><strong>Burpsuite中的Change body encoding</strong></h5><p>任意修改其中的boundary，但是下面的boundary必须有两个<code>--</code>结尾</p>
-<p><img src="C:/Users/Rainbow/AppData/Roaming/Typora/typora-user-images/image-20210319183842847.png" alt="image-20210319183842847"></p>
+<p><img src="/images/image-20210319183842847.png" alt="image-20210319183842847"></p>
 <p>还可以添加<code>filename</code>，但是需要注释才可以。</p>
-<p><img src="C:/Users/Rainbow/AppData/Roaming/Typora/typora-user-images/image-20210319191013437.png" alt="image-20210319191013437"></p>
-<p><img src="C:/Users/Rainbow/AppData/Roaming/Typora/typora-user-images/image-20210319191120045.png" alt="image-20210319191120045"></p>
-<h5 id="结合分块传输和change-body-encoding"><a href="#结合分块传输和change-body-encoding" class="headerlink" title="结合分块传输和change body encoding"></a><strong>结合分块传输和change body encoding</strong></h5><p><img src="C:/Users/Rainbow/AppData/Roaming/Typora/typora-user-images/image-20210319182938912.png" alt="image-20210319182938912"></p>
-<h5 id="压缩协议绕过"><a href="#压缩协议绕过" class="headerlink" title="压缩协议绕过"></a><strong>压缩协议绕过</strong></h5><p><img src="C:/Users/Rainbow/AppData/Roaming/Typora/typora-user-images/image-20210319202515804.png" alt="image-20210319202515804"></p>
+<p><img src="/images/image-20210319191013437.png" alt="image-20210319191013437"></p>
+<p><img src="/images/image-20210319191120045.png" alt="image-20210319191120045"></p>
+<h5 id="结合分块传输和change-body-encoding"><a href="#结合分块传输和change-body-encoding" class="headerlink" title="结合分块传输和change body encoding"></a><strong>结合分块传输和change body encoding</strong></h5><p><img src="/images/image-20210319182938912.png" alt="image-20210319182938912"></p>
+<h5 id="压缩协议绕过"><a href="#压缩协议绕过" class="headerlink" title="压缩协议绕过"></a><strong>压缩协议绕过</strong></h5><p><img src="/images/image-20210319202515804.png" alt="image-20210319202515804"></p>
 <h5 id="畸形请求头"><a href="#畸形请求头" class="headerlink" title="畸形请求头"></a><strong>畸形请求头</strong></h5><p>只要保证<code>HTTP</code>和<code>1.1</code>之间的<code>/</code>存在，可以任意修改<code>HTTP</code>和<code>1.1</code></p>
-<p><img src="C:/Users/Rainbow/AppData/Roaming/Typora/typora-user-images/image-20210319183435268.png" alt="image-20210319183435268"></p>
+<p><img src="/images/image-20210319183435268.png" alt="image-20210319183435268"></p>
 
         </div>
         
