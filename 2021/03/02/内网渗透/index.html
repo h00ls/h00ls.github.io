@@ -23,7 +23,7 @@
 <meta property="og:image" content="http://example.com/images/image-20210116105039417.png">
 <meta property="og:image" content="http://example.com/images/image-20210116105528377.png">
 <meta property="article:published_time" content="2021-03-02T08:18:03.000Z">
-<meta property="article:modified_time" content="2021-04-01T23:51:19.906Z">
+<meta property="article:modified_time" content="2021-09-02T06:03:00.384Z">
 <meta property="article:author" content="h00ls">
 <meta property="article:tag" content="内网渗透专栏">
 <meta name="twitter:card" content="summary">
@@ -228,12 +228,12 @@
 
 
     
-        <span class="post-wordcount" itemprop="wordCount">Word Count: 8.1k(words)</span>
+        <span class="post-wordcount" itemprop="wordCount">Word Count: 8.4k(words)</span>
     
 	
 	
     
-        <span class="post-readcount" itemprop="timeRequired">Read Count: 36(minutes)</span>
+        <span class="post-readcount" itemprop="timeRequired">Read Count: 37(minutes)</span>
     
 	
 	
@@ -461,8 +461,17 @@
 <h4 id="BypassUAC"><a href="#BypassUAC" class="headerlink" title="BypassUAC"></a>BypassUAC</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">msf5 exploit(multi&#x2F;handler) &gt; use exploit&#x2F;windows&#x2F;local&#x2F;bypassuac </span><br><span class="line">meterpreter &gt; getuid</span><br><span class="line">meterpreter &gt; getsystem</span><br></pre></td></tr></table></figure>
 <h4 id="提权项目"><a href="#提权项目" class="headerlink" title="提权项目"></a>提权项目</h4><p><a target="_blank" rel="noopener" href="https://github.com/Ascotbe/Kernelhub">https://github.com/Ascotbe/Kernelhub</a></p>
 <h4 id="Windows本地提权-CVE-2021-1732"><a href="#Windows本地提权-CVE-2021-1732" class="headerlink" title="Windows本地提权(CVE-2021-1732)"></a>Windows本地提权(CVE-2021-1732)</h4><p><a target="_blank" rel="noopener" href="https://github.com/KaLendsi/CVE-2021-1732-Exploit.git">https://github.com/KaLendsi/CVE-2021-1732-Exploit.git</a></p>
-<h3 id="Linux"><a href="#Linux" class="headerlink" title="Linux"></a>Linux</h3><h4 id="sudo-提权"><a href="#sudo-提权" class="headerlink" title="sudo 提权"></a>sudo 提权</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo -l   # 查看查看当前⽤户允许执⾏的提权命令。</span><br><span class="line">sudo -u root &#x2F;tmp&#x2F;tiquan.sh</span><br></pre></td></tr></table></figure>
-<h4 id="suid提权"><a href="#suid提权" class="headerlink" title="suid提权"></a>suid提权</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># 查看 suid 的文件</span><br><span class="line">find &#x2F; -perm -u&#x3D;s -type f 2&gt;&#x2F;dev&#x2F;null</span><br><span class="line"></span><br><span class="line"># 查看 guid 的文件</span><br><span class="line">find &#x2F; -perm -g&#x3D;s -type f 2&gt;&#x2F;dev&#x2F;null</span><br></pre></td></tr></table></figure>
+<h3 id="Linux"><a href="#Linux" class="headerlink" title="Linux"></a>Linux</h3><h4 id="sudo-提权"><a href="#sudo-提权" class="headerlink" title="sudo 提权"></a>sudo 提权</h4><ul>
+<li><p>当前用户是否具有sudo权限</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo -l   # 查看查看当前⽤户允许执⾏的提权命令。</span><br><span class="line">sudo -u root &#x2F;tmp&#x2F;tiquan.sh   # 以某个用户执行命令</span><br></pre></td></tr></table></figure></li>
+<li><p>基于堆溢出提权</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">1.   以非root用户身份登录系统。</span><br><span class="line"></span><br><span class="line">2.   运行命令“sudoedit -s &#x2F;”</span><br><span class="line"></span><br><span class="line">3.   如果出现以“ sudoedit：”开头的错误响应，则系统受到此漏洞影响；如果出现以“ usage：”开头的错误响应，则表示该漏洞已被补丁修复。</span><br></pre></td></tr></table></figure>
+
+
+</li>
+</ul>
+<h4 id="suid提权"><a href="#suid提权" class="headerlink" title="suid提权"></a>suid提权</h4><p>原因：设置了SUID的文件可以让调用者在调用该文件时以文件拥有者的身份运行该文件，所以利用SUID提权的原理就是运行拥有者为root并设置了SUID的文件，那么我们运行该文件的时候就得获得root用户的身份了</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># 查看 suid 的文件</span><br><span class="line">find &#x2F; -perm -u&#x3D;s -type f 2&gt;&#x2F;dev&#x2F;null</span><br><span class="line"></span><br><span class="line"># 查看 guid 的文件</span><br><span class="line">find &#x2F; -perm -g&#x3D;s -type f 2&gt;&#x2F;dev&#x2F;null</span><br></pre></td></tr></table></figure>
 <h4 id="特殊命令提权"><a href="#特殊命令提权" class="headerlink" title="特殊命令提权"></a>特殊命令提权</h4><p><a target="_blank" rel="noopener" href="https://gtfobins.github.io/">https://gtfobins.github.io/</a></p>
 <h4 id="定时任务提权"><a href="#定时任务提权" class="headerlink" title="定时任务提权"></a>定时任务提权</h4><p>查看计划任务，找到有修改权限的计划任务脚本</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ls -l &#x2F;etc&#x2F;cron*</span><br><span class="line">more &#x2F;etc&#x2F;crontab</span><br></pre></td></tr></table></figure>
@@ -552,10 +561,12 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kerberos::ptt PENTESTLAB.kirbi</span><br></pre></td></tr></table></figure>
 <h4 id="PTH哈希传递"><a href="#PTH哈希传递" class="headerlink" title="PTH哈希传递"></a>PTH哈希传递</h4><p>Windows 网络认证（如SMB 服务）</p>
 <blockquote>
-<p>1、首先客户端会向服务端发送用户信息（其中就包含用户信息）</p>
-<p>2、查看客户端发过来的用户名，如果不存在，认证失败。然后，服务器收到客户端请求后，随机生成一个16位的随机数（叫做Challenge）。使用相应的用户名的 NTLM Hash 加密 Challenge，与此同时将明文的Challenge并返回给客户端。</p>
-<p>3、客户端使用自己的NTLM Hash加密Challenge，然后发送给服务端。</p>
-<p>4、服务端会判断，自己本地加密的Challenge和客户端发送过来加密后的Challenge是否一致，从而判断是否</p>
+<p>1、用户通过输入Windows账号和密码登录客户端时。再登录之前，客户端会缓存输入密码的哈希值，明文密码就会被丢弃。然后向访问的服务发起一个请求。</p>
+<p>2、服务器接收到请求后，生成16位随机数的Challenge。服务端再发送该Challenge给客户端之前，会先将Challenge保存起来，Challenge是以明文发送的。</p>
+<p>3、客户端接收到Challenge之后，在本地使用自己的NTLM哈希对Challenge加密，然后将其密文再次发送到服务端</p>
+<p>4、服务端接收到客户端发过来的加密的Challenge后，会向DC发送客户端验证请求。该请求包含：客户端用户名、客户端密码哈希加密的Challenge和原始的Challenge。</p>
+<p>5、DC根据收到的客户端的用户名查找对应的哈希，然后使用该哈希解密加密后的Challenge，如果和加密后的Challenge一致，则验证通过。</p>
+<p>6、DC将验证的结果发送到服务端，并最终返回到客户端。</p>
 </blockquote>
 <p>实际上就是客户端和服务端都使用要登陆用户的NTLM-hash加密同一个Challenge，看看两次加密是否一致，从而实现认证。</p>
 <p>微软于2014年5月打了KB2871997补丁用来防范哈希传递，但是Administrator账号(SID为500)是例外的，使用该账户的NTLM Hash依然可以进行哈希传递</p>
